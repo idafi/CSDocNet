@@ -1,0 +1,38 @@
+using System.Collections.Generic;
+using NADS.Collections;
+
+namespace NADS.Comments
+{
+    public readonly struct MemberComments
+    {
+        public readonly string Name;
+        
+        public readonly CommentBlock Summary;
+        public readonly CommentBlock Remarks;
+        public readonly CommentBlock Value;
+        public readonly CommentBlock Returns;
+
+        public readonly IReadOnlyList<ParamComments> Params;
+        public readonly IReadOnlyList<ParamComments> TypeParams;
+        public readonly IReadOnlyList<ParamComments> Exceptions;
+        public readonly IReadOnlyList<ParamComments> Permissions;
+
+        public MemberComments(string name,
+            CommentBlock summary, CommentBlock remarks, CommentBlock value, CommentBlock returns,
+            IReadOnlyList<ParamComments> parameters, IReadOnlyList<ParamComments> typeParams,
+            IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions)
+        {
+            Name = name ?? "";
+
+            Summary = summary;
+            Remarks = remarks;
+            Value = value;
+            Returns = returns;
+
+            Params = parameters ?? Empty<ParamComments>.EmptyList;
+            TypeParams = typeParams ?? Empty<ParamComments>.EmptyList;
+            Exceptions = exceptions ?? Empty<ParamComments>.EmptyList;
+            Permissions = permissions ?? Empty<ParamComments>.EmptyList;
+        }
+    }
+}
