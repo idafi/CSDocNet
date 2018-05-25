@@ -17,8 +17,8 @@ namespace NADS.Comments
         public readonly IReadOnlyList<ParamComments> Exceptions;
         public readonly IReadOnlyList<ParamComments> Permissions;
 
-        public MemberComments(string name,
-            CommentBlock summary, CommentBlock remarks, CommentBlock value, CommentBlock returns,
+        public MemberComments(string name, in CommentBlock summary, in CommentBlock remarks,
+            in CommentBlock value, in CommentBlock returns,
             IReadOnlyList<ParamComments> parameters, IReadOnlyList<ParamComments> typeParams,
             IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions)
         {

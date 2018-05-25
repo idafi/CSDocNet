@@ -5,7 +5,7 @@ namespace NADS.Comments
         public readonly string Name;
         public readonly CommentBlock Description;
 
-        public ParamComments(string name, CommentBlock description)
+        public ParamComments(string name, in CommentBlock description)
         {
             Name = name ?? "";
             Description = description;
