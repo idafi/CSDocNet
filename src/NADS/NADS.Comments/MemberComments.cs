@@ -11,6 +11,7 @@ namespace NADS.Comments
         public readonly CommentBlock Remarks;
         public readonly CommentBlock Value;
         public readonly CommentBlock Returns;
+        public readonly CommentBlock Example;
 
         public readonly IReadOnlyList<ParamComments> Params;
         public readonly IReadOnlyList<ParamComments> TypeParams;
@@ -18,7 +19,7 @@ namespace NADS.Comments
         public readonly IReadOnlyList<ParamComments> Permissions;
 
         public MemberComments(string name, in CommentBlock summary, in CommentBlock remarks,
-            in CommentBlock value, in CommentBlock returns,
+            in CommentBlock value, in CommentBlock returns, in CommentBlock example,
             IReadOnlyList<ParamComments> parameters, IReadOnlyList<ParamComments> typeParams,
             IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions)
         {
@@ -28,6 +29,7 @@ namespace NADS.Comments
             Remarks = remarks;
             Value = value;
             Returns = returns;
+            Example = example;
 
             Params = parameters ?? Empty<ParamComments>.EmptyList;
             TypeParams = typeParams ?? Empty<ParamComments>.EmptyList;
