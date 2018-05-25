@@ -33,5 +33,13 @@ namespace NADS.Collections
             Assert.Throws<ArgumentOutOfRangeException>(() => _ = empty[0]);
             Assert.That(empty, Is.EquivalentTo(new int[0]));
         }
+
+        [Test]
+        public void TestEmptyDict()
+        {
+            var empty = Empty<int, float>.EmptyDict;
+            Assert.IsNotNull(empty);
+            Assert.AreEqual(0, empty.Count);
+        }
     }
 }
