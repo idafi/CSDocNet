@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NADS.Collections;
 
 namespace NADS.Comments
 {
@@ -12,9 +13,10 @@ namespace NADS.Comments
         public CommentBlock(IReadOnlyList<CommentNode> nodes,
             IReadOnlyList<string> text, IReadOnlyList<CommentBlock> blocks)
         {
-            Nodes = nodes ?? new CommentNode[0];
-            Text = text ?? new string[0];
-            Blocks = blocks ?? new CommentBlock[0];
+            Nodes = nodes ?? Empty<CommentNode>.EmptyList;
+            
+            Text = text ?? Empty<string>.EmptyList;
+            Blocks = blocks ?? Empty<CommentBlock>.EmptyList;
         }
     }
 }
