@@ -57,16 +57,23 @@ namespace NADS.Comments
         
         public AssemblyComments Parse(XmlDocument xml)
         {
-            Log.Note("Parsing XML document...");
+            if(xml != null)
+            {
+                Log.Note("Parsing XML document...");
 
-            if(!TryFindElement(xml, "doc", out var doc, LogLevel.Failure))
-            { return AssemblyComments.Empty; }
+                if(!TryFindElement(xml, "doc", out var doc, LogLevel.Failure))
+                { return AssemblyComments.Empty; }
 
-            string assemblyName = ParseAssemblyName(doc["assembly"]);
+                string assemblyName = ParseAssemblyName(doc["assembly"]);
 
-            Log.Note("...done parsing XML document.");
-            return new AssemblyComments(assemblyName,
-                null, null, null, null, null);
+                Log.Note("...done parsing XML document.");
+                return new AssemblyComments(assemblyName,
+                    null, null, null, null, null);
+            }
+            else
+            { Log.Failure("Couldn't parse XML document.\n\tDocument is null"); }
+
+            return AssemblyComments.Empty;
         }
 
         public string ParseAssemblyName(XmlElement assemblyNode)
