@@ -23,7 +23,7 @@ namespace NADS.Comments
                     Log.Debug("...done loading XML document.");
                     return Parse(xml);
                 }
-                catch(FileNotFoundException e)
+                catch(Exception e)
                 { Log.Failure("Couldn't read XML stream.\n\t" + e); }
             }
             else
@@ -46,7 +46,7 @@ namespace NADS.Comments
                     Log.Debug("...done loading XML document.");
                     return Parse(xmlDoc);
                 }
-                catch(XmlException e)
+                catch(Exception e)
                 { Log.Failure("Couldn't read XML data.\n\t" + e); }
             }
             else
