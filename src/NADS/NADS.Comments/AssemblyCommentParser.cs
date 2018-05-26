@@ -89,6 +89,11 @@ namespace NADS.Comments
             throw new NotImplementedException();
         }
 
+        public MemberComments ParseMember(XmlElement memberNode)
+        {
+            throw new NotImplementedException();
+        }
+
         public ParamComments ParseParam(XmlElement paramNode)
         {
             throw new NotImplementedException();

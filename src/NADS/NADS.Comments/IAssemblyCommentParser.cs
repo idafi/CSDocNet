@@ -12,6 +12,7 @@ namespace NADS.Comments
 
         string ParseAssemblyName(XmlElement assemblyNode);
         IReadOnlyList<MemberComments> ParseMembers(XmlElement membersNode);
+        MemberComments ParseMember(XmlElement memberNode);
         ParamComments ParseParam(XmlElement paramNode);
         CommentBlock ParseCommentBlock(XmlNode blockNode);
     }
