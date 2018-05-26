@@ -9,6 +9,7 @@ namespace NADS.Comments
     public class AssemblyCommentParserTest
     {
         const string doc = @"<doc><assembly><name>Hello</name></assembly></doc>";
+        const string badDoc = @"<doc<assembly><name>Hello</name></assembly></doc>";
 
         AssemblyCommentParser parser;
 
@@ -29,10 +30,45 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseFromStreamCatchIfNull()
+        {
+            var comments = AssemblyComments.Empty;
+            Assert.DoesNotThrow(() => comments = parser.Parse((Stream)(null)));
+            Assert.AreEqual("", comments.Name);
+        }
+
+        [Test]
+        public void TestParseFromStreamCatchIfMalformed()
+        {
+            byte[] asBytes = Encoding.UTF8.GetBytes(badDoc);
+            MemoryStream mem = new MemoryStream(asBytes);
+
+            var comments = AssemblyComments.Empty;
+            Assert.DoesNotThrow(() => comments = parser.Parse(mem));
+            Assert.AreEqual("", comments.Name);
+        }
+        
+        [Test]
         public void TestParseFromString()
         {
             var comments = parser.Parse(doc);
             Assert.AreEqual("Hello", comments.Name);
+        }
+
+        [Test]
+        public void TestParseFromStringCatchIfNull()
+        {
+            var comments = AssemblyComments.Empty;
+            Assert.DoesNotThrow(() => comments = parser.Parse((string)(null)));
+            Assert.AreEqual("", comments.Name);
+        }
+
+        [Test]
+        public void TestParseFromStringCatchIfMalformed()
+        {
+            var comments = AssemblyComments.Empty;
+            Assert.DoesNotThrow(() => comments = parser.Parse(badDoc));
+            Assert.AreEqual("", comments.Name);
         }
 
         [Test]
@@ -44,10 +80,25 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseFromDocumentCatchIfNull()
+        {
+            var comments = AssemblyComments.Empty;
+            Assert.DoesNotThrow(() => comments = parser.Parse((XmlDocument)(null)));
+            Assert.AreEqual("", comments.Name);
+        }
+
+        [Test]
         public void TestParseName()
         {
             var assemblyNode = MakeElement(@"<assembly><name>Hello</name></assembly>");
             Assert.AreEqual("Hello", parser.ParseAssemblyName(assemblyNode));
+        }
+
+        [Test]
+        public void TestParseNameNoNameElement()
+        {
+            var assemblyNode = MakeElement(@"<assembly>Hello</assembly>");
+            Assert.AreEqual("", parser.ParseAssemblyName(assemblyNode));
         }
 
         [Test]
