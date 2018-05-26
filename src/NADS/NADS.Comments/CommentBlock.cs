@@ -21,5 +21,8 @@ namespace NADS.Comments
             Blocks = blocks ?? Empty<CommentBlock>.EmptyList;
             Lists = lists ?? Empty<CommentList>.EmptyList;
         }
+
+        public static CommentBlock Empty
+            => new CommentBlock(null, null, null, null);
     }
 }

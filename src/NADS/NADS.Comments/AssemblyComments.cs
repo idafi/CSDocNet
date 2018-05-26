@@ -29,5 +29,8 @@ namespace NADS.Comments
             Methods = methods ?? Empty<string, MemberComments>.EmptyDict;
             Events = events ?? Empty<string, MemberComments>.EmptyDict;
         }
+
+        public static AssemblyComments Empty
+            => new AssemblyComments(null, null, null, null, null, null);
     }
 }

@@ -36,5 +36,10 @@ namespace NADS.Comments
             Exceptions = exceptions ?? Empty<ParamComments>.EmptyList;
             Permissions = permissions ?? Empty<ParamComments>.EmptyList;
         }
+
+        public static MemberComments Empty
+            => new MemberComments(null, CommentBlock.Empty, CommentBlock.Empty,
+                CommentBlock.Empty, CommentBlock.Empty, CommentBlock.Empty,
+                null, null, null, null);
     }
 }
