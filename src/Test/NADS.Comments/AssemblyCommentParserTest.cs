@@ -209,6 +209,7 @@ namespace NADS.Comments
             Assert.AreEqual("i am the typeparam", member.TypeParams[0].Description.Text[0]);
             Assert.AreEqual("ThePermission", member.Permissions[0].Name);
             Assert.AreEqual("i am the permission", member.Permissions[0].Description.Text[0]);
+            Assert.IsFalse(member.InheritDoc);
         }
 
         [Test]
@@ -247,6 +248,27 @@ namespace NADS.Comments
         {
             var member = parser.ParseMember(null);
             Assert.IsTrue(member.IsEmpty);
+        }
+        
+        [Test]
+        public void TestParseMemberWithInheritDoc()
+        {
+            string xml = @"<member><inheritdoc/></member>";
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.IsTrue(member.InheritDoc);
+        }
+
+        [Test]
+        public void TestParseMemberWithPartialInheritDoc()
+        {
+            string xml = @"<member><summary>hey it's the summary</summary><inheritdoc/></member>";
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.AreEqual("hey it's the summary", member.Summary.Text[0]);
+            Assert.IsTrue(member.InheritDoc);
         }
 
         [Test]

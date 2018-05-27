@@ -18,10 +18,13 @@ namespace NADS.Comments
         public readonly IReadOnlyList<ParamComments> Exceptions;
         public readonly IReadOnlyList<ParamComments> Permissions;
 
+        public readonly bool InheritDoc;
+
         public MemberComments(string name, in CommentBlock summary, in CommentBlock remarks,
             in CommentBlock value, in CommentBlock returns, in CommentBlock example,
             IReadOnlyList<ParamComments> parameters, IReadOnlyList<ParamComments> typeParams,
-            IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions)
+            IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions,
+            bool inheritDoc = false)
         {
             Name = name ?? "";
 
@@ -35,6 +38,8 @@ namespace NADS.Comments
             TypeParams = typeParams ?? Empty<ParamComments>.EmptyList;
             Exceptions = exceptions ?? Empty<ParamComments>.EmptyList;
             Permissions = permissions ?? Empty<ParamComments>.EmptyList;
+
+            InheritDoc = inheritDoc;
         }
 
         public static MemberComments Empty
@@ -52,6 +57,7 @@ namespace NADS.Comments
             && Params.Count == 0
             && TypeParams.Count == 0
             && Exceptions.Count == 0
-            && Permissions.Count == 0;
+            && Permissions.Count == 0
+            && !InheritDoc;
     }
 }

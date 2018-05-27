@@ -117,8 +117,10 @@ namespace NADS.Comments
             var exceptions = ParseChildren(memberNode, "exception", n => ParseParam(n, "cref"));
             var permissions = ParseChildren(memberNode, "permission", n => ParseParam(n, "cref"));
 
+            bool inheritDoc = TryFindElement(memberNode, "inheritdoc", out var _, LogLevel.Debug);
+
             return new MemberComments(name, summary, remarks, value, returns, example,
-                parameters, typeParams, exceptions, permissions);
+                parameters, typeParams, exceptions, permissions, inheritDoc);
         }
 
         public ParamComments ParseParam(XmlElement paramNode, string nameAttribute)
