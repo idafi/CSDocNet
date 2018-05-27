@@ -127,6 +127,13 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseCommentBlockWithNullNode()
+        {
+            var block = parser.ParseCommentBlock(null);
+            Assert.AreEqual(0, block.Nodes.Count);
+        }
+
+        [Test]
         public void TestParseText()
         {
             string xml = @"<doc>hello i am text</doc>";
