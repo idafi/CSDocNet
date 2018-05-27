@@ -127,84 +127,6 @@ namespace NADS.Comments
         }
 
         [Test]
-        public void TestParseParam()
-        {
-            string xml = @"<param name=""hello"">the text</param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, "name");
-
-            Assert.AreEqual("hello", param.Name);
-            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
-            Assert.AreEqual("the text", param.Description.Text[0]);
-        }
-
-        [Test]
-        public void TestParseParamWithNullNode()
-        {
-            var param = parser.ParseParam(null, "name");
-            Assert.AreEqual("", param.Name);
-            Assert.AreEqual(0, param.Description.Nodes.Count);
-        }
-
-        [Test]
-        public void TestParseParamWithNullNameAttr()
-        {
-            string xml = @"<param name=""hello"">the text</param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, null);
-
-            Assert.AreEqual("", param.Name);
-            Assert.AreEqual(0, param.Description.Nodes.Count);
-        }
-
-        [Test]
-        public void TestParseParamWithBadNameAttr()
-        {
-            string xml = @"<param cref=""hello"">the text</param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, "name");
-
-            Assert.AreEqual("", param.Name);
-            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
-            Assert.AreEqual("the text", param.Description.Text[0]);
-        }
-
-        [Test]
-        public void TestParseParamWithNoNameAttr()
-        {
-            string xml = @"<param>the text</param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, "name");
-
-            Assert.AreEqual("", param.Name);
-            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
-            Assert.AreEqual("the text", param.Description.Text[0]);
-        }
-
-        [Test]
-        public void TestParseParamWithEmptyName()
-        {
-            string xml = @"<param name="""">the text</param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, "name");
-
-            Assert.AreEqual("", param.Name);
-            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
-            Assert.AreEqual("the text", param.Description.Text[0]);
-        }
-
-        [Test]
-        public void TestParseParamWithEmptyDesc()
-        {
-            string xml = @"<param name=""hello""></param>";
-            var element = MakeElement(xml);
-            var param = parser.ParseParam(element, "name");
-
-            Assert.AreEqual("hello", param.Name);
-            Assert.AreEqual(0, param.Description.Nodes.Count);
-        }
-
-        [Test]
         public void TestParseMember()
         {
             string xml = @"<member name=""hello"">
@@ -296,6 +218,84 @@ namespace NADS.Comments
         {
             var member = parser.ParseMember(null);
             Assert.IsTrue(member.IsEmpty);
+        }
+
+        [Test]
+        public void TestParseParam()
+        {
+            string xml = @"<param name=""hello"">the text</param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, "name");
+
+            Assert.AreEqual("hello", param.Name);
+            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
+            Assert.AreEqual("the text", param.Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseParamWithNullNode()
+        {
+            var param = parser.ParseParam(null, "name");
+            Assert.AreEqual("", param.Name);
+            Assert.AreEqual(0, param.Description.Nodes.Count);
+        }
+
+        [Test]
+        public void TestParseParamWithNullNameAttr()
+        {
+            string xml = @"<param name=""hello"">the text</param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, null);
+
+            Assert.AreEqual("", param.Name);
+            Assert.AreEqual(0, param.Description.Nodes.Count);
+        }
+
+        [Test]
+        public void TestParseParamWithBadNameAttr()
+        {
+            string xml = @"<param cref=""hello"">the text</param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, "name");
+
+            Assert.AreEqual("", param.Name);
+            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
+            Assert.AreEqual("the text", param.Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseParamWithNoNameAttr()
+        {
+            string xml = @"<param>the text</param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, "name");
+
+            Assert.AreEqual("", param.Name);
+            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
+            Assert.AreEqual("the text", param.Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseParamWithEmptyName()
+        {
+            string xml = @"<param name="""">the text</param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, "name");
+
+            Assert.AreEqual("", param.Name);
+            Assert.AreEqual(CommentNodeType.Text, param.Description.Nodes[0].Type);
+            Assert.AreEqual("the text", param.Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseParamWithEmptyDesc()
+        {
+            string xml = @"<param name=""hello""></param>";
+            var element = MakeElement(xml);
+            var param = parser.ParseParam(element, "name");
+
+            Assert.AreEqual("hello", param.Name);
+            Assert.AreEqual(0, param.Description.Nodes.Count);
         }
 
         [Test]
