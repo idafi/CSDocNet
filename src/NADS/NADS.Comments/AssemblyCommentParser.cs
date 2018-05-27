@@ -101,7 +101,50 @@ namespace NADS.Comments
 
         public CommentBlock ParseCommentBlock(XmlNode blockNode)
         {
-            throw new NotImplementedException();
+            if(blockNode == null)
+            { return CommentBlock.Empty; }
+
+            int nodeCt = blockNode.ChildNodes.Count;
+            var nodes = new List<CommentNode>(nodeCt);
+            var text = new List<string>(nodeCt);
+            var blocks = new List<CommentBlock>(nodeCt);
+            var lists = new List<CommentList>(nodeCt);
+
+            foreach(XmlNode child in blockNode.ChildNodes)
+            {
+                switch(child.Name)
+                {
+                    case "#text":
+                        ParseText(child, nodes, text);
+                        break;
+                    case "see":
+                        ParseCRef(child, nodes, text);
+                        break;
+                    case "paramref":
+                        ParseParamRef(child, nodes, text);
+                        break;
+                    case "typeparamref":
+                        ParseTypeParamRef(child, nodes, text);
+                        break;
+                    case "para":
+                        ParseParagraph(child, nodes, blocks);
+                        break;
+                    case "code":
+                        ParseCodeBlock(child, nodes, blocks);
+                        break;
+                    case "c":
+                        ParseCodeInline(child, nodes, blocks);
+                        break;
+                    case "example":
+                        ParseExample(child, nodes, blocks);
+                        break;
+                    default:
+                        Log.Warning($"Unrecognized child node type: '{child.Name}'");
+                        break;
+                }
+            }
+
+            return new CommentBlock(nodes.ToArray(), text.ToArray(), blocks.ToArray(), null);
         }
 
         bool TryFindElement(XmlNode parent, string child, out XmlElement element,
@@ -114,6 +157,92 @@ namespace NADS.Comments
             { Log.Write(failureLevel, $"Couldn't find '{child}' element in '{parent.Name}' node."); }
 
             return (element != null);
+        }
+
+        bool TryFindAttributeValue(XmlNode node, string attribute, out string value,
+            LogLevel failureLevel = LogLevel.Warning)
+        {
+            Assert.Ref(node, attribute);
+
+            var attr = node.Attributes[attribute];
+            if(attr == null)
+            { Log.Write(failureLevel, $"Couldn't find '{attribute}' attribute on '{node.Name}' node."); }
+
+            value = attr?.Value ?? "";
+            return (attr != null);
+        }
+
+        void ParseText(XmlNode xmlNode, List<CommentNode> nodes, List<string> text)
+        {
+            Assert.Ref(xmlNode, nodes, text);
+
+            nodes.Add(new CommentNode(CommentNodeType.Text, text.Count));
+            text.Add(xmlNode.InnerText);
+        }
+
+        void ParseCRef(XmlNode xmlNode, List<CommentNode> nodes, List<string> text)
+        {
+            Assert.Ref(xmlNode, nodes, text);
+
+            if(TryFindAttributeValue(xmlNode, "cref", out string value))
+            {
+                nodes.Add(new CommentNode(CommentNodeType.CRef, text.Count));
+                text.Add(value);
+            }
+        }
+
+        void ParseParamRef(XmlNode xmlNode, List<CommentNode> nodes, List<string> text)
+        {
+            Assert.Ref(xmlNode, nodes, text);
+
+            if(TryFindAttributeValue(xmlNode, "name", out string value))
+            {
+                nodes.Add(new CommentNode(CommentNodeType.ParamRef, text.Count));
+                text.Add(value);
+            }
+        }
+
+        void ParseTypeParamRef(XmlNode xmlNode, List<CommentNode> nodes, List<string> text)
+        {
+            Assert.Ref(xmlNode, nodes, text);
+
+            if(TryFindAttributeValue(xmlNode, "name", out string value))
+            {
+                nodes.Add(new CommentNode(CommentNodeType.TypeParamRef, text.Count));
+                text.Add(value);
+            }
+        }
+
+        void ParseParagraph(XmlNode xmlNode, List<CommentNode> nodes, List<CommentBlock> blocks)
+        {
+            Assert.Ref(xmlNode, nodes, blocks);
+
+            nodes.Add(new CommentNode(CommentNodeType.Paragraph, blocks.Count));
+            blocks.Add(ParseCommentBlock(xmlNode));
+        }
+
+        void ParseCodeBlock(XmlNode xmlNode, List<CommentNode> nodes, List<CommentBlock> blocks)
+        {
+            Assert.Ref(xmlNode, nodes, blocks);
+
+            nodes.Add(new CommentNode(CommentNodeType.CodeBlock, blocks.Count));
+            blocks.Add(ParseCommentBlock(xmlNode));
+        }
+
+        void ParseCodeInline(XmlNode xmlNode, List<CommentNode> nodes, List<CommentBlock> blocks)
+        {
+            Assert.Ref(xmlNode, nodes, blocks);
+
+            nodes.Add(new CommentNode(CommentNodeType.CodeInline, blocks.Count));
+            blocks.Add(ParseCommentBlock(xmlNode));
+        }
+
+        void ParseExample(XmlNode xmlNode, List<CommentNode> nodes, List<CommentBlock> blocks)
+        {
+            Assert.Ref(xmlNode, nodes, blocks);
+
+            nodes.Add(new CommentNode(CommentNodeType.Example, blocks.Count));
+            blocks.Add(ParseCommentBlock(xmlNode));
         }
     }
 }
