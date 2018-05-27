@@ -99,12 +99,13 @@ namespace NADS.Comments
             throw new NotImplementedException();
         }
 
-        public ParamComments ParseParam(XmlElement paramNode)
+        public ParamComments ParseParam(XmlElement paramNode, string nameAttribute)
         {
-            if(paramNode == null)
+            if(paramNode == null || nameAttribute == null)
             { return ParamComments.Empty; }
 
-            return default;
+            TryFindAttributeValue(paramNode, nameAttribute, out string name);
+            return new ParamComments(name, ParseCommentBlock(paramNode));
         }
 
         public CommentBlock ParseCommentBlock(XmlNode blockNode)
