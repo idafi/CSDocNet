@@ -135,9 +135,6 @@ namespace NADS.Comments
                     case "c":
                         ParseCodeInline(child, nodes, blocks);
                         break;
-                    case "example":
-                        ParseExample(child, nodes, blocks);
-                        break;
                     default:
                         Log.Warning($"Unrecognized child node type: '{child.Name}'");
                         break;
@@ -234,14 +231,6 @@ namespace NADS.Comments
             Assert.Ref(xmlNode, nodes, blocks);
 
             nodes.Add(new CommentNode(CommentNodeType.CodeInline, blocks.Count));
-            blocks.Add(ParseCommentBlock(xmlNode));
-        }
-
-        void ParseExample(XmlNode xmlNode, List<CommentNode> nodes, List<CommentBlock> blocks)
-        {
-            Assert.Ref(xmlNode, nodes, blocks);
-
-            nodes.Add(new CommentNode(CommentNodeType.Example, blocks.Count));
             blocks.Add(ParseCommentBlock(xmlNode));
         }
     }
