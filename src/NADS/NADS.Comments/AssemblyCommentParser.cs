@@ -80,6 +80,9 @@ namespace NADS.Comments
 
         public string ParseAssemblyName(XmlElement assemblyNode)
         {
+            if(assemblyNode == null)
+            { return ""; }
+
             if(!TryFindElement(assemblyNode, "name", out var name))
             { return ""; }
 
@@ -98,7 +101,10 @@ namespace NADS.Comments
 
         public ParamComments ParseParam(XmlElement paramNode)
         {
-            throw new NotImplementedException();
+            if(paramNode == null)
+            { return ParamComments.Empty; }
+
+            return default;
         }
 
         public CommentBlock ParseCommentBlock(XmlNode blockNode)

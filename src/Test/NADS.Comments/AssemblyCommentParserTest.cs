@@ -112,6 +112,12 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseNameWithNullNode()
+        {
+            Assert.AreEqual("", parser.ParseAssemblyName(null));
+        }
+
+        [Test]
         public void TestParseNameFromDoc()
         {
             var d = MakeDocument(doc);
