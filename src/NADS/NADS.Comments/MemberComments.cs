@@ -41,5 +41,17 @@ namespace NADS.Comments
             => new MemberComments(null, CommentBlock.Empty, CommentBlock.Empty,
                 CommentBlock.Empty, CommentBlock.Empty, CommentBlock.Empty,
                 null, null, null, null);
+        
+        public bool IsEmpty
+            => Name == ""
+            && Summary.Nodes.Count == 0
+            && Remarks.Nodes.Count == 0
+            && Value.Nodes.Count == 0
+            && Returns.Nodes.Count == 0
+            && Example.Nodes.Count == 0
+            && Params.Count == 0
+            && TypeParams.Count == 0
+            && Exceptions.Count == 0
+            && Permissions.Count == 0;
     }
 }
