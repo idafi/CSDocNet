@@ -205,6 +205,100 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseMember()
+        {
+            string xml = @"<member name=""hello"">
+            <summary>i am the summary</summary>
+            <remarks>i am the remarks</remarks>
+            <value>i am the value</value>
+            <returns>i am the returns</returns>
+            <example>i am the example</example>
+            <param name=""theParam"">i am the param</param>
+            <typeparam name=""T"">i am the typeparam</typeparam>
+            <exception cref=""TheException"">i am the exception</exception>
+            <permission cref=""ThePermission"">i am the permission</permission>
+            </member>";
+
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.AreEqual("hello", member.Name);
+            Assert.AreEqual("i am the summary", member.Summary.Text[0]);
+            Assert.AreEqual("i am the remarks", member.Remarks.Text[0]);
+            Assert.AreEqual("i am the value", member.Value.Text[0]);
+            Assert.AreEqual("i am the returns", member.Returns.Text[0]);
+            Assert.AreEqual("i am the example", member.Example.Text[0]);
+            Assert.AreEqual("theParam", member.Params[0].Name);
+            Assert.AreEqual("i am the param", member.Params[0].Description.Text[0]);
+            Assert.AreEqual("T", member.TypeParams[0].Name);
+            Assert.AreEqual("i am the typeparam", member.TypeParams[0].Description.Text[0]);
+            Assert.AreEqual("TheException", member.Exceptions[0].Name);
+            Assert.AreEqual("i am the exception", member.Exceptions[0].Description.Text[0]);
+            Assert.AreEqual("ThePermission", member.Permissions[0].Name);
+            Assert.AreEqual("i am the permission", member.Permissions[0].Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseMemberPartial()
+        {
+            string xml = @"<member name=""hello"">
+            <remarks>i am the remarks</remarks>
+            <returns>i am the returns</returns>
+            <typeparam name=""T"">i am the typeparam</typeparam>
+            <permission cref=""ThePermission"">i am the permission</permission>
+            </member>";
+
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.AreEqual("hello", member.Name);
+            Assert.AreEqual("i am the remarks", member.Remarks.Text[0]);
+            Assert.AreEqual("i am the returns", member.Returns.Text[0]);
+            Assert.AreEqual("T", member.TypeParams[0].Name);
+            Assert.AreEqual("i am the typeparam", member.TypeParams[0].Description.Text[0]);
+            Assert.AreEqual("ThePermission", member.Permissions[0].Name);
+            Assert.AreEqual("i am the permission", member.Permissions[0].Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseMemberWithMissingName()
+        {
+            string xml = @"<member><summary>i am the summary</summary></member>";
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.AreEqual("", member.Name);
+            Assert.AreEqual("i am the summary", member.Summary.Text[0]);
+        }
+
+        [Test]
+        public void TestParseMemberWhenEmpty()
+        {
+            string xml = @"<member></member>";
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.IsTrue(member.IsEmpty);
+        }
+
+        [Test]
+        public void TestParseMemberWithUnrecognizedChildren()
+        {
+            string xml = @"<member><whoops>oh no</whoops></member>";
+            var element = MakeElement(xml);
+            var member = parser.ParseMember(element);
+
+            Assert.IsTrue(member.IsEmpty);
+        }
+
+        [Test]
+        public void TestParseMemberWithNullNode()
+        {
+            var member = parser.ParseMember(null);
+            Assert.IsTrue(member.IsEmpty);
+        }
+
+        [Test]
         public void TestParseCommentBlockWithNullNode()
         {
             var block = parser.ParseCommentBlock(null);
