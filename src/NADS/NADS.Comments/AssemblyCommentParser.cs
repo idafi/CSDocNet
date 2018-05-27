@@ -64,8 +64,10 @@ namespace NADS.Comments
                 if(!TryFindElement(xml, "doc", out var doc, LogLevel.Failure))
                 { return AssemblyComments.Empty; }
 
-                string assemblyName = ParseAssemblyName(doc["assembly"]);
-
+                string assemblyName = TryFindElement(doc, "assembly", out var assemblyNode)
+                    ? ParseAssemblyName(assemblyNode)
+                    : "";
+                
                 Log.Note("...done parsing XML document.");
                 return new AssemblyComments(assemblyName,
                     null, null, null, null, null);

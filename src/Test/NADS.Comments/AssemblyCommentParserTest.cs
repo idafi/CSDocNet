@@ -102,6 +102,16 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseNameNoAssemblyElement()
+        {
+            string xml = @"<doc><name>Hello</name></doc>";
+            var d = MakeDocument(xml);
+            var comments = parser.Parse(d);
+
+            Assert.AreEqual("", comments.Name);
+        }
+
+        [Test]
         public void TestParseNameFromDoc()
         {
             var d = MakeDocument(doc);
