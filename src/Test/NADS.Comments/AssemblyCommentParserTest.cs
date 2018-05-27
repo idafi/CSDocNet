@@ -617,6 +617,83 @@ namespace NADS.Comments
             Assert.AreEqual("another code", innerCode.Text[0]);
         }
 
+        [Test]
+        public void TestParseList()
+        {
+            string xml = @"<doc><list type=""bullet"">
+                <listheader><term>header term</term><description>header desc</description></listheader>
+                <item><term>item 1 term</term><description>item 1 desc</description></item>
+                <item><term>item 2 term</term><description>item 2 desc</description></item>
+                </list></doc>";
+            
+            var element = MakeElement(xml);
+            var block = parser.ParseCommentBlock(element);
+            var list = block.Lists[0];
+            
+            Assert.AreEqual(CommentNodeType.List, block.Nodes[0].Type);
+            Assert.AreEqual(CommentListType.Bullet, list.Type);
+            Assert.AreEqual(2, list.Items.Count);
+
+            Assert.AreEqual("header term", list.Header.Term.Text[0]);
+            Assert.AreEqual("header desc", list.Header.Description.Text[0]);
+            Assert.AreEqual("item 1 term", list.Items[0].Term.Text[0]);
+            Assert.AreEqual("item 1 desc", list.Items[0].Description.Text[0]);
+            Assert.AreEqual("item 2 term", list.Items[1].Term.Text[0]);
+            Assert.AreEqual("item 2 desc", list.Items[1].Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseListTypes()
+        {
+            string xml = @"<doc>
+                <list type=""bullet""></list>
+                <list type=""number""></list>
+                <list type=""table""></list>
+                <list type=""whoops""></list>
+                </doc>";
+            
+            var element = MakeElement(xml);
+            var block = parser.ParseCommentBlock(element);
+
+            Assert.AreEqual(CommentListType.Bullet, block.Lists[0].Type);
+            Assert.AreEqual(CommentListType.Number, block.Lists[1].Type);
+            Assert.AreEqual(CommentListType.Table, block.Lists[2].Type);
+            Assert.AreEqual(default(CommentListType), block.Lists[3].Type);
+        }
+
+        [Test]
+        public void TestParseListWithImplicitDescription()
+        {
+            string xml = @"<doc><list><item>hello</item></list></doc>";
+            var element = MakeElement(xml);
+            var block = parser.ParseCommentBlock(element);
+            var list = block.Lists[0];
+
+            Assert.AreEqual("hello", list.Items[0].Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseListWithTermAndImplicitDescription()
+        {
+            string xml = @"<doc><list><item><term>the term</term>the desc</item></list></doc>";
+            var element = MakeElement(xml);
+            var block = parser.ParseCommentBlock(element);
+            var list = block.Lists[0];
+
+            Assert.AreEqual("the term", list.Items[0].Term.Text[0]);
+            Assert.AreEqual("the desc", list.Items[0].Description.Text[0]);
+        }
+
+        [Test]
+        public void TestParseListWithNoItems()
+        {
+            string xml = @"<doc><list type=""bullet""></list></doc>";
+            var element = MakeElement(xml);
+            var block = parser.ParseCommentBlock(element);
+
+            Assert.AreEqual(0, block.Lists[0].Items.Count);
+        }
+
         XmlElement MakeElement(string xml)
         {
             var doc = MakeDocument(xml);
