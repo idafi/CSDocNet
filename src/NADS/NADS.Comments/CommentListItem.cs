@@ -10,5 +10,8 @@ namespace NADS.Comments
             Term = term;
             Description = description;
         }
+
+        public static CommentListItem Empty
+            => new CommentListItem(CommentBlock.Empty, CommentBlock.Empty);
     }
 }

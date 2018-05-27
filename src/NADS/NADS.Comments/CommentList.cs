@@ -17,5 +17,8 @@ namespace NADS.Comments
             Header = header;
             Items = items ?? Empty<CommentListItem>.EmptyList;
         }
+
+        public static CommentList Empty
+            => new CommentList(default, CommentListItem.Empty, Empty<CommentListItem>.EmptyList);
     }
 }
