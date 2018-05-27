@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using NADS.Collections;
 using NADS.Debug;
 using NADS.Logging;
 
@@ -67,10 +68,11 @@ namespace NADS.Comments
                 string assemblyName = TryFindElement(doc, "assembly", out var assemblyNode)
                     ? ParseAssemblyName(assemblyNode)
                     : "";
-                
+
+                var members = ParseMembers(doc["members"]);
+
                 Log.Note("...done parsing XML document.");
-                return new AssemblyComments(assemblyName,
-                    null, null, null, null, null);
+                return new AssemblyComments(assemblyName, members);
             }
             else
             { Log.Failure("Couldn't parse XML document.\n\tDocument is null"); }
@@ -91,7 +93,10 @@ namespace NADS.Comments
 
         public IReadOnlyList<MemberComments> ParseMembers(XmlElement membersNode)
         {
-            throw new NotImplementedException();
+            if(membersNode == null)
+            { return Empty<MemberComments>.EmptyList; }
+
+            return ParseChildren(membersNode, "member", ParseMember);
         }
 
         public MemberComments ParseMember(XmlElement memberNode)
