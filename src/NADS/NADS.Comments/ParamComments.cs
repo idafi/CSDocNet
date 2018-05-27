@@ -10,5 +10,7 @@ namespace NADS.Comments
             Name = name ?? "";
             Description = description;
         }
+
+        public static ParamComments Empty => new ParamComments(null, CommentBlock.Empty);
     }
 }
