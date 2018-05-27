@@ -166,13 +166,16 @@ namespace NADS.Comments
                     case "c":
                         ParseCodeInline(child, nodes, blocks);
                         break;
+                    case "list":
+                        ParseList(child, nodes, lists);
+                        break;
                     default:
                         Log.Warning($"Unrecognized child node type: '{child.Name}'");
                         break;
                 }
             }
 
-            return new CommentBlock(nodes.ToArray(), text.ToArray(), blocks.ToArray(), null);
+            return new CommentBlock(nodes.ToArray(), text.ToArray(), blocks.ToArray(), lists.ToArray());
         }
 
         bool TryFindElement(XmlNode parent, string child, out XmlElement element,
@@ -279,6 +282,60 @@ namespace NADS.Comments
 
             nodes.Add(new CommentNode(CommentNodeType.CodeInline, blocks.Count));
             blocks.Add(ParseCommentBlock(xmlNode));
+        }
+
+        void ParseList(XmlNode xmlNode, List<CommentNode> nodes, List<CommentList> lists)
+        {
+            Assert.Ref(xmlNode, nodes, lists);
+
+            if(xmlNode is XmlElement e)
+            {
+                var type = ParseListType(xmlNode);
+                var header = TryFindElement(xmlNode, "listheader", out var headerNode, LogLevel.Debug)
+                    ? ParseListItem(headerNode)
+                    : CommentListItem.Empty;
+                var items = ParseChildren(e, "item", ParseListItem);
+
+                nodes.Add(new CommentNode(CommentNodeType.List, lists.Count));
+                lists.Add(new CommentList(type, header, items));
+            }
+            else
+            { Log.Warning("Invalid list node: expected an XML element"); }
+        }
+
+        CommentListType ParseListType(XmlNode listNode)
+        {
+            Assert.Ref(listNode);
+
+            if(!TryFindAttributeValue(listNode, "type", out string value))
+            { return default; }
+
+            switch(value)
+            {
+                case "bullet":
+                    return CommentListType.Bullet;
+                case "number":
+                    return CommentListType.Number;
+                case "table":
+                    return CommentListType.Table;
+                default:
+                    Log.Warning($"Unrecognized list type: '{value}'");
+                    return default;
+            }
+        }
+
+        CommentListItem ParseListItem(XmlElement itemNode)
+        {
+            Assert.Ref(itemNode);
+
+            CommentBlock term = TryFindElement(itemNode, "Term", out var termNode, LogLevel.Debug)
+                ? ParseCommentBlock(termNode)
+                : CommentBlock.Empty;
+            CommentBlock description = TryFindElement(itemNode, "Description", out var descNode, LogLevel.Debug)
+                ? ParseCommentBlock(descNode)
+                : ParseCommentBlock(itemNode);
+            
+            return new CommentListItem(term, description);
         }
     }
 }
