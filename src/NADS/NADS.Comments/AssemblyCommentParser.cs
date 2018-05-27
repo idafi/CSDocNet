@@ -117,7 +117,7 @@ namespace NADS.Comments
             var exceptions = ParseChildren(memberNode, "exception", n => ParseParam(n, "cref"));
             var permissions = ParseChildren(memberNode, "permission", n => ParseParam(n, "cref"));
 
-            bool inheritDoc = TryFindElement(memberNode, "inheritdoc", out var _, LogLevel.Debug);
+            bool inheritDoc = TryFindElement(memberNode, "inheritdoc", out var _, null);
 
             return new MemberComments(name, summary, remarks, value, returns, example,
                 parameters, typeParams, exceptions, permissions, inheritDoc);
@@ -181,25 +181,25 @@ namespace NADS.Comments
         }
 
         bool TryFindElement(XmlNode parent, string child, out XmlElement element,
-            LogLevel failureLevel = LogLevel.Warning)
+            LogLevel? failureLevel = LogLevel.Warning)
         {
             Assert.Ref(parent, child);
 
             element = parent[child];
-            if(element == null)
-            { Log.Write(failureLevel, $"Couldn't find '{child}' element in '{parent.Name}' node."); }
+            if(element == null && failureLevel != null)
+            { Log.Write(failureLevel.Value, $"Couldn't find '{child}' element in '{parent.Name}' node."); }
 
             return (element != null);
         }
 
         bool TryFindAttributeValue(XmlNode node, string attribute, out string value,
-            LogLevel failureLevel = LogLevel.Warning)
+            LogLevel? failureLevel = LogLevel.Warning)
         {
             Assert.Ref(node, attribute);
 
             var attr = node.Attributes[attribute];
-            if(attr == null)
-            { Log.Write(failureLevel, $"Couldn't find '{attribute}' attribute on '{node.Name}' node."); }
+            if(attr == null && failureLevel != null)
+            { Log.Write(failureLevel.Value, $"Couldn't find '{attribute}' attribute on '{node.Name}' node."); }
 
             value = attr?.Value ?? "";
             return (attr != null);
@@ -293,7 +293,7 @@ namespace NADS.Comments
             if(xmlNode is XmlElement e)
             {
                 var type = ParseListType(xmlNode);
-                var header = TryFindElement(xmlNode, "listheader", out var headerNode, LogLevel.Debug)
+                var header = TryFindElement(xmlNode, "listheader", out var headerNode, null)
                     ? ParseListItem(headerNode)
                     : CommentListItem.Empty;
                 var items = ParseChildren(e, "item", ParseListItem);
@@ -330,10 +330,10 @@ namespace NADS.Comments
         {
             Assert.Ref(itemNode);
 
-            CommentBlock term = TryFindElement(itemNode, "term", out var termNode, LogLevel.Debug)
+            CommentBlock term = TryFindElement(itemNode, "term", out var termNode, null)
                 ? ParseCommentBlock(termNode)
                 : CommentBlock.Empty;
-            CommentBlock description = TryFindElement(itemNode, "description", out var descNode, LogLevel.Debug)
+            CommentBlock description = TryFindElement(itemNode, "description", out var descNode, null)
                 ? ParseCommentBlock(descNode)
                 : ParseCommentBlock(itemNode);
             
