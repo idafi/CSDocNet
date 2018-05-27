@@ -127,6 +127,35 @@ namespace NADS.Comments
         }
 
         [Test]
+        public void TestParseMembers()
+        {
+            string xml = @"<members><member name=""A""></member><member name=""B""></member></members>";
+            var element = MakeElement(xml);
+            var members = parser.ParseMembers(element);
+
+            Assert.AreEqual(2, members.Count);
+            Assert.AreEqual("A", members[0].Name);
+            Assert.AreEqual("B", members[1].Name);
+        }
+
+        [Test]
+        public void TestParseMembersWithNoMembers()
+        {
+            string xml = @"<members></members>";
+            var element = MakeElement(xml);
+            var members = parser.ParseMembers(element);
+            
+            Assert.AreEqual(0, members.Count);
+        }
+
+        [Test]
+        public void TestParseMembersWithNullNode()
+        {
+            var members = parser.ParseMembers(null);
+            Assert.AreEqual(0, members.Count);
+        }
+
+        [Test]
         public void TestParseMember()
         {
             string xml = @"<member name=""hello"">
