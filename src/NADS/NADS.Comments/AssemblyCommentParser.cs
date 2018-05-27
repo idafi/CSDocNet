@@ -96,7 +96,24 @@ namespace NADS.Comments
 
         public MemberComments ParseMember(XmlElement memberNode)
         {
-            throw new NotImplementedException();
+            if(memberNode == null)
+            { return MemberComments.Empty; }
+
+            TryFindAttributeValue(memberNode, "name", out string name);
+
+            var summary = ParseCommentBlock(memberNode["summary"]);
+            var remarks = ParseCommentBlock(memberNode["remarks"]);
+            var value = ParseCommentBlock(memberNode["value"]);
+            var returns = ParseCommentBlock(memberNode["returns"]);
+            var example = ParseCommentBlock(memberNode["example"]);
+
+            var parameters = ParseChildren(memberNode, "param", n => ParseParam(n, "name"));
+            var typeParams = ParseChildren(memberNode, "typeparam", n => ParseParam(n, "name"));
+            var exceptions = ParseChildren(memberNode, "exception", n => ParseParam(n, "cref"));
+            var permissions = ParseChildren(memberNode, "permission", n => ParseParam(n, "cref"));
+
+            return new MemberComments(name, summary, remarks, value, returns, example,
+                parameters, typeParams, exceptions, permissions);
         }
 
         public ParamComments ParseParam(XmlElement paramNode, string nameAttribute)
@@ -176,6 +193,22 @@ namespace NADS.Comments
 
             value = attr?.Value ?? "";
             return (attr != null);
+        }
+
+        IReadOnlyList<T> ParseChildren<T>(XmlElement parentNode, string tag, Func<XmlElement, T> parser)
+        {
+            Assert.Ref(parentNode, tag, parser);
+
+            XmlNodeList childList = parentNode.GetElementsByTagName(tag);
+            var children = new List<T>(childList?.Count ?? 0);
+
+            if(childList != null)
+            {
+                foreach(XmlElement childNode in childList)
+                { children.Add(parser(childNode)); }
+            }
+
+            return children.ToArray();
         }
 
         void ParseText(XmlNode xmlNode, List<CommentNode> nodes, List<string> text)
