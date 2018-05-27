@@ -328,10 +328,10 @@ namespace NADS.Comments
         {
             Assert.Ref(itemNode);
 
-            CommentBlock term = TryFindElement(itemNode, "Term", out var termNode, LogLevel.Debug)
+            CommentBlock term = TryFindElement(itemNode, "term", out var termNode, LogLevel.Debug)
                 ? ParseCommentBlock(termNode)
                 : CommentBlock.Empty;
-            CommentBlock description = TryFindElement(itemNode, "Description", out var descNode, LogLevel.Debug)
+            CommentBlock description = TryFindElement(itemNode, "description", out var descNode, LogLevel.Debug)
                 ? ParseCommentBlock(descNode)
                 : ParseCommentBlock(itemNode);
             
