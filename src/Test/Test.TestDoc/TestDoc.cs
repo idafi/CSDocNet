@@ -298,4 +298,28 @@ namespace NADS.TestDoc
             return ref s.Field;
         }
     }
+
+    /// <summary>
+    /// Unsafe struct doc.
+    /// </summary>
+    public unsafe struct UnsafeStruct
+    {
+        /// <summary>
+        /// Pointer field doc.
+        /// </summary>
+        public readonly int* PointerField;
+
+        /// <summary>
+        /// Fixed array doc.
+        /// </summary>
+        public fixed int FixedArray[69];
+
+        /// <summary>
+        /// Pointer method doc.
+        /// </summary>
+        /// <param name="a">Pointer a.</param>
+        /// <param name="b">Pointer b.</param>
+        /// <returns>Returns doc.</returns>
+        public int* PointerMethod(int* a, float* b) => a;
+    }
 }
