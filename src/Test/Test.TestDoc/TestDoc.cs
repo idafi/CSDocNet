@@ -6,6 +6,37 @@ namespace NADS.TestDoc
     public class TestClass
     {
         /// <summary>
+        /// Nested class doc.
+        /// </summary>
+        public class NestedClass
+        {
+            /// <summary>
+            /// Nested nested class doc.
+            /// </summary>
+            public class NestedNestedClass
+            {
+
+            }
+
+            /// <summary>
+            /// Nested field doc.
+            /// </summary>
+            public readonly int NestedField;
+
+            /// <summary>
+            /// Nested property doc.
+            /// </summary>
+            public int NestedProperty => NestedField;
+
+            /// <summary>
+            /// Nested method doc.
+            /// </summary>
+            /// <param name="param">Nested method param.</param>
+            /// <returns>Returns doc.</returns>
+            public int NestedMethod(int param) => param;
+        }
+
+        /// <summary>
         /// Int field doc.
         /// </summary>
         public readonly int IntField;
@@ -187,6 +218,34 @@ namespace NADS.TestDoc
     public class GenericClass<T>
     {
         /// <summary>
+        /// Generic nested class doc.
+        /// </summary>
+        /// <typeparam name="Q">Typeparam Q.</typeparam>
+        public class GenericNestedClass<Q>
+        {
+            /// <summary>
+            /// Generic nested field doc.
+            /// </summary>
+            public readonly T NestedField;
+
+            /// <summary>
+            /// Generic nested property doc.
+            /// </summary>
+            public T NestedProperty => NestedField;
+
+            /// <summary>
+            /// Generic nested method doc.
+            /// </summary>
+            /// <param name="classParam">Class param.</param>
+            /// <param name="nestedParam">Nested class param.</param>
+            /// <param name="methodParam">Method param.</param>
+            /// <typeparam name="V">Typeparam V.</typeparam>
+            /// <returns>Returns doc.</returns>
+            public V NestedMethod<V>(T classParam, Q nestedParam, ref V methodParam)
+                => methodParam;
+        }
+
+        /// <summary>
         /// Generic field doc.
         /// </summary>
         public readonly T GenericField;
@@ -217,6 +276,26 @@ namespace NADS.TestDoc
         {
             return methodParam;
         }
+    }
 
+    /// <summary>
+    /// Test struct doc.
+    /// </summary>
+    public readonly struct TestStruct
+    {
+        /// <summary>
+        /// Test struct field doc.
+        /// </summary>
+        public readonly int Field;
+
+        /// <summary>
+        /// Test struct method doc.
+        /// </summary>
+        /// <param name="s">Test struct param.</param>
+        /// <returns>Returns doc.</returns>
+        public ref readonly int Method(in TestStruct s)
+        {
+            return ref s.Field;
+        }
     }
 }
