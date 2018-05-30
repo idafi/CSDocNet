@@ -256,6 +256,11 @@ namespace NADS.TestDoc
         public readonly T[] GenericArrayField;
 
         /// <summary>
+        /// Constructed field doc.
+        /// </summary>
+        public readonly GenericClass<int> ConstructedField;
+
+        /// <summary>
         /// Generic property doc.
         /// </summary>
         public T GenericProperty => GenericField;
@@ -264,6 +269,11 @@ namespace NADS.TestDoc
         /// Generic array property doc.
         /// </summary>
         public T[] GenericArrayProperty => GenericArrayField;
+
+        /// <summary>
+        /// Constructed property doc.
+        /// </summary>
+        public GenericClass<int> ConstructedProperty => ConstructedField;
 
         /// <summary>
         /// Generic method doc.
@@ -275,6 +285,20 @@ namespace NADS.TestDoc
         public Q GenericMethod<Q>(T classParam, Q methodParam)
         {
             return methodParam;
+        }
+
+        /// <summary>
+        /// Constructed method doc.
+        /// </summary>
+        /// <param name="classParam">Class param.</param>
+        /// <param name="methodParam">Method param.</param>
+        /// <param name="constructedParam">Constructed param.</param>
+        /// <typeparam name="Q">Typeparam Q.</typeparam>
+        /// <returns>Returns doc.</returns>
+        public GenericClass<int> ConstructedMethod<Q>(T classParam, Q methodParam,
+            GenericClass<int> constructedParam)
+        {
+            return constructedParam;
         }
     }
 
