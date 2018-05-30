@@ -13,9 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NADS\NADS\NADS.csproj" />
-    <ProjectReference Include="..\..\NADS\NADS.Base\NADS.Base.csproj" />
-    <ProjectReference Include="..\..\NADS\NADS.Comments\NADS.Comments.csproj" />
+    <ProjectReference Include="../../NADS/NADS/NADS.csproj" />
+    <ProjectReference Include="../../NADS/NADS.Base/NADS.Base.csproj" />
+    <ProjectReference Include="../../NADS/NADS.Comments/NADS.Comments.csproj" />
+    <ProjectReference Include="../../NADS/NADS.Reflection/NADS.Reflection.csproj" />
+    <ProjectReference Include="../Test.TestDoc/Test.TestDoc.csproj" />
   </ItemGroup>
 
 </Project>
