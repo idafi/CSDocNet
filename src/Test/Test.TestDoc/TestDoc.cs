@@ -165,6 +165,14 @@ namespace NADS.TestDoc
         }
 
         /// <summary>
+        /// No param method doc.
+        /// </summary>
+        public void NoParamMethod()
+        {
+            
+        }
+
+        /// <summary>
         /// Nullable method doc.
         /// </summary>
         /// <param name="nullable">Nullable param.</param>
