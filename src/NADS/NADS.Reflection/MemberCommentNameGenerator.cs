@@ -28,7 +28,12 @@ namespace NADS.Reflection
 
         public string GeneratePropertyName(PropertyInfo property)
         {
-            throw new NotImplementedException();
+            Check.Ref(property);
+
+            string typeName = FormatTypeName(property.DeclaringType);
+            string paramList = FormatParameterList(property.GetIndexParameters());
+
+            return $"P:{typeName}.{property.Name}{paramList}";
         }
 
         public string GenerateMethodName(MethodInfo method)
