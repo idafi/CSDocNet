@@ -128,6 +128,12 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateFieldNameThrowsIfNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => generator.GenerateFieldName(null));
+        }
+
+        [Test]
         public void TestGeneratePropertyName()
         {
             var p = typeof(TestClass).GetProperty("IntProperty");
@@ -205,6 +211,12 @@ namespace NADS.Reflection
             var p = typeof(GenericClass<>).GetProperty("Item", typeof(int));
             string name = generator.GeneratePropertyName(p);
             Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.Item(NADS.TestDoc.GenericClass{System.Int32})", name);
+        }
+
+        [Test]
+        public void TestGeneratePropertyNameThrowsIfNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => generator.GeneratePropertyName(null));
         }
 
         [Test]
@@ -365,6 +377,12 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateMethodNameThrowsIfNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => generator.GenerateMethodName((MethodInfo)(null)));
+        }
+
+        [Test]
         public void TestGenerateConstructorName()
         {
             var c = typeof(TestClass).GetConstructor(new Type[] { typeof(int) });
@@ -381,6 +399,12 @@ namespace NADS.Reflection
             var c = typeof(GenericClass<>).GetConstructor(new Type[] { typeParam, typeof(GenericClass<int>) });
             string name = generator.GenerateMethodName(c);
             Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.#ctor(`0,NADS.TestDoc.GenericClass{System.Int32})", name);
+        }
+
+        [Test]
+        public void TestGenerateConstructorNameThrowsIfNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => generator.GenerateMethodName((ConstructorInfo)(null)));
         }
 
         [Test]
@@ -413,6 +437,12 @@ namespace NADS.Reflection
             var e = typeof(GenericClass<>).GetEvent("ConstructedEvent");
             string name = generator.GenerateEventName(e);
             Assert.AreEqual("E:NADS.TestDoc.GenericClass`1.ConstructedEvent", name);
+        }
+
+        [Test]
+        public void TestGenerateEventNameThrowsIfNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => generator.GenerateEventName(null));
         }
     }
 }
