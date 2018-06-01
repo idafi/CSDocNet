@@ -208,6 +208,22 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateExplicitOperatorMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("op_Explicit");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.op_Explicit(NADS.TestDoc.TestClass)~System.Int32", name);
+        }
+
+        [Test]
+        public void TestGenerateImplicitOperatorMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("op_Implicit");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.op_Implicit(NADS.TestDoc.TestClass)~System.Single", name);
+        }
+
+        [Test]
         public void TestGenerateOverrideMethodName()
         {
             var m = typeof(TestClass).GetMethod("Equals");

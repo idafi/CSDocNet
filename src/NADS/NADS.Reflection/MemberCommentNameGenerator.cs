@@ -45,8 +45,12 @@ namespace NADS.Reflection
             string typeName = FormatTypeName(method.DeclaringType);
             string typeParams = (typeParamCt > 0) ? $"``{typeParamCt}" : "";
             string paramList = FormatParameterList(method.GetParameters());
+            string returnType = (method.IsSpecialName
+            && (method.Name == "op_Explicit" || method.Name == "op_Implicit"))
+                ? $"~{FormatTypeName(method.ReturnType)}"
+                : "";
             
-            return $"M:{typeName}.{method.Name}{typeParams}{paramList}";
+            return $"M:{typeName}.{method.Name}{typeParams}{paramList}{returnType}";
         }
 
         public string GenerateMethodName(ConstructorInfo ctor)
