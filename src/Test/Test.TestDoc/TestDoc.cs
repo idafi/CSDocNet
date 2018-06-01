@@ -314,7 +314,17 @@ namespace NADS.TestDoc
         public static explicit operator int(GenericClass<T> classParam) => 666;
 
         /// <inheritdoc />
-        public static implicit operator GenericClass<T>(int intParam) => default;        
+        public static implicit operator GenericClass<T>(int intParam) => default;
+
+        /// <summary>
+        /// Generic constructor doc.
+        /// </summary>
+        /// <param name="classParam">Class param.</param>
+        /// <param name="constructedParam">Constructed class param.</param>
+        public GenericClass(T classParam, GenericClass<int> constructedParam)
+        {
+
+        }      
 
         /// <summary>
         /// Generic method doc.
