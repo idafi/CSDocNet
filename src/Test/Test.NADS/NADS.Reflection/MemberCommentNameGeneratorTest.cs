@@ -104,6 +104,70 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGeneratePropertyName()
+        {
+            var p = typeof(TestClass).GetProperty("IntProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.TestClass.IntProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateMutablePropertyName()
+        {
+            var p = typeof(TestClass).GetProperty("MutableProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.TestClass.MutableProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateIndexerPropertyName()
+        {
+            var p = typeof(TestClass).GetProperty("Item");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.TestClass.Item(System.Int32)", name);
+        }
+
+        [Test]
+        public void TestGenerateNestedPropertyName()
+        {
+            var p = typeof(TestClass.NestedClass).GetProperty("NestedProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.TestClass.NestedClass.NestedProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericPropertyName()
+        {
+            var p = typeof(GenericClass<>).GetProperty("GenericProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.GenericProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericArrayPropertyName()
+        {
+            var p = typeof(GenericClass<>).GetProperty("GenericArrayProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.GenericArrayProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateConstructedGenericPropertyName()
+        {
+            var p = typeof(GenericClass<>).GetProperty("ConstructedProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.ConstructedProperty", name);
+        }
+
+        [Test]
+        public void TestGenerateNestedGenericPropertyName()
+        {
+            var p = typeof(GenericClass<>.GenericNestedClass<>).GetProperty("NestedProperty");
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.GenericNestedClass`1.NestedProperty", name);
+        }
+
+        [Test]
         public void TestGenerateMethodName()
         {
             var m = typeof(TestClass).GetMethod("IntMethod");
