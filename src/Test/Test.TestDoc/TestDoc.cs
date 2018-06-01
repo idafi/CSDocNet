@@ -301,6 +301,16 @@ namespace NADS.TestDoc
         public GenericClass<int> ConstructedProperty => ConstructedField;
 
         /// <summary>
+        /// Generic indexed doc.
+        /// </summary>
+        public T this[GenericClass<T> classParam] => default(T);
+
+        /// <summary>
+        /// Constructed indexer doc.
+        /// </summary>
+        public int this[GenericClass<int> classParam] => 666;
+
+        /// <summary>
         /// Generic method doc.
         /// </summary>
         /// <param name="classParam">Class param.</param>
