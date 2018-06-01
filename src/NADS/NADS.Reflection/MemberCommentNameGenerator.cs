@@ -59,7 +59,7 @@ namespace NADS.Reflection
             throw new NotImplementedException();
         }
 
-        string FormatTypeName(Type type)
+        string FormatTypeName(Type type, bool listTypeParams = false)
         {
             Assert.Ref(type);
             
@@ -70,7 +70,7 @@ namespace NADS.Reflection
             if(tpListPos > -1)
             { name = name.Substring(0, tpListPos); }
             
-            if(type.IsConstructedGenericType)
+            if(listTypeParams)
             {
                 ReadOnlySpan<Type> typeParams = type.GetGenericArguments();
                 MatchCollection tpCtMatches = typeParamCountRegex.Matches(name);
@@ -164,7 +164,7 @@ namespace NADS.Reflection
                 name = prefix + name;
             }
             else
-            { name = FormatTypeName(type) + name; }
+            { name = FormatTypeName(type, true) + name; }
             
             return name;
         }
