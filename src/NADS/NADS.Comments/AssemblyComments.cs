@@ -6,12 +6,12 @@ namespace NADS.Comments
     public readonly struct AssemblyComments
     {
         public readonly string Name;
-        public readonly IReadOnlyList<MemberComments> Members;
+        public readonly IReadOnlyDictionary<string, MemberComments> Members;
 
-        public AssemblyComments(string name, IReadOnlyList<MemberComments> members)
+        public AssemblyComments(string name, IReadOnlyDictionary<string, MemberComments> members)
         {
             Name = name ?? "";
-            Members = members ?? Empty<MemberComments>.EmptyList;
+            Members = members ?? Empty<string, MemberComments>.EmptyDict;
         }
 
         public static AssemblyComments Empty

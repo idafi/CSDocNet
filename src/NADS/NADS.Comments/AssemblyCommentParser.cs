@@ -91,12 +91,17 @@ namespace NADS.Comments
             return name.InnerText;
         }
 
-        public IReadOnlyList<MemberComments> ParseMembers(XmlElement membersNode)
+        public IReadOnlyDictionary<string, MemberComments> ParseMembers(XmlElement membersNode)
         {
             if(membersNode == null)
-            { return Empty<MemberComments>.EmptyList; }
+            { return Empty<string, MemberComments>.EmptyDict; }
 
-            return ParseChildren(membersNode, "member", ParseMember);
+            var members = ParseChildren(membersNode, "member", ParseMember);
+            var dict = new Dictionary<string, MemberComments>(members.Count);
+            for(int i = 0; i < members.Count; i++)
+            { dict.Add(members[i].Name, members[i]); }
+
+            return dict;
         }
 
         public MemberComments ParseMember(XmlElement memberNode)

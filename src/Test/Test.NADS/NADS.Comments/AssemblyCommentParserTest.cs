@@ -134,8 +134,8 @@ namespace NADS.Comments
             var members = parser.ParseMembers(element);
 
             Assert.AreEqual(2, members.Count);
-            Assert.AreEqual("A", members[0].Name);
-            Assert.AreEqual("B", members[1].Name);
+            Assert.AreEqual("A", members["A"].Name);
+            Assert.AreEqual("B", members["B"].Name);
         }
 
         [Test]
