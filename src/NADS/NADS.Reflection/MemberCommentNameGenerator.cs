@@ -55,7 +55,12 @@ namespace NADS.Reflection
 
         public string GenerateMethodName(ConstructorInfo ctor)
         {
-            throw new NotImplementedException();
+            Check.Ref(ctor);
+
+            string typeName = FormatTypeName(ctor.DeclaringType);
+            string paramList = FormatParameterList(ctor.GetParameters());
+
+            return $"M:{typeName}.#ctor{paramList}";
         }
 
         public string GenerateEventName(EventInfo ev)

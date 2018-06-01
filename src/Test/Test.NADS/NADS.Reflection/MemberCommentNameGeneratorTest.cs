@@ -339,5 +339,24 @@ namespace NADS.Reflection
             string name = generator.GenerateMethodName(m);
             Assert.AreEqual("M:NADS.TestDoc.UnsafeStruct.PointerMethod(System.Int32*,System.Single*)", name);
         }
+
+        [Test]
+        public void TestGenerateConstructorName()
+        {
+            var c = typeof(TestClass).GetConstructor(new Type[] { typeof(int) });
+            string name = generator.GenerateMethodName(c);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.#ctor(System.Int32)", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericConstructorName()
+        {
+            Type genericType = typeof(GenericClass<>);
+            Type typeParam = genericType.GetGenericArguments()[0];
+            
+            var c = typeof(GenericClass<>).GetConstructor(new Type[] { typeParam, typeof(GenericClass<int>) });
+            string name = generator.GenerateMethodName(c);
+            Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.#ctor(`0,NADS.TestDoc.GenericClass{System.Int32})", name);
+        }
     }
 }
