@@ -423,4 +423,28 @@ namespace NADS.TestDoc
         /// <returns>Returns doc.</returns>
         public int* PointerMethod(int* a, float* b) => a;
     }
+
+    /// <summary>
+    /// Test enum doc.
+    /// </summary>
+    public enum TestEnum { }
+
+    /// <summary>
+    /// Test delegate doc.
+    /// </summary>
+    /// <param name="i">Int param.</param>
+    /// <param name="f">Float param.</param>
+    /// <returns>Returns doc.</returns>
+    public delegate int TestDelegate(int i, float f);
+
+    /// <summary>
+    /// Generic delegate doc.
+    /// </summary>
+    /// <param name="param">Generic param.</param>
+    /// <param name="genericClassParam">Generic class param.</param>
+    /// <param name="constructedGenericParam">Constructed generic class param.</param>
+    /// <typeparam name="T">Typeparam T.</typeparam>
+    /// <returns>Returns doc.</returns>
+    public delegate T GenericDelegate<T>(T param, GenericClass<T> genericClassParam,
+        GenericClass<int> constructedGenericParam);
 }

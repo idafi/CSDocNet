@@ -49,6 +49,30 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateEnumName()
+        {
+            var t = typeof(TestEnum);
+            string name = generator.GenerateTypeName(t);
+            Assert.AreEqual("T:NADS.TestDoc.TestEnum", name);
+        }
+
+        [Test]
+        public void TestGenerateDelegateName()
+        {
+            var t = typeof(TestDoc.TestDelegate);
+            string name = generator.GenerateTypeName(t);
+            Assert.AreEqual("T:NADS.TestDoc.TestDelegate", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericDelegateName()
+        {
+            var t = typeof(GenericDelegate<>);
+            string name = generator.GenerateTypeName(t);
+            Assert.AreEqual("T:NADS.TestDoc.GenericDelegate`1", name);
+        }
+
+        [Test]
         public void TestGenerateTypeNameThrowsIfNull()
         {
             Assert.Throws<ArgumentNullException>(() => generator.GenerateTypeName(null));
