@@ -306,6 +306,21 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateConversionOperatorWithGenericParamName()
+        {
+            var m = typeof(GenericClass<>).GetMethod("op_Explicit");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.op_Explicit(NADS.TestDoc.GenericClass{`0})~System.Int32", name);
+        }
+
+        public void TestGenerateConversionOperatorWithGenericReturnName()
+        {
+            var m = typeof(GenericClass<>).GetMethod("op_Implicit");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.op_Implicit(System.Int32)~NADS.TestDoc.GenericClass{`0}", name);
+        }
+
+        [Test]
         public void TestGenerateTheMonsterMethodName()
         {
             // hold onto your butts !!

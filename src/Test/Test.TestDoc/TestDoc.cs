@@ -310,6 +310,12 @@ namespace NADS.TestDoc
         /// </summary>
         public int this[GenericClass<int> classParam] => 666;
 
+        /// <inheritdoc />
+        public static explicit operator int(GenericClass<T> classParam) => 666;
+
+        /// <inheritdoc />
+        public static implicit operator GenericClass<T>(int intParam) => default;        
+
         /// <summary>
         /// Generic method doc.
         /// </summary>
