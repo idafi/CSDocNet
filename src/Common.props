@@ -2,4 +2,8 @@
   <PropertyGroup>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.0" />
+  </ItemGroup>
 </Project>
