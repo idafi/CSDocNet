@@ -102,5 +102,131 @@ namespace NADS.Reflection
             string name = generator.GenerateFieldName(f);
             Assert.AreEqual("F:NADS.TestDoc.UnsafeStruct.FixedArray", name);
         }
+
+        [Test]
+        public void TestGenerateMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("IntMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.IntMethod(System.Int32)", name);
+        }
+
+        [Test]
+        public void TestGenerateNestedMethodName()
+        {
+            var m = typeof(TestClass.NestedClass).GetMethod("NestedMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.NestedClass.NestedMethod(System.Int32)", name);
+        }
+
+        [Test]
+        public void TestGenerateOperatorMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("op_Addition");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.op_Addition(NADS.TestDoc.TestClass,NADS.TestDoc.TestClass)", name);
+        }
+
+        [Test]
+        public void TestGenerateOverrideMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("Equals");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.Equals(System.Object)", name);
+        }
+
+        [Test]
+        public void TestGenerateVirtualMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("VirtualMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.VirtualMethod(System.Int32)", name);
+        }
+
+        [Test]
+        public void TestGenerateNoParamMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("NoParamMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.NoParamMethod", name);
+        }
+
+        [Test]
+        public void TestGenerateNullableMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("NullableMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.NullableMethod(System.Nullable{System.Int32})", name);
+        }
+
+        [Test]
+        public void TestGenerateRefMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("RefMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.RefMethod(System.Int32@,System.Int32@,System.Int32@)", name);
+        }
+
+        [Test]
+        public void TestGenerateArrayMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("ArrayMethod");
+            string expected = "M:NADS.TestDoc.TestClass.ArrayMethod(System.Int32[],System.Int32[0:,0:],System.Int32[][])";
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual(expected, name);
+        }
+
+        [Test]
+        public void TestGenerateGenericMethodName()
+        {
+            var m = typeof(TestClass).GetMethod("GenericMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.TestClass.GenericMethod``1(``0)", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericClassMethodName()
+        {
+            var m = typeof(GenericClass<>).GetMethod("GenericMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.GenericMethod``1(`0,``0)", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericClassConstructedMethodName()
+        {
+            var m = typeof(GenericClass<>).GetMethod("ConstructedMethod");
+            string expected = "M:NADS.TestDoc.GenericClass`1.ConstructedMethod``1(`0,``0,NADS.TestDoc.GenericClass{System.Int32})";
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual(expected, name);
+        }
+
+        [Test]
+        public void TestGenerateGenericClassNestedMethodName()
+        {
+            var m = typeof(GenericClass<>.GenericNestedClass<>).GetMethod("NestedMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.GenericNestedClass`1.NestedMethod``1(`0,`1,``0)", name);
+        }
+
+        [Test]
+        public void TestGenerateTheMonsterMethodName()
+        {
+            // hold onto your butts !!
+            string expected =
+                "M:NADS.TestDoc.GenericClass`1.GenericNestedClass`1.TheMonsterMethod``1(`0,`1,``0,NADS.TestDoc.GenericClass{System.Int32}.GenericNestedClass{``0}[][]@,``0[][]@,`1[0:,0:,0:]@)";
+
+            var m = typeof(GenericClass<>.GenericNestedClass<>).GetMethod("TheMonsterMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual(expected, name);
+        }
+
+        [Test]
+        public void TestGeneratePointerMethodName()
+        {
+            var m = typeof(UnsafeStruct).GetMethod("PointerMethod");
+            string name = generator.GenerateMethodName(m);
+            Assert.AreEqual("M:NADS.TestDoc.UnsafeStruct.PointerMethod(System.Int32*,System.Single*)", name);
+        }
     }
 }
