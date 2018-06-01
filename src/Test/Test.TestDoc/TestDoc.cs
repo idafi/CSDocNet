@@ -249,7 +249,24 @@ namespace NADS.TestDoc
             /// <param name="methodParam">Method param.</param>
             /// <typeparam name="V">Typeparam V.</typeparam>
             /// <returns>Returns doc.</returns>
-            public V NestedMethod<V>(T classParam, Q nestedParam, ref V methodParam)
+            public V NestedMethod<V>(T classParam, Q nestedParam, V methodParam)
+                => methodParam;
+            
+            /// <summary>
+            /// The monster method doc.
+            /// <para>If we can parse this, we can parse anything.</para>
+            /// </summary>
+            /// <param name="classParam">Class param.</param>
+            /// <param name="nestedParam">Nested param.</param>
+            /// <param name="methodParam">Method param.</param>
+            /// <param name="constructedParam">Constructed generic ref array param.</param>
+            /// <param name="genericArrayParam">Generic ref array param.</param>
+            /// <param name="multiArrayParam">Multidimensional generic ref array param.</param>
+            /// <typeparam name="V">Typeparam V.</typeparam>
+            /// <returns>Returns doc.</returns>
+            public V TheMonsterMethod<V>(T classParam, Q nestedParam,
+                V methodParam, ref GenericClass<int>.GenericNestedClass<V>[][] constructedParam,
+                ref V[][] genericArrayParam, ref Q[,,] multiArrayParam)
                 => methodParam;
         }
 
