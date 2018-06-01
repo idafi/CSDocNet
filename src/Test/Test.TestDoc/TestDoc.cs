@@ -1,3 +1,5 @@
+using System;
+
 namespace NADS.TestDoc
 {
     /// <summary>
@@ -35,6 +37,16 @@ namespace NADS.TestDoc
             /// <returns>Returns doc.</returns>
             public int NestedMethod(int param) => param;
         }
+
+        /// <summary>
+        /// Action event doc.
+        /// </summary>
+        public event Action ActionEvent;
+
+        /// <summary>
+        /// Int action event doc.
+        /// </summary>
+        public event Action<int> IntActionEvent;
 
         /// <summary>
         /// Int field doc.
@@ -81,7 +93,9 @@ namespace NADS.TestDoc
         /// <param name="ctorParam">Constructor param.</param>
         public TestClass(int ctorParam)
         {
-
+            // shut up the compiler
+            ActionEvent?.Invoke();
+            IntActionEvent?.Invoke(default);
         }
 
         /// <summary><inheritdoc /></summary>
@@ -271,6 +285,16 @@ namespace NADS.TestDoc
         }
 
         /// <summary>
+        /// Generic event doc.
+        /// </summary>
+        public event Action<T> GenericEvent;
+
+        /// <summary>
+        /// Constructed generic event doc.
+        /// </summary>
+        public event Action<GenericClass<int>> ConstructedEvent;
+
+        /// <summary>
         /// Generic field doc.
         /// </summary>
         public readonly T GenericField;
@@ -323,7 +347,9 @@ namespace NADS.TestDoc
         /// <param name="constructedParam">Constructed class param.</param>
         public GenericClass(T classParam, GenericClass<int> constructedParam)
         {
-
+            // shut up the compiler
+            GenericEvent?.Invoke(default);
+            ConstructedEvent?.Invoke(default);
         }      
 
         /// <summary>

@@ -353,10 +353,42 @@ namespace NADS.Reflection
         {
             Type genericType = typeof(GenericClass<>);
             Type typeParam = genericType.GetGenericArguments()[0];
-            
+
             var c = typeof(GenericClass<>).GetConstructor(new Type[] { typeParam, typeof(GenericClass<int>) });
             string name = generator.GenerateMethodName(c);
             Assert.AreEqual("M:NADS.TestDoc.GenericClass`1.#ctor(`0,NADS.TestDoc.GenericClass{System.Int32})", name);
+        }
+
+        [Test]
+        public void TestGenerateEventName()
+        {
+            var e = typeof(TestClass).GetEvent("ActionEvent");
+            string name = generator.GenerateEventName(e);
+            Assert.AreEqual("E:NADS.TestDoc.TestClass.ActionEvent", name);
+        }
+
+        [Test]
+        public void TestGenerateEventWithTypeParamsName()
+        {
+            var e = typeof(TestClass).GetEvent("IntActionEvent");
+            string name = generator.GenerateEventName(e);
+            Assert.AreEqual("E:NADS.TestDoc.TestClass.IntActionEvent", name);
+        }
+
+        [Test]
+        public void TestGenerateGenericEventName()
+        {
+            var e = typeof(GenericClass<>).GetEvent("GenericEvent");
+            string name = generator.GenerateEventName(e);
+            Assert.AreEqual("E:NADS.TestDoc.GenericClass`1.GenericEvent", name);
+        }
+
+        [Test]
+        public void TestGenerateConstructedGenericEventName()
+        {
+            var e = typeof(GenericClass<>).GetEvent("ConstructedEvent");
+            string name = generator.GenerateEventName(e);
+            Assert.AreEqual("E:NADS.TestDoc.GenericClass`1.ConstructedEvent", name);
         }
     }
 }

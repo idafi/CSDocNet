@@ -65,7 +65,10 @@ namespace NADS.Reflection
 
         public string GenerateEventName(EventInfo ev)
         {
-            throw new NotImplementedException();
+            Check.Ref(ev);
+            
+            string type = FormatTypeName(ev.DeclaringType);
+            return $"E:{type}.{ev.Name}";
         }
 
         string FormatTypeName(Type type, bool listTypeParams = false)
