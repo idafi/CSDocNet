@@ -168,6 +168,22 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateGenericIndexerName()
+        {
+            var p = typeof(GenericClass<>).GetProperty("Item", new Type[] { typeof(GenericClass<>) });
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.Item(NADS.TestDoc.GenericClass{`0})", name);
+        }
+
+        [Test]
+        public void TestGenerateConstructedGenericIndexerName()
+        {
+            var p = typeof(GenericClass<>).GetProperty("Item", typeof(int));
+            string name = generator.GeneratePropertyName(p);
+            Assert.AreEqual("P:NADS.TestDoc.GenericClass`1.Item(NADS.TestDoc.GenericClass{System.Int32})", name);
+        }
+
+        [Test]
         public void TestGenerateMethodName()
         {
             var m = typeof(TestClass).GetMethod("IntMethod");
