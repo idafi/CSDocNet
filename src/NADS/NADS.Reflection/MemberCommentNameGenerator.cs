@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -8,18 +9,20 @@ namespace NADS.Reflection
 {
     public class MemberCommentNameGenerator : IMemberCommentNameGenerator
     {
+        static readonly Regex typeParamCountRegex = new Regex(@"\`(\d+)");
+
         public string GenerateTypeName(Type type)
         {
             Check.Ref(type);
 
-            return $"T:{FormatTypeName(type, false)}";
+            return $"T:{FormatTypeName(type)}";
         }
 
         public string GenerateFieldName(FieldInfo field)
         {
             Check.Ref(field);
             
-            string type = FormatTypeName(field.DeclaringType, false);
+            string type = FormatTypeName(field.DeclaringType);
             return $"F:{type}.{field.Name}";
         }
 
@@ -34,7 +37,7 @@ namespace NADS.Reflection
 
             int typeParamCt = method.GetGenericArguments().Length;
 
-            string typeName = FormatTypeName(method.DeclaringType, false);
+            string typeName = FormatTypeName(method.DeclaringType);
             string typeParams = (typeParamCt > 0) ? $"``{typeParamCt}" : "";
             string paramList = FormatParameterList(method.GetParameters());
             
@@ -51,103 +54,114 @@ namespace NADS.Reflection
             throw new NotImplementedException();
         }
 
-        string FormatTypeName(Type type, bool listTypeParams)
+        string FormatTypeName(Type type)
         {
             Assert.Ref(type);
-
+            
             string name = type.ToString();
             name = name.Replace('+', '.');
-
-            int typeParamList = name.IndexOf('[');
-            if(typeParamList > -1)
-            { name = name.Substring(0, typeParamList); }
-
-            if(listTypeParams)
+            
+            int tpListPos = name.IndexOf('[');
+            if(tpListPos > -1)
+            { name = name.Substring(0, tpListPos); }
+            
+            if(type.IsConstructedGenericType)
             {
-                Span<Type> typeParams = type.GetGenericArguments();
-                MatchCollection tpCtMatches = Regex.Matches(name, @"\`(\d+)");
+                ReadOnlySpan<Type> typeParams = type.GetGenericArguments();
+                MatchCollection tpCtMatches = typeParamCountRegex.Matches(name);
                 
                 for(int i = 0; i < tpCtMatches.Count; i++)
                 {
+                    // we insert typeparam lists in reverse, so that we don't offset match start indices
                     Match match = tpCtMatches[tpCtMatches.Count - 1 - i];
                     int typeParamCount = int.Parse(match.Groups[1].Value);
-
-                    Span<Type> usedParams = typeParams.Slice(typeParams.Length - typeParamCount);
-                    string list = '{' + FormatTypeList(usedParams) + '}';
-
+                    int usedParamsStart = typeParams.Length - typeParamCount;
+                    
+                    ReadOnlySpan<Type> usedParams = typeParams.Slice(usedParamsStart);
+                    string list = FormatTypeParamList(usedParams);
+                    
                     name = name.Remove(match.Index, match.Length);
                     name = name.Insert(match.Index, list);
-
-                    typeParams = typeParams.Slice(0, typeParams.Length - typeParamCount);
+                    
+                    typeParams = typeParams.Slice(0, typeParamCount);
                 }
             }
-
+            
             return name;
         }
 
-        string FormatParameterList(ParameterInfo[] parameters)
+        string FormatTypeParamList(ReadOnlySpan<Type> typeParams)
         {
-            if(parameters != null && parameters.Length > 0)
-            {
-                Type[] types =
-                    (from ParameterInfo param in parameters
-                    select param.ParameterType).ToArray();
+            string[] names = new string[typeParams.Length];
+            for(int i = 0; i < names.Length; i++)
+            { names[i] = FormatParamName(typeParams[i]); }
 
-                return $"({FormatTypeList(types)})";
-            }
-
-            return "";
+            string list = string.Join(",", names);
+            return '{' + list + '}';
         }
 
-        string FormatTypeList(Span<Type> types)
+        string FormatParameterList(IReadOnlyList<ParameterInfo> parameters)
         {
-            if(types == null || types.Length <= 0)
+            Assert.Ref(parameters);
+
+            if(parameters.Count < 1)
             { return ""; }
+            
+            string[] names = new string[parameters.Count];
+            for(int i = 0; i < names.Length; i++)
+            { names[i] = FormatParamName(parameters[i].ParameterType); }
 
-            string[] paramNames = new string[types.Length];
-            for(int i = 0; i < types.Length; i++)
+            string list = string.Join(",", names);
+            return $"({list})";
+        }
+
+        string FormatParamName(Type type)
+        {
+            Assert.Ref(type);
+
+            string name = "";
+            
+            // handle ref/out/in
+            if(type.IsByRef)
             {
-                ref string name = ref paramNames[i];
-                Type type = types[i];
-
-                if(type.IsByRef)
+                name += "@";
+                type = type.GetElementType();
+            }
+            
+            // handle arrays
+            while(type.IsArray)
+            {
+                int dimCount = type.GetArrayRank();
+                
+                // handle multidimensional arrays
+                if(dimCount > 1)
                 {
-                    name = "@";
-                    type = type.GetElementType();
-                }
-
-                while(type.IsArray)
-                {
-                    int dimCount = type.GetArrayRank();
-
-                    if(dimCount > 1)
-                    {
-                        string[] prefixes = new string[dimCount];
-                        for(int d = 0; d < dimCount; d++)
-                        { prefixes[d] = "0:"; }
-
-                        name = $"[{string.Join(",", prefixes)}]" + name;
-                    }
-                    else
-                    { name = "[]" + name; }
-
-                    type = type.GetElementType();
-                }
-
-                if(type.IsGenericParameter)
-                {
-                    name = type.GenericParameterPosition + name;
-
-                    if(type.DeclaringMethod != null)
-                    { name = "``" + name; }
-                    else
-                    { name = '`' + name; }
+                    string[] dimMarkers = new string[dimCount];
+                    for(int d = 0; d < dimCount; d++)
+                    { dimMarkers[d] = "0:"; }
+                
+                    name = $"[{string.Join(",", dimMarkers)}]" + name;
                 }
                 else
-                { name = FormatTypeName(type, true) + name; }
-            }
+                { name = "[]" + name; }
 
-            return string.Join(",", paramNames);
+                type = type.GetElementType();
+            }
+            
+            // handle generics
+            if(type.IsGenericParameter)
+            {
+                int pos = type.GenericParameterPosition;
+                string prefix = (type.DeclaringMethod != null)
+                    ? $"``{pos}"
+                    : $"`{pos}";
+                
+                name = prefix + name;
+            }
+            else
+            { name = FormatTypeName(type) + name; }
+            
+            return name;
         }
     }
 }
