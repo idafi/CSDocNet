@@ -5,6 +5,8 @@ namespace NADS.Reflection
     [Flags]
     public enum Modifier
     {
+        None        = 0x0000,
+
         Abstract	= 0x0001,
         Async		= 0x0002,
         Const		= 0x0004,
