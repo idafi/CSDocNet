@@ -1,0 +1,32 @@
+namespace NADS.Reflection
+{
+    public enum Operator
+    {
+        UnaryPlus,
+        UnaryNegation,
+        LogicalNot,
+        OnesComplement,
+        Increment,
+        Decrement,
+        True,
+        False,
+        Addition,
+        Subtraction,
+        Multiply,
+        Division,
+        Modulus,
+        BitwiseAnd,
+        BitwiseOr,
+        ExclusiveOr,
+        LeftShift,
+        RightShift,
+        Equality,
+        Inequality,
+        LessThan,
+        GreaterThan,
+        LessThanOrEqual,
+        GreaterThanOrEqual,
+        Explicit,
+        Implicit
+    }
+}
