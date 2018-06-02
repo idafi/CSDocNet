@@ -17,7 +17,6 @@ namespace NADS.Reflection
         Readonly	= 0x0080,
         Sealed		= 0x0100,
         Static		= 0x0200,
-        Unsafe		= 0x0400,
         Virtual		= 0x0800,
         Volatile	= 0x1000
     }
