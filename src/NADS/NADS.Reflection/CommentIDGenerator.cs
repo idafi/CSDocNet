@@ -7,18 +7,18 @@ using NADS.Debug;
 
 namespace NADS.Reflection
 {
-    public class MemberCommentNameGenerator : IMemberCommentNameGenerator
+    public class CommentIDGenerator : ICommentIDGenerator
     {
         static readonly Regex typeParamCountRegex = new Regex(@"\`(\d+)");
 
-        public string GenerateTypeName(Type type)
+        public string GenerateTypeID(Type type)
         {
             Check.Ref(type);
 
             return $"T:{FormatTypeName(type)}";
         }
 
-        public string GenerateFieldName(FieldInfo field)
+        public string GenerateFieldID(FieldInfo field)
         {
             Check.Ref(field);
             
@@ -26,7 +26,7 @@ namespace NADS.Reflection
             return $"F:{type}.{field.Name}";
         }
 
-        public string GeneratePropertyName(PropertyInfo property)
+        public string GeneratePropertyID(PropertyInfo property)
         {
             Check.Ref(property);
 
@@ -36,7 +36,7 @@ namespace NADS.Reflection
             return $"P:{typeName}.{property.Name}{paramList}";
         }
 
-        public string GenerateMethodName(MethodInfo method)
+        public string GenerateMethodID(MethodInfo method)
         {
             Check.Ref(method);
 
@@ -53,7 +53,7 @@ namespace NADS.Reflection
             return $"M:{typeName}.{method.Name}{typeParams}{paramList}{returnType}";
         }
 
-        public string GenerateMethodName(ConstructorInfo ctor)
+        public string GenerateMethodID(ConstructorInfo ctor)
         {
             Check.Ref(ctor);
 
@@ -63,7 +63,7 @@ namespace NADS.Reflection
             return $"M:{typeName}.#ctor{paramList}";
         }
 
-        public string GenerateEventName(EventInfo ev)
+        public string GenerateEventID(EventInfo ev)
         {
             Check.Ref(ev);
             
