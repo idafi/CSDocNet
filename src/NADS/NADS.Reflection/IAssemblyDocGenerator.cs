@@ -19,5 +19,8 @@ namespace NADS.Reflection
         MethodDoc GenerateConstructorDoc(ConstructorInfo ctorInfo);
         OperatorDoc GenerateOperatorDoc(MethodInfo opInfo);
         MethodDoc GenerateMethodDoc(MethodInfo methodInfo);
+
+        AccessModifier GetTypeAccess(Type type);
+        Modifier GetTypeModifiers(Type type);
     }
 }
