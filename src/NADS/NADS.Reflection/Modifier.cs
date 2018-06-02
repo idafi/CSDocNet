@@ -12,12 +12,11 @@ namespace NADS.Reflection
         Const		= 0x0004,
         Extern		= 0x0008,
         Override	= 0x0010,
-        Partial		= 0x0020,
-        Ref			= 0x0040,
-        Readonly	= 0x0080,
-        Sealed		= 0x0100,
-        Static		= 0x0200,
-        Virtual		= 0x0800,
-        Volatile	= 0x1000
+        Ref			= 0x0020,
+        Readonly	= 0x0040,
+        Sealed		= 0x0080,
+        Static		= 0x0100,
+        Virtual		= 0x0200,
+        Volatile	= 0x0400
     }
 }
