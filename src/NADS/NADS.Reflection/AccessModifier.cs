@@ -4,6 +4,7 @@ namespace NADS.Reflection
     {
         Private,
         PrivateProtected,
+        Protected,
         Internal,
         ProtectedInternal,
         Public
