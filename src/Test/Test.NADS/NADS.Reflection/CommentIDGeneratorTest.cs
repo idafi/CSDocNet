@@ -49,6 +49,22 @@ namespace NADS.Reflection
         }
 
         [Test]
+        public void TestGenerateTypeIDWithStruct()
+        {
+            var t = typeof(TestStruct);
+            string id = generator.GenerateTypeID(t);
+            Assert.AreEqual("T:NADS.TestDoc.TestStruct", id);
+        }
+
+        [Test]
+        public void TestGenerateTypeIDWithUnsafeStruct()
+        {
+            var t = typeof(UnsafeStruct);
+            string id = generator.GenerateTypeID(t);
+            Assert.AreEqual("T:NADS.TestDoc.UnsafeStruct", id);
+        }
+
+        [Test]
         public void TestGenerateEnumID()
         {
             var t = typeof(TestEnum);
