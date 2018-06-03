@@ -21,21 +21,7 @@ namespace NADS.Reflection
 
         public ClassDoc GenerateClassDoc(Type classType)
         {
-            Check.Ref(classType);
-            Check.Cond(classType.IsClass, $"type '{classType.Name}' is not a class");
-
-            string name = classType.FullName;
-            string id = idGen.GenerateTypeID(classType);
-
-            AccessModifier access = GetTypeAccess(classType);
-            Modifier modifiers = GetTypeModifiers(classType);
-
-            IReadOnlyList<MemberRef> attributes = GetAttributes(classType);
-            IReadOnlyList<TypeParam> typeParams = GetTypeParams(classType);
-
-            MemberDoc member = new MemberDoc(name, id, access, modifiers, attributes, typeParams);
-            
-            return default;
+            throw new NotImplementedException();
         }
 
         public ClassDoc GenerateStructDoc(Type structType)
@@ -86,6 +72,22 @@ namespace NADS.Reflection
         public MethodDoc GenerateMethodDoc(MethodInfo methodInfo)
         {
             throw new NotImplementedException();
+        }
+
+        public MemberDoc GenerateMemberDoc(Type type)
+        {
+            Check.Ref(type);
+
+            string name = type.FullName;
+            string id = idGen.GenerateTypeID(type);
+
+            AccessModifier access = GetTypeAccess(type);
+            Modifier modifiers = GetTypeModifiers(type);
+
+            IReadOnlyList<MemberRef> attributes = GetAttributes(type);
+            IReadOnlyList<TypeParam> typeParams = GetTypeParams(type);
+
+            return new MemberDoc(name, id, access, modifiers, attributes, typeParams);
         }
 
         public AccessModifier GetTypeAccess(Type type)

@@ -21,6 +21,8 @@ namespace NADS.Reflection
         OperatorDoc GenerateOperatorDoc(MethodInfo opInfo);
         MethodDoc GenerateMethodDoc(MethodInfo methodInfo);
 
+        MemberDoc GenerateMemberDoc(Type type);
+
         AccessModifier GetTypeAccess(Type type);
         Modifier GetTypeModifiers(Type type);
         IReadOnlyList<MemberRef> GetAttributes(MemberInfo memberInfo);
