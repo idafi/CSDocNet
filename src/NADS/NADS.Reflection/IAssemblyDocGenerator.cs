@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace NADS.Reflection
@@ -22,5 +23,7 @@ namespace NADS.Reflection
 
         AccessModifier GetTypeAccess(Type type);
         Modifier GetTypeModifiers(Type type);
+        IReadOnlyList<MemberRef> GetAttributes(MemberInfo memberInfo);
+        IReadOnlyList<TypeParam> GetTypeParams(Type type);
     }
 }
