@@ -7,6 +7,6 @@ namespace NADS.Reflection.Generation
     {
         FieldDoc GenerateFieldDoc(FieldInfo fieldInfo);
 
-        object GetConstValue(FieldInfo fieldInfo);
+        object GenerateConstValue(FieldInfo fieldInfo);
     }
 }
