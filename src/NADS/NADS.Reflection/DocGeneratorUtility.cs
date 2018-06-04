@@ -95,19 +95,6 @@ namespace NADS.Reflection
             }
         }
 
-        string GetMemberName(MemberInfo member)
-        {
-            switch(member.MemberType)
-            {
-                case MemberTypes.TypeInfo:
-                case MemberTypes.NestedType:
-                    Type t = (Type)(member);
-                    return t.FullName;
-                default:
-                    return $"{member.DeclaringType.FullName}.{member.Name}";
-            }
-        }
-
         MemberRefType GetMemberRefType(Type type)
         {
             Assert.Ref(type);
@@ -124,6 +111,19 @@ namespace NADS.Reflection
             { return MemberRefType.Struct; }
             else
             { throw new NotSupportedException($"couldn't determine member type of type '{type.Name}'"); }
+        }
+
+        string GetMemberName(MemberInfo member)
+        {
+            switch(member.MemberType)
+            {
+                case MemberTypes.TypeInfo:
+                case MemberTypes.NestedType:
+                    Type t = (Type)(member);
+                    return t.FullName;
+                default:
+                    return $"{member.DeclaringType.FullName}.{member.Name}";
+            }
         }
     }
 }
