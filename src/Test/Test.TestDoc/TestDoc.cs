@@ -581,6 +581,7 @@ namespace NADS.TestDoc
         public volatile int VolatileField;
 
         /// <summary>Static readonly field doc.</summary>
+        [NonSerialized]
         public static readonly int StaticReadonlyField;
         /// <summary>Static volatile field doc.</summary>
         public static volatile int StaticVolatileField;
