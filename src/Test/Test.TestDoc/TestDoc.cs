@@ -585,5 +585,15 @@ namespace NADS.TestDoc
         public static readonly int StaticReadonlyField;
         /// <summary>Static volatile field doc.</summary>
         public static volatile int StaticVolatileField;
+
+        /// <summary>
+        /// Shut up, compiler !!
+        /// </summary>
+        public void ShutUpCompiler()
+        {
+            InternalField++;
+            privateField++;
+            defaultField++;
+        }
     }
 }
