@@ -99,55 +99,55 @@ namespace NADS.TestDoc
             IntActionEvent?.Invoke(default);
         }
 
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator +(TestClass c) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator -(TestClass c) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator !(TestClass c) => false;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator ~(TestClass c) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator ++(TestClass c) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator --(TestClass c) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator true(TestClass c) => true;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator false(TestClass c) => false;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator +(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator -(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator *(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator /(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator %(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator |(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator ^(TestClass a, TestClass b) => a;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator <<(TestClass c, int p) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator >>(TestClass c, int p) => c;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator ==(TestClass a, TestClass b) => a == b;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static TestClass operator !=(TestClass a, TestClass b) => a != b;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator <(TestClass a, TestClass b) => true;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator >(TestClass a, TestClass b) => true;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator <=(TestClass a, TestClass b) => true;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static bool operator >=(TestClass a, TestClass b) => true;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static explicit operator int(TestClass c) => 666;
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public static implicit operator float(TestClass c) => 666;
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NADS.TestDoc
         /// <returns>Returns doc.</returns>
         public override bool Equals(object obj) => base.Equals(obj);
 
-        /// <summary><inheritdoc /></summary>
+        /// <inheritdoc />
         public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
