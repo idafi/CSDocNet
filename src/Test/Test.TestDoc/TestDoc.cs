@@ -560,6 +560,7 @@ namespace NADS.TestDoc
     public class FieldTestClass
     {
         /// <summary>Public field doc.</summary>
+        [NonSerialized]
         public int PublicField;
         /// <summary>Protected internal field doc.</summary>
         protected internal int ProtectedInternalField;
@@ -581,5 +582,7 @@ namespace NADS.TestDoc
 
         /// <summary>Static readonly field doc.</summary>
         public static readonly int StaticReadonlyField;
+        /// <summary>Static volatile field doc.</summary>
+        public static volatile int StaticVolatileField;
     }
 }
