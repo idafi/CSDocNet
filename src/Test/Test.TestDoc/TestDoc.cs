@@ -5,6 +5,7 @@ namespace NADS.TestDoc
     /// <summary>
     /// Test class doc.
     /// </summary>
+    [Serializable]
     public class TestClass
     {
         /// <summary>
