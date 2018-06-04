@@ -12,10 +12,9 @@ namespace NADS.Reflection
         public readonly Modifier Modifiers;
         
         public readonly IReadOnlyList<MemberRef> Attributes;
-        public readonly IReadOnlyList<TypeParam> TypeParams;
 
         public MemberDoc(string name, string commentID, AccessModifier access, Modifier modifiers,
-            IReadOnlyList<MemberRef> attributes, IReadOnlyList<TypeParam> typeParams)
+            IReadOnlyList<MemberRef> attributes)
         {
             Name = name ?? "";
             CommentID = commentID ?? "";
@@ -24,7 +23,6 @@ namespace NADS.Reflection
             Modifiers = modifiers;
             
             Attributes = attributes ?? Empty<MemberRef>.EmptyList;
-            TypeParams = typeParams ?? Empty<TypeParam>.EmptyList;
         }
     }
 }
