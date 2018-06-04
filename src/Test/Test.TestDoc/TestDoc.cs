@@ -596,4 +596,44 @@ namespace NADS.TestDoc
             defaultField++;
         }
     }
+
+    /// <summary>
+    /// Property test class doc.
+    /// </summary>
+    public abstract class PropertyTestClass
+    {
+        /// <summary>
+        /// Property test class implementation.
+        /// </summary>
+        public class Impl : PropertyTestClass
+        {
+            /// <inheritdoc />
+            public override int VirtualProperty { get; set; }
+            /// <inheritdoc />
+            public override int AbstractProperty { get; set; }
+        }
+
+        /// <summary>Public property.</summary>
+        public int PublicProperty { get; set; }
+        /// <summary>Protected internal property.</summary>
+        protected internal int ProtectedInternalProperty { get; set; }
+        internal int InternalProperty { get; set; }
+        /// <summary>Protected property.</summary>
+        protected int protectedProperty { get; set; }
+        private protected int privateProtectedProperty { get; set; }
+        private int privateProprety { get; set; }
+        int defaultProperty { get; set; }
+
+        /// <summary>Static property.</summary>
+        public static int StaticProperty { get; set; }
+        /// <summary>Virtual property.</summary>
+        public virtual int VirtualProperty { get; set; }
+        /// <summary>Abstract property.</summary>
+        public abstract int AbstractProperty { get; set; }
+
+        /// <summary>Get-only property.</summary>
+        public int GetOnlyProperty { get; }
+        /// <summary>Set-only property.</summary>
+        public int SetOnlyProperty { set { } }
+    }
 }
