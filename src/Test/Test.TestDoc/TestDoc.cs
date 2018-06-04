@@ -401,6 +401,28 @@ namespace NADS.TestDoc
     }
 
     /// <summary>
+    /// Generic struct doc.
+    /// </summary>
+    public readonly struct GenericStruct<T>
+    {
+        /// <summary>
+        /// Field doc.
+        /// </summary>
+        public readonly T Field;
+
+        /// <summary>
+        /// Generic method doc.
+        /// </summary>
+        /// <param name="tParam">Generic param.</param>
+        /// <param name="constructedParam">Constructed generic param.</param>
+        /// <returns>Returns doc.</returns>
+        public T Method(T tParam, in GenericStruct<int> constructedParam)
+        {
+            return tParam;
+        }
+    }
+
+    /// <summary>
     /// Unsafe struct doc.
     /// </summary>
     public unsafe struct UnsafeStruct
@@ -427,7 +449,77 @@ namespace NADS.TestDoc
     /// <summary>
     /// Test enum doc.
     /// </summary>
-    public enum TestEnum { }
+    public enum TestEnum
+    {
+        /// <summary>
+        /// Value A doc.
+        /// </summary>
+        ValueA,
+
+        /// <summary>
+        /// Value B doc.
+        /// </summary>
+        ValueB
+    }
+
+    /// <summary>
+    /// Test interface doc.
+    /// </summary>
+    public interface TestInterface
+    {
+        /// <summary>
+        /// Action event doc.
+        /// </summary>
+        event Action ActionEvent;
+
+        /// <summary>
+        /// Get only property doc.
+        /// </summary>
+        int GetOnlyProperty { get; }
+
+        /// <summary>
+        /// Set only property doc.
+        /// </summary>
+        int SetOnlyProperty { set; }
+
+        /// <summary>
+        /// Get/set property doc.
+        /// </summary>
+        int GetSetProperty { get; set; }
+
+        /// <summary>
+        /// Method doc.
+        /// </summary>
+        /// <param name="intParam">Int param.</param>
+        /// <returns>Returns doc.</returns>
+        int Method(int intParam);
+    }
+
+    /// <summary>
+    /// Generic interface doc.
+    /// </summary>
+    /// <typeparam name="T">Contravariant typeparam T.</typeparam>
+    /// <typeparam name="V">Covariant typeparam V.</typeparam>
+    /// <typeparam name="W">Typeparam W.</typeparam>
+    public interface GenericInterface<in T, out V, W>
+    {
+        /// <summary>
+        /// Generic event doc.
+        /// </summary>
+        event Action<W> GenericEvent;
+
+        /// <summary>
+        /// Covariant property doc.
+        /// </summary>
+        V CovariantProperty { get; }
+
+        /// <summary>
+        /// Contravariant method doc.
+        /// </summary>
+        /// <param name="contraParam">Contravariant param.</param>
+        /// <returns>Returns doc.</returns>
+        V ContravariantMethod(T contraParam);
+    }
 
     /// <summary>
     /// Test delegate doc.
