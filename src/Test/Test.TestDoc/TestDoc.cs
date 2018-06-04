@@ -553,4 +553,33 @@ namespace NADS.TestDoc
     /// <returns>Returns doc.</returns>
     public delegate T GenericDelegate<T>(T param, GenericClass<T> genericClassParam,
         GenericClass<int> constructedGenericParam);
+
+    /// <summary>
+    /// Field test class doc.
+    /// </summary>
+    public class FieldTestClass
+    {
+        /// <summary>Public field doc.</summary>
+        public int PublicField;
+        /// <summary>Protected internal field doc.</summary>
+        protected internal int ProtectedInternalField;
+        internal int InternalField;
+        /// <summary>Protected field doc.</summary>
+        protected int protectedField;
+        private protected int privateProtectedField;
+        private int privateField;
+        int defaultField;
+
+        /// <summary>Const field doc.</summary>
+        public const int ConstField = 666;
+        /// <summary>Readonly field doc.</summary>
+        public readonly int ReadonlyField;
+        /// <summary>Static field doc.</summary>
+        public static int StaticField;
+        /// <summary>Volatile field doc.</summary>
+        public volatile int VolatileField;
+
+        /// <summary>Static readonly field doc.</summary>
+        public static readonly int StaticReadonlyField;
+    }
 }
