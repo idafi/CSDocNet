@@ -51,12 +51,7 @@ namespace NADS.Reflection
 
         public FieldDoc GenerateFieldDoc(FieldInfo fieldInfo)
         {
-            MemberDoc member = GenerateMemberDoc(fieldInfo);
-            object constValue = (member.Modifiers.HasFlag(Modifier.Const))
-                ? fieldInfo.GetRawConstantValue()
-                : null;
-            
-            return new FieldDoc(member, constValue);
+            throw new NotImplementedException();
         }
 
         public PropertyDoc GeneratePropertyDoc(PropertyInfo propertyInfo)
@@ -77,38 +72,6 @@ namespace NADS.Reflection
         public MethodDoc GenerateMethodDoc(MethodInfo methodInfo)
         {
             throw new NotImplementedException();
-        }
-
-        public MemberDoc GenerateMemberDoc(Type type)
-        {
-            Check.Ref(type);
-
-            string name = type.Name;
-            string id = idGen.GenerateTypeID(type);
-
-            AccessModifier access = GetTypeAccess(type);
-            Modifier modifiers = GetTypeModifiers(type);
-
-            IReadOnlyList<MemberRef> attributes = GetAttributes(type);
-            IReadOnlyList<TypeParam> typeParams = GetTypeParams(type);
-
-            return new MemberDoc(name, id, access, modifiers, attributes, typeParams);
-        }
-
-        public MemberDoc GenerateMemberDoc(FieldInfo fieldInfo)
-        {
-            Check.Ref(fieldInfo);
-
-            string name = fieldInfo.Name;
-            string id = idGen.GenerateFieldID(fieldInfo);
-
-            AccessModifier access = GetFieldAccess(fieldInfo);
-            Modifier modifiers = GetFieldModifiers(fieldInfo);
-
-            IReadOnlyList<MemberRef> attributes = GetAttributes(fieldInfo);
-            IReadOnlyList<TypeParam> typeParams = Empty<TypeParam>.EmptyList;
-
-            return new MemberDoc(name, id, access, modifiers, attributes, typeParams);
         }
 
         public AccessModifier GetTypeAccess(Type type)
@@ -186,93 +149,6 @@ namespace NADS.Reflection
             { mod |= Modifier.Readonly; }
 
             return mod;
-        }
-
-        public IReadOnlyList<MemberRef> GetAttributes(MemberInfo memberInfo)
-        {
-            List<MemberRef> attributes = new List<MemberRef>();
-            foreach(var attr in memberInfo.CustomAttributes)
-            {
-                MemberRefType attrRefType = GetMemberRefType(attr.AttributeType);
-                string attrName = attr.AttributeType.FullName;
-
-                attributes.Add(new MemberRef(attrRefType, attrName));
-            }
-
-            return attributes.ToArray();
-        }
-
-        public IReadOnlyList<TypeParam> GetTypeParams(Type type)
-        {
-            List<TypeParam> typeParams = new List<TypeParam>();
-            foreach(var typeParam in type.GetGenericArguments())
-            {
-                string name = typeParam.Name;
-                ParamModifier modifier = GetGenericParamModifier(typeParam.GenericParameterAttributes);
-                IReadOnlyList<TypeConstraint> constraints = GetTypeParamConstraints(typeParam);
-
-                typeParams.Add(new TypeParam(name, modifier, constraints));
-            }
-
-            return typeParams.ToArray();
-        }
-
-        public MemberRefType GetMemberRefType(Type type)
-        {
-            if(type.BaseType == typeof(Delegate) || type.BaseType == typeof(MulticastDelegate))
-            { return MemberRefType.Delegate; }
-            else if(type.IsClass)
-            { return MemberRefType.Class; }
-            else if(type.IsInterface)
-            { return MemberRefType.Interface; }
-            else if(type.IsEnum)
-            { return MemberRefType.Enum; }
-            else if(type.IsValueType)
-            { return MemberRefType.Struct; }
-            else
-            { throw new NotSupportedException($"Couldn't determine member type of type '{type.Name}'"); }
-        }
-
-        public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
-        {
-            if(attributes.HasFlag(GenericParameterAttributes.Contravariant))
-            { return ParamModifier.In; }
-            else if(attributes.HasFlag(GenericParameterAttributes.Covariant))
-            { return ParamModifier.Out; }
-            else
-            { return ParamModifier.None; }
-        }
-
-        public IReadOnlyList<TypeConstraint> GetTypeParamConstraints(Type typeParam)
-        {
-            List<TypeConstraint> constraints = new List<TypeConstraint>();
-            var attr = typeParam.GenericParameterAttributes;
-
-            if(attr.HasFlag(GenericParameterAttributes.NotNullableValueTypeConstraint))
-            { constraints.Add(TypeConstraint.Struct); }
-            else
-            {
-                if(attr.HasFlag(GenericParameterAttributes.ReferenceTypeConstraint))
-                { constraints.Add(TypeConstraint.Class); }
-                if(attr.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint))
-                { constraints.Add(TypeConstraint.Ctor); }
-                
-                foreach(var constraint in typeParam.GetGenericParameterConstraints())
-                {
-                    if(constraint.IsGenericParameter)
-                    {
-                        int pos = constraint.GenericParameterPosition;
-                        constraints.Add(TypeConstraint.TypeParam(pos));
-                    }
-                    else
-                    {
-                        MemberRef mRef = new MemberRef(GetMemberRefType(constraint), constraint.FullName);
-                        constraints.Add(TypeConstraint.Type(mRef));
-                    }
-                }
-            }
-
-            return constraints.ToArray();
         }
     }
 }
