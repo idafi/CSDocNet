@@ -7,6 +7,18 @@ namespace NADS.Reflection
 {
     public class DocGeneratorUtility : IDocGeneratorUtility
     {
+        public IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo)
+        {
+            List<MemberRef> attributes = new List<MemberRef>();
+            foreach(var attr in memberInfo.CustomAttributes)
+            {
+                MemberRef mRef = MakeMemberRef(attr.AttributeType);
+                attributes.Add(mRef);
+            }
+
+            return attributes.ToArray();
+        }
+
         public MemberRef MakeMemberRef(MemberInfo member)
         {
             Check.Ref(member);
