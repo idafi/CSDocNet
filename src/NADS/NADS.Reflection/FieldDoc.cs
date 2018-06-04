@@ -3,17 +3,12 @@ namespace NADS.Reflection
     public readonly struct FieldDoc
     {
         public readonly MemberDoc Member;
+        public readonly object ConstValue;
 
-        public readonly bool HasDefaultValue;
-        public readonly object DefaultValue;
-
-        public FieldDoc(in MemberDoc member, 
-            bool hasDefaultValue, object defaultValue)
+        public FieldDoc(in MemberDoc member, object constValue)
         {
             Member = member;
-
-            HasDefaultValue = hasDefaultValue;
-            DefaultValue = defaultValue;
+            ConstValue = constValue;
         }
     }
 }
