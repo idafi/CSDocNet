@@ -78,7 +78,7 @@ namespace NADS.Reflection
         {
             Check.Ref(type);
 
-            string name = type.FullName;
+            string name = type.Name;
             string id = idGen.GenerateTypeID(type);
 
             AccessModifier access = GetTypeAccess(type);
