@@ -9,6 +9,8 @@ namespace NADS.Reflection
     {
         public IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo)
         {
+            Check.Ref(memberInfo);
+
             List<MemberRef> attributes = new List<MemberRef>();
             foreach(var attr in memberInfo.CustomAttributes)
             {
@@ -41,6 +43,9 @@ namespace NADS.Reflection
 
         public IReadOnlyList<TypeConstraint> GetTypeParamConstraints(Type typeParam)
         {
+            Check.Ref(typeParam);
+            Check.Cond(typeParam.IsGenericParameter, "typeParam must be a generic parameter type");
+
             List<TypeConstraint> constraints = new List<TypeConstraint>();
             var attr = typeParam.GenericParameterAttributes;
 
