@@ -8,6 +8,19 @@ namespace NADS.Reflection.Generation
 {
     public class DocGeneratorUtility : IDocGeneratorUtility
     {
+        public string GenerateName(MemberInfo member)
+        {
+            switch(member.MemberType)
+            {
+                case MemberTypes.TypeInfo:
+                case MemberTypes.NestedType:
+                    Type t = (Type)(member);
+                    return t.FullName;
+                default:
+                    return $"{member.DeclaringType.FullName}.{member.Name}";
+            }
+        }
+
         public IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo)
         {
             Check.Ref(memberInfo);
@@ -27,7 +40,7 @@ namespace NADS.Reflection.Generation
             Check.Ref(member);
 
             var refType = GetMemberRefType(member);
-            var refName = GetMemberName(member);
+            var refName = GenerateName(member);
 
             return new MemberRef(refType, refName);
         }
@@ -117,19 +130,6 @@ namespace NADS.Reflection.Generation
             { return MemberRefType.Struct; }
             else
             { throw new NotSupportedException($"couldn't determine member type of type '{type.Name}'"); }
-        }
-
-        string GetMemberName(MemberInfo member)
-        {
-            switch(member.MemberType)
-            {
-                case MemberTypes.TypeInfo:
-                case MemberTypes.NestedType:
-                    Type t = (Type)(member);
-                    return t.FullName;
-                default:
-                    return $"{member.DeclaringType.FullName}.{member.Name}";
-            }
         }
     }
 }

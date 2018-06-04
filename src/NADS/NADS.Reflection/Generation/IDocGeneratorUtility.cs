@@ -7,6 +7,7 @@ namespace NADS.Reflection.Generation
 {
     public interface IDocGeneratorUtility
     {
+        string GenerateName(MemberInfo info);
         IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo);
 
         MemberRef MakeMemberRef(MemberInfo member);

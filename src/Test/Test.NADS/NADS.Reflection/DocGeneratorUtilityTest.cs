@@ -19,6 +19,101 @@ namespace NADS.Reflection.Generation
         }
 
         [Test]
+        public void TestGenerateTypeName()
+        {
+            Assert.AreEqual("NADS.TestDoc.TestClass", utility.GenerateName(typeof(TestClass)));
+        }
+
+        [Test]
+        public void TestGenerateNestedTypeName()
+        {
+            Assert.AreEqual("NADS.TestDoc.TestClass+NestedClass", utility.GenerateName(typeof(TestClass.NestedClass)));
+        }
+
+        [Test]
+        public void TestGenerateGenericTypeName()
+        {
+            Assert.AreEqual("NADS.TestDoc.GenericClass`1", utility.GenerateName(typeof(GenericClass<>)));   
+        }
+
+        [Test]
+        public void TestGenerateEventName()
+        {
+            EventInfo ev = typeof(TestClass).GetEvent("ActionEvent");
+            Assert.AreEqual("NADS.TestDoc.TestClass.ActionEvent", utility.GenerateName(ev));
+        }
+
+        [Test]
+        public void TestGenerateFieldName()
+        {
+            FieldInfo field = typeof(TestClass).GetField("IntField");
+            Assert.AreEqual("NADS.TestDoc.TestClass.IntField", utility.GenerateName(field));
+        }
+
+        [Test]
+        public void TestGenerateNestedFieldName()
+        {
+            FieldInfo field = typeof(TestClass.NestedClass).GetField("NestedField");
+            Assert.AreEqual("NADS.TestDoc.TestClass+NestedClass.NestedField", utility.GenerateName(field));
+        }
+
+        [Test]
+        public void TestGenerateGenericFieldName()
+        {
+            FieldInfo field = typeof(GenericClass<>).GetField("GenericField");
+            Assert.AreEqual("NADS.TestDoc.GenericClass`1.GenericField", utility.GenerateName(field));
+        }
+
+        [Test]
+        public void TestGeneratePropertyName()
+        {
+            PropertyInfo property = typeof(TestClass).GetProperty("IntProperty");
+            Assert.AreEqual("NADS.TestDoc.TestClass.IntProperty", utility.GenerateName(property));
+        }
+
+        [Test]
+        public void TestGenerateNestedPropertyName()
+        {
+            PropertyInfo property = typeof(TestClass.NestedClass).GetProperty("NestedProperty");
+            Assert.AreEqual("NADS.TestDoc.TestClass+NestedClass.NestedProperty", utility.GenerateName(property));
+        }
+
+        [Test]
+        public void TestGenerateGenericPropertyName()
+        {
+            PropertyInfo property = typeof(GenericClass<>).GetProperty("GenericProperty");
+            Assert.AreEqual("NADS.TestDoc.GenericClass`1.GenericProperty", utility.GenerateName(property));
+        }
+
+        [Test]
+        public void TestGenerateConstructorName()
+        {
+            ConstructorInfo ctor = typeof(TestClass).GetConstructor(new Type[] { typeof(int) });
+            Assert.AreEqual("NADS.TestDoc.TestClass..ctor", utility.GenerateName(ctor));
+        }
+
+        [Test]
+        public void TestGenerateMethodName()
+        {
+            MethodInfo method = typeof(TestClass).GetMethod("IntMethod");
+            Assert.AreEqual("NADS.TestDoc.TestClass.IntMethod", utility.GenerateName(method));
+        }
+
+        [Test]
+        public void TestGenerateNestedMethodName()
+        {
+            MethodInfo method = typeof(TestClass.NestedClass).GetMethod("NestedMethod");
+            Assert.AreEqual("NADS.TestDoc.TestClass+NestedClass.NestedMethod", utility.GenerateName(method));
+        }
+
+        [Test]
+        public void TestGenerateGenericMethodName()
+        {
+            MethodInfo method = typeof(GenericClass<>).GetMethod("GenericMethod");
+            Assert.AreEqual("NADS.TestDoc.GenericClass`1.GenericMethod", utility.GenerateName(method));
+        }
+
+        [Test]
         public void TestGenerateAttributes()
         {
             var attributes = utility.GenerateAttributes(typeof(TestClass));
