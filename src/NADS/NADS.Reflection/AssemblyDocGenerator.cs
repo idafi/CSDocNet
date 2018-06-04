@@ -51,7 +51,12 @@ namespace NADS.Reflection
 
         public FieldDoc GenerateFieldDoc(FieldInfo fieldInfo)
         {
-            throw new NotImplementedException();
+            MemberDoc member = GenerateMemberDoc(fieldInfo);
+            object constValue = (member.Modifiers.HasFlag(Modifier.Const))
+                ? fieldInfo.GetRawConstantValue()
+                : null;
+            
+            return new FieldDoc(member, constValue);
         }
 
         public PropertyDoc GeneratePropertyDoc(PropertyInfo propertyInfo)
@@ -90,6 +95,22 @@ namespace NADS.Reflection
             return new MemberDoc(name, id, access, modifiers, attributes, typeParams);
         }
 
+        public MemberDoc GenerateMemberDoc(FieldInfo fieldInfo)
+        {
+            Check.Ref(fieldInfo);
+
+            string name = fieldInfo.Name;
+            string id = idGen.GenerateFieldID(fieldInfo);
+
+            AccessModifier access = GetFieldAccess(fieldInfo);
+            Modifier modifiers = GetFieldModifiers(fieldInfo);
+
+            IReadOnlyList<MemberRef> attributes = GetAttributes(fieldInfo);
+            IReadOnlyList<TypeParam> typeParams = Empty<TypeParam>.EmptyList;
+
+            return new MemberDoc(name, id, access, modifiers, attributes, typeParams);
+        }
+
         public AccessModifier GetTypeAccess(Type type)
         {
             if(type.IsPublic || type.IsNestedPublic)
@@ -106,6 +127,24 @@ namespace NADS.Reflection
             { return AccessModifier.Private; }
             else
             { throw new NotSupportedException($"Unknown access modifier on type '{type.Name}'"); }
+        }
+
+        public AccessModifier GetFieldAccess(FieldInfo fieldInfo)
+        {
+            if(fieldInfo.IsPublic)
+            { return AccessModifier.Public; }
+            else if(fieldInfo.IsFamilyOrAssembly)
+            { return AccessModifier.ProtectedInternal; }
+            else if(fieldInfo.IsAssembly)
+            { return AccessModifier.Internal; }
+            else if(fieldInfo.IsFamily)
+            { return AccessModifier.Protected; }
+            else if(fieldInfo.IsFamilyAndAssembly)
+            { return AccessModifier.PrivateProtected; }
+            else if(fieldInfo.IsPrivate)
+            { return AccessModifier.Private; }
+            else
+            { throw new NotSupportedException($"Unknown access modifier on field '{fieldInfo.Name}'"); }
         }
 
         public Modifier GetTypeModifiers(Type type)
@@ -129,6 +168,22 @@ namespace NADS.Reflection
                     break;
                 }
             }
+
+            return mod;
+        }
+
+        public Modifier GetFieldModifiers(FieldInfo fieldInfo)
+        {
+            Modifier mod = Modifier.None;
+
+            if(fieldInfo.IsLiteral)
+            { mod |= Modifier.Const; }
+            if(fieldInfo.IsStatic)
+            { mod |= Modifier.Static; }
+            if(fieldInfo.IsPinvokeImpl)
+            { mod |= Modifier.Extern; }
+            if(fieldInfo.IsInitOnly)
+            { mod |= Modifier.Readonly; }
 
             return mod;
         }
