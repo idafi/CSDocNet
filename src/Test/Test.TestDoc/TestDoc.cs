@@ -381,6 +381,19 @@ namespace NADS.TestDoc
     }
 
     /// <summary>
+    /// Generic constrainted class.
+    /// </summary>
+    /// <typeparam name="T">Struct-constrained typeparam T.</typeparam>
+    /// <typeparam name="U">Class and new()-constrained typeparam U.</typeparam>
+    /// <typeparam name="V">Typeparam W-constrained typeparam V.</typeparam>
+    /// <typeparam name="W">TestClass-constrained typeparam W.</typeparam>
+    public class GenericConstrainedClass<T, U, V, W>
+        where T : struct
+        where U : class, new()
+        where V : W
+        where W : TestClass { }
+
+    /// <summary>
     /// Test struct doc.
     /// </summary>
     public readonly struct TestStruct
