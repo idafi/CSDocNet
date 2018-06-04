@@ -1,4 +1,4 @@
-namespace NADS.Reflection
+namespace NADS.Reflection.Data
 {
     public readonly struct TypeConstraint
     {

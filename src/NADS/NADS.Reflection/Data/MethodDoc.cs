@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NADS.Collections;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Data
 {
     public readonly struct MethodDoc
     {

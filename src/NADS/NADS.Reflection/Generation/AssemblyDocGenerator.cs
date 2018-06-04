@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NADS.Collections;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     public class AssemblyDocGenerator : IAssemblyDocGenerator
     {

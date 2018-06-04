@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NADS.TestDoc;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     [TestFixture]
     public class DocGeneratorUtilityTest

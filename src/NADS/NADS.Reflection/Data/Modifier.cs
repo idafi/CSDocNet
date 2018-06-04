@@ -1,6 +1,6 @@
 using System;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Data
 {
     [Flags]
     public enum Modifier

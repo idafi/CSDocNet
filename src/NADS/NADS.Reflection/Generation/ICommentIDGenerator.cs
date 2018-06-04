@@ -1,7 +1,8 @@
 using System;
 using System.Reflection;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     public interface ICommentIDGenerator
     {

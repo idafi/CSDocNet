@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using NADS.TestDoc;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     [TestFixture]
     public class CommentIDGeneratorTest

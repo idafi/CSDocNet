@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     public interface IMemberDocGenerator<T>
     {

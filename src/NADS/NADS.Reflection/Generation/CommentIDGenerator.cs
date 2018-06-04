@@ -4,8 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using NADS.Debug;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     public class CommentIDGenerator : ICommentIDGenerator
     {

@@ -2,8 +2,9 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NADS.TestDoc;
+using NADS.Reflection.Data;
 
-namespace NADS.Reflection
+namespace NADS.Reflection.Generation
 {
     internal class InternalClass { }
     class DefaultAccessClass { }
