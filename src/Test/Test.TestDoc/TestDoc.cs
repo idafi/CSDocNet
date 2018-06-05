@@ -666,7 +666,11 @@ namespace NADS.TestDoc
         void DefaultMethod() { }
 
         /// <summary>Normal method doc.</summary>
-        public int Method(int param) => param;
+        public int Method(in int inParam, out int outParam, ref int refParam, int param = 666)
+        {
+            outParam = inParam;
+            return param;
+        }
 
         /// <summary>No-param method doc.</summary>
         public void NoParamMethod() { }
