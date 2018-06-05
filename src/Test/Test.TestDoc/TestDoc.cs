@@ -649,7 +649,7 @@ namespace NADS.TestDoc
         public class Impl : MethodTestClass
         {
             /// <inheritdoc />
-            public override int AbstractMethod(int param) => param;
+            public sealed override int AbstractMethod(int param) => param;
             /// <inheritdoc />
             public override int VirtualMethod(int param) => param;
         }
