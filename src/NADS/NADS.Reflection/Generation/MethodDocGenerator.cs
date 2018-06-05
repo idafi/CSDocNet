@@ -24,7 +24,11 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(methodInfo);
 
-            throw new NotImplementedException();
+            return new MethodDoc(
+                GenerateMemberDoc(methodInfo),
+                GenerateReturnType(methodInfo),
+                GenerateParams(methodInfo)
+            );
         }
 
         public MemberDoc GenerateMemberDoc(MethodInfo member)
