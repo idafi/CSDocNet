@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using NADS.Debug;
 using NADS.Reflection.Data;
 
@@ -116,6 +117,9 @@ namespace NADS.Reflection.Generation
             if(member.IsStatic)
             { mod |= Modifier.Static; }
 
+            if(member.GetCustomAttribute<AsyncStateMachineAttribute>() != null)
+            { mod |= Modifier.Async; }
+            
             return mod;
         }
         
