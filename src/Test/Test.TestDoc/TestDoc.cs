@@ -61,6 +61,11 @@ namespace NADS.TestDoc
         public readonly int[] IntArrayField;
 
         /// <summary>
+        /// Multi array field doc.
+        /// </summary>
+        public readonly int[][,,][,] MultiArrayField;
+
+        /// <summary>
         /// Mutable field doc.
         /// </summary>
         public int MutableField;
