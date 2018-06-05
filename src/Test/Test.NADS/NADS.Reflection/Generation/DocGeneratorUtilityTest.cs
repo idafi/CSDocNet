@@ -215,6 +215,17 @@ namespace NADS.Reflection.Generation
         }
 
         [Test]
+        public void TestMakeByRefTypeRef()
+        {
+            MethodInfo method = typeof(TestStruct).GetMethod("Method");
+            MemberRef returnRef = utility.MakeMemberRef(method.ReturnType);
+            MemberRef paramRef = utility.MakeMemberRef(method.GetParameters()[0].ParameterType);
+
+            AssertMemberRef(returnRef, MemberRefType.Struct, "System.Int32");
+            AssertMemberRef(paramRef, MemberRefType.Struct, "NADS.TestDoc.TestStruct");
+        }
+
+        [Test]
         public void TestMakeMemberRefThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => utility.MakeMemberRef(null));
