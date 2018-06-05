@@ -9,6 +9,6 @@ namespace NADS.Reflection.Generation
         MethodDoc GenerateMethodDoc(MethodInfo methodInfo);
 
         MemberRef GenerateReturnType(MethodInfo methodInfo);
-        IReadOnlyCollection<Param> GenerateParams(MethodImplAttributes methodInfo);
+        IReadOnlyList<Param> GenerateParams(MethodInfo methodInfo);
     }
 }
