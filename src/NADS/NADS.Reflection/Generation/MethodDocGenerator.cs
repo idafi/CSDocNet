@@ -49,6 +49,8 @@ namespace NADS.Reflection.Generation
 
         public IReadOnlyList<Param> GenerateParams(MethodInfo methodInfo)
         {
+            Check.Ref(methodInfo);
+
             ParameterInfo[] paramInfo = methodInfo.GetParameters();
             Param[] parameters = new Param[paramInfo.Length];
 
@@ -149,7 +151,7 @@ namespace NADS.Reflection.Generation
         ParamModifier GenerateParamModifier(ParameterInfo parameterInfo)
         {
             Assert.Ref(parameterInfo);
-            
+
             if(parameterInfo.ParameterType.IsByRef)
             { 
                 switch(parameterInfo.Attributes)
