@@ -690,5 +690,12 @@ namespace NADS.TestDoc
 
         /// <summary>Virtual method doc.</summary>
         public virtual int VirtualMethod(int param) => param;
+
+        /// <summary>Static async method doc.</summary>
+        public static async Task<int> StaticAsyncMethod()
+        {
+            await Task.Delay(666);
+            return 666;
+        }
     }
 }
