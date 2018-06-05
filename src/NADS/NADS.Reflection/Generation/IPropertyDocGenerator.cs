@@ -7,6 +7,6 @@ namespace NADS.Reflection.Generation
     {
         PropertyDoc GeneratePropertyDoc(PropertyInfo propertyInfo);
         
-        (bool hasGet, bool hasSet) GenerateAccessorDoc(PropertyInfo propertyInfo);
+        PropertyDoc.Accessor GenerateAccessor(MethodInfo accessorInfo);
     }
 }
