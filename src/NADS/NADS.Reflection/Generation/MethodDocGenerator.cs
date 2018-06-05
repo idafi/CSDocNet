@@ -110,6 +110,8 @@ namespace NADS.Reflection.Generation
 
             if(member.Attributes.HasFlag(MethodAttributes.PinvokeImpl))
             { mod |= Modifier.Extern; }
+            if(member.Attributes.HasFlag(MethodAttributes.Final))
+            { mod |= Modifier.Sealed; }
             
             if(member.IsStatic)
             { mod |= Modifier.Static; }
