@@ -108,6 +108,12 @@ namespace NADS.Reflection.Generation
             else if(member.IsVirtual)
             { mod |= Modifier.Virtual; }
 
+            if(member.Attributes.HasFlag(MethodAttributes.PinvokeImpl))
+            { mod |= Modifier.Extern; }
+            
+            if(member.IsStatic)
+            { mod |= Modifier.Static; }
+
             return mod;
         }
         
