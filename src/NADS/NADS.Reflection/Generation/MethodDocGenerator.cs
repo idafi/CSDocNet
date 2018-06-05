@@ -103,8 +103,7 @@ namespace NADS.Reflection.Generation
 
             if(member.IsAbstract)
             { mod |= Modifier.Abstract; }
-
-            if(member.GetBaseDefinition().DeclaringType != member.DeclaringType)
+            else if(member.GetBaseDefinition().DeclaringType != member.DeclaringType)
             { mod |= Modifier.Override; }
             else if(member.IsVirtual)
             { mod |= Modifier.Virtual; }
