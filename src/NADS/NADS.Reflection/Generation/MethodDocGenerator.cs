@@ -141,7 +141,7 @@ namespace NADS.Reflection.Generation
             int genericPos = (isGenericType) ? parameterInfo.ParameterType.GenericParameterPosition : -1;
 
             bool hasDefaultValue = parameterInfo.HasDefaultValue;
-            object defaultValue = parameterInfo.RawDefaultValue;
+            object defaultValue = (hasDefaultValue) ? parameterInfo.RawDefaultValue : null;
 
             return new Param(modifier, type, isGenericType, genericPos, hasDefaultValue, defaultValue);
         }
