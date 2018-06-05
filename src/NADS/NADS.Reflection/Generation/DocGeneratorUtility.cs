@@ -39,10 +39,23 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
+            List<int> arrayDim = new List<int>();
+            if(member is Type t)
+            {
+                while(t.IsByRef)
+                { member = t = t.GetElementType(); }
+                
+                while(t.IsArray)
+                {
+                    arrayDim.Add(t.GetArrayRank());
+                    member = t = t.GetElementType();
+                }
+            }
+
             var refType = GetMemberRefType(member);
             var refName = GenerateName(member);
 
-            return new MemberRef(refType, refName);
+            return new MemberRef(refType, refName, arrayDim.ToArray());
         }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)

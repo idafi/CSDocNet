@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using NADS.Collections;
 using NADS.TestDoc;
 using NADS.Reflection.Data;
 
@@ -207,6 +208,13 @@ namespace NADS.Reflection.Generation
         }
 
         [Test]
+        public void TestMakeMultiArrayTypeRef()
+        {
+            MemberRef mRef = utility.MakeMemberRef(typeof(TestClass).GetField("MultiArrayField").FieldType);
+            AssertMemberRef(mRef, MemberRefType.Struct, "System.Int32", new int[] { 1, 3, 2 });
+        }
+
+        [Test]
         public void TestMakeMemberRefThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => utility.MakeMemberRef(null));
@@ -261,10 +269,11 @@ namespace NADS.Reflection.Generation
             Assert.Throws<Exception>(() => utility.GetTypeParamConstraints(typeof(int)));
         }
 
-        void AssertMemberRef(in MemberRef mRef, MemberRefType type, string name)
+        void AssertMemberRef(in MemberRef mRef, MemberRefType type, string name, IReadOnlyList<int> arrayDim = null)
         {
             Assert.AreEqual(mRef.Type, type);
             Assert.AreEqual(mRef.Name, name);
+            Assert.That(mRef.ArrayDimensions, Is.EquivalentTo(arrayDim ?? Empty<int>.EmptyList));
         }
 
         void AssertTypeConstraints(IReadOnlyList<TypeConstraint> expected, IReadOnlyList<TypeConstraint> actual)
@@ -277,8 +286,11 @@ namespace NADS.Reflection.Generation
         void AssertTypeConstraint(in TypeConstraint expected, in TypeConstraint actual)
         {
             Assert.AreEqual(expected.Constraint, actual.Constraint);
-            AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.Name);
-            Assert.AreEqual(expected.ConstrainedTypeParamPosition, actual.ConstrainedTypeParamPosition);
+
+            if(expected.Constraint == ConstraintType.Type)
+            { AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.Name); }
+            else if(expected.Constraint == ConstraintType.TypeParam)
+            { Assert.AreEqual(expected.ConstrainedTypeParamPosition, actual.ConstrainedTypeParamPosition); }
         }
     }
 }
