@@ -149,17 +149,19 @@ namespace NADS.Reflection.Generation
         ParamModifier GenerateParamModifier(ParameterInfo parameterInfo)
         {
             Assert.Ref(parameterInfo);
-
-            switch(parameterInfo.Attributes)
-            {
-                case ParameterAttributes.In:
-                    return ParamModifier.In;
-                case ParameterAttributes.Out:
-                    return ParamModifier.Out;
-            }
-
+            
             if(parameterInfo.ParameterType.IsByRef)
-            { return ParamModifier.Ref; }
+            { 
+                switch(parameterInfo.Attributes)
+                {
+                    case ParameterAttributes.In:
+                        return ParamModifier.In;
+                    case ParameterAttributes.Out:
+                        return ParamModifier.Out;
+                    default:
+                        return ParamModifier.Ref;
+                }
+            }
 
             return ParamModifier.None;
         }
