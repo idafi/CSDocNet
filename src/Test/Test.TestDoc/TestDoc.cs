@@ -666,6 +666,7 @@ namespace NADS.TestDoc
         void DefaultMethod() { }
 
         /// <summary>Normal method doc.</summary>
+        [STAThread]
         public int Method(in int inParam, out int outParam, ref int refParam, int param = 666)
         {
             outParam = inParam;
