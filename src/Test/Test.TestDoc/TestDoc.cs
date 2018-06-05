@@ -671,6 +671,14 @@ namespace NADS.TestDoc
         /// <summary>No-param method doc.</summary>
         public void NoParamMethod() { }
 
+        /// <summary>
+        /// Generic param method doc.
+        /// </summary>
+        /// <param name="param">Non-generic param.</param>
+        /// <param name="genericParam">Generic param.</param>
+        /// <typeparam name="T">Typeparam T.</typeparam>
+        public void GenericParamMethod<T>(int param, T genericParam) { }
+
         /// <summary>Abstract method doc.</summary>
         public abstract int AbstractMethod(int param);
 
