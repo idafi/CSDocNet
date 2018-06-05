@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace NADS.TestDoc
 {
@@ -635,5 +636,59 @@ namespace NADS.TestDoc
         public int GetOnlyProperty { get; }
         /// <summary>Set-only property.</summary>
         public int SetOnlyProperty { set { } }
+    }
+
+    /// <summary>
+    /// Method test class doc.
+    /// </summary>
+    public abstract class MethodTestClass
+    {
+        /// <summary>
+        /// Method test class implementation.
+        /// </summary>
+        public class Impl : MethodTestClass
+        {
+            /// <inheritdoc />
+            public override int AbstractMethod(int param) => param;
+            /// <inheritdoc />
+            public override int VirtualMethod(int param) => param;
+        }
+
+        /// <summary>Public method doc.</summary>
+        public void PublicMethod() { }
+        /// <summary>Protected internal method doc.</summary>
+        protected internal void ProtectedInternalMethod() { }
+        internal void InternalMethod() { }
+        /// <summary>Protected method doc.</summary>
+        protected void ProtectedMethod() { }
+        private protected void PrivateProtectedMethod() { }
+        private void PrivateMethod() { }
+        void DefaultMethod() { }
+
+        /// <summary>Normal method doc.</summary>
+        public int Method(int param) => param;
+
+        /// <summary>No-param method doc.</summary>
+        public void NoParamMethod() { }
+
+        /// <summary>Abstract method doc.</summary>
+        public abstract int AbstractMethod(int param);
+
+        /// <summary>Async method doc.</summary>
+        public async Task<int> AsyncMethod()
+        {
+            await Task.Delay(666);
+            return 666;
+        }
+
+        /// <summary>Extern method doc.</summary>
+        [System.Runtime.InteropServices.DllImport("don't call me")]
+        public static extern int ExternMethod(int param);
+
+        /// <summary>Static method doc.</summary>
+        public static int StaticMethod(int param) => param;
+
+        /// <summary>Virtual method doc.</summary>
+        public virtual int VirtualMethod(int param) => param;
     }
 }
