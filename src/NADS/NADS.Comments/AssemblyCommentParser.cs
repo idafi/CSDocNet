@@ -94,7 +94,7 @@ namespace NADS.Comments
         public IReadOnlyDictionary<string, MemberComments> ParseMembers(XmlElement membersNode)
         {
             if(membersNode == null)
-            { return Empty<string, MemberComments>.EmptyDict; }
+            { return Empty<string, MemberComments>.Dict; }
 
             var members = ParseChildren(membersNode, "member", ParseMember);
             var dict = new Dictionary<string, MemberComments>(members.Count);

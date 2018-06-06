@@ -16,7 +16,7 @@ namespace NADS.Reflection.Data
             Member = member;
 
             ReturnType = returnType;
-            Params = parameters ?? Empty<Param>.EmptyList;;
+            Params = parameters ?? Empty<Param>.List;;
         }
     }
 }

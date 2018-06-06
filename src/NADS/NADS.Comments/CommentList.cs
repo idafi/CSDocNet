@@ -15,10 +15,10 @@ namespace NADS.Comments
         {
             Type = type;
             Header = header;
-            Items = items ?? Empty<CommentListItem>.EmptyList;
+            Items = items ?? Empty<CommentListItem>.List;
         }
 
         public static CommentList Empty
-            => new CommentList(default, CommentListItem.Empty, Empty<CommentListItem>.EmptyList);
+            => new CommentList(default, CommentListItem.Empty, Empty<CommentListItem>.List);
     }
 }

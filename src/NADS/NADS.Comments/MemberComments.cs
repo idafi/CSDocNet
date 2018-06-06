@@ -34,10 +34,10 @@ namespace NADS.Comments
             Returns = returns;
             Example = example;
 
-            Params = parameters ?? Empty<ParamComments>.EmptyList;
-            TypeParams = typeParams ?? Empty<ParamComments>.EmptyList;
-            Exceptions = exceptions ?? Empty<ParamComments>.EmptyList;
-            Permissions = permissions ?? Empty<ParamComments>.EmptyList;
+            Params = parameters ?? Empty<ParamComments>.List;
+            TypeParams = typeParams ?? Empty<ParamComments>.List;
+            Exceptions = exceptions ?? Empty<ParamComments>.List;
+            Permissions = permissions ?? Empty<ParamComments>.List;
 
             InheritDoc = inheritDoc;
         }

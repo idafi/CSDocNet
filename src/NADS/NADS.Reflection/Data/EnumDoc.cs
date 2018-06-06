@@ -16,7 +16,7 @@ namespace NADS.Reflection.Data
             Member = member;
             
             UnderlyingType = underlyingType;
-            Values = values ?? Empty<EnumValue>.EmptyList;
+            Values = values ?? Empty<EnumValue>.List;
         }
     }
 }

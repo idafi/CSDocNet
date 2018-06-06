@@ -18,9 +18,9 @@ namespace NADS.Reflection.Data
         {
             Member = member;
 
-            Events = events ?? Empty<MemberRef>.EmptyList;
-            Properties = properties ?? Empty<MemberRef>.EmptyList;
-            Methods = methods ?? Empty<MemberRef>.EmptyList;
+            Events = events ?? Empty<MemberRef>.List;
+            Properties = properties ?? Empty<MemberRef>.List;
+            Methods = methods ?? Empty<MemberRef>.List;
         }
     }
 }

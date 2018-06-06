@@ -15,11 +15,11 @@ namespace NADS.Comments
             IReadOnlyList<string> text, IReadOnlyList<CommentBlock> blocks,
             IReadOnlyList<CommentList> lists)
         {
-            Nodes = nodes ?? Empty<CommentNode>.EmptyList;
+            Nodes = nodes ?? Empty<CommentNode>.List;
             
-            Text = text ?? Empty<string>.EmptyList;
-            Blocks = blocks ?? Empty<CommentBlock>.EmptyList;
-            Lists = lists ?? Empty<CommentList>.EmptyList;
+            Text = text ?? Empty<string>.List;
+            Blocks = blocks ?? Empty<CommentBlock>.List;
+            Lists = lists ?? Empty<CommentList>.List;
         }
 
         public static CommentBlock Empty

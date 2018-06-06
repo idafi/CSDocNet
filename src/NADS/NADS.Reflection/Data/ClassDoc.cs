@@ -30,14 +30,14 @@ namespace NADS.Reflection.Data
             Member = member;
             
             Inherits = inherits;
-            Implements = implements ?? Empty<MemberRef>.EmptyList;
+            Implements = implements ?? Empty<MemberRef>.List;
 
-            Events = events ?? Empty<MemberRef>.EmptyList;
-            Fields = fields ?? Empty<MemberRef>.EmptyList;
-            Properties = properties ?? Empty<MemberRef>.EmptyList;
-            Constructors = constructors ?? Empty<MemberRef>.EmptyList;
-            Operators = operators ?? Empty<MemberRef>.EmptyList;
-            Methods = methods ?? Empty<MemberRef>.EmptyList;
+            Events = events ?? Empty<MemberRef>.List;
+            Fields = fields ?? Empty<MemberRef>.List;
+            Properties = properties ?? Empty<MemberRef>.List;
+            Constructors = constructors ?? Empty<MemberRef>.List;
+            Operators = operators ?? Empty<MemberRef>.List;
+            Methods = methods ?? Empty<MemberRef>.List;
         }
     }
 }

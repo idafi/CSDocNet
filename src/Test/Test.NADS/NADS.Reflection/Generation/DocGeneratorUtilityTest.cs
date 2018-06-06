@@ -284,7 +284,7 @@ namespace NADS.Reflection.Generation
         {
             Assert.AreEqual(mRef.Type, type);
             Assert.AreEqual(mRef.Name, name);
-            Assert.That(mRef.ArrayDimensions, Is.EquivalentTo(arrayDim ?? Empty<int>.EmptyList));
+            Assert.That(mRef.ArrayDimensions, Is.EquivalentTo(arrayDim ?? Empty<int>.List));
         }
 
         void AssertTypeConstraints(IReadOnlyList<TypeConstraint> expected, IReadOnlyList<TypeConstraint> actual)

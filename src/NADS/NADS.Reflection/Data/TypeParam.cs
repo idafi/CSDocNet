@@ -15,7 +15,7 @@ namespace NADS.Reflection.Data
             Name = name;
 
             Modifier = modifier;
-            Constraints = constraints ?? Empty<TypeConstraint>.EmptyList;
+            Constraints = constraints ?? Empty<TypeConstraint>.List;
         }
     }
 }

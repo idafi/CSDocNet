@@ -11,7 +11,7 @@ namespace NADS.Comments
         public AssemblyComments(string name, IReadOnlyDictionary<string, MemberComments> members)
         {
             Name = name ?? "";
-            Members = members ?? Empty<string, MemberComments>.EmptyDict;
+            Members = members ?? Empty<string, MemberComments>.Dict;
         }
 
         public static AssemblyComments Empty

@@ -15,7 +15,7 @@ namespace NADS.Reflection.Data
             Type = type;
             Name = name ?? "";
 
-            ArrayDimensions = arrayDimensions ?? Empty<int>.EmptyList;
+            ArrayDimensions = arrayDimensions ?? Empty<int>.List;
         }
     }
 }

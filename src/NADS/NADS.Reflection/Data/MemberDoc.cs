@@ -22,7 +22,7 @@ namespace NADS.Reflection.Data
             Access = access;
             Modifiers = modifiers;
             
-            Attributes = attributes ?? Empty<MemberRef>.EmptyList;
+            Attributes = attributes ?? Empty<MemberRef>.List;
         }
     }
 }

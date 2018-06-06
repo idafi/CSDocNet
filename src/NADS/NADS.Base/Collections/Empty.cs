@@ -4,16 +4,17 @@ namespace NADS.Collections
 {
     public static class Empty<T>
     {
-        static T[] empty;
+        static readonly T[] empty;
 
         static Empty()
         {
             empty = new T[0];
         }
 
-        public static IEnumerable<T> EmptyEnumerable => empty;
-        public static IReadOnlyCollection<T> EmptyCollection => empty;
-        public static IReadOnlyList<T> EmptyList => empty;
+        public static T[] Array => empty;
+        public static IEnumerable<T> Enumerable => empty;
+        public static IReadOnlyCollection<T> Collection => empty;
+        public static IReadOnlyList<T> List => empty;
     }
 
     public static class Empty<TKey, TValue>
@@ -25,6 +26,6 @@ namespace NADS.Collections
             empty = new Dictionary<TKey, TValue>();
         }
 
-        public static IReadOnlyDictionary<TKey, TValue> EmptyDict => empty;
+        public static IReadOnlyDictionary<TKey, TValue> Dict => empty;
     }
 }

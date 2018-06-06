@@ -33,18 +33,18 @@ namespace NADS.Reflection.Data
             IReadOnlyDictionary<string, MethodDoc> methods
         )
         {
-            Classes = classes ?? Empty<string, ClassDoc>.EmptyDict;
-            Structs = classes ?? Empty<string, ClassDoc>.EmptyDict;
-            Interfaces = interfaces ?? Empty<string, InterfaceDoc>.EmptyDict;
-            Enums = enums ?? Empty<string, EnumDoc>.EmptyDict;
-            Delegates = delegates ?? Empty<string, MethodDoc>.EmptyDict;
+            Classes = classes ?? Empty<string, ClassDoc>.Dict;
+            Structs = classes ?? Empty<string, ClassDoc>.Dict;
+            Interfaces = interfaces ?? Empty<string, InterfaceDoc>.Dict;
+            Enums = enums ?? Empty<string, EnumDoc>.Dict;
+            Delegates = delegates ?? Empty<string, MethodDoc>.Dict;
             
-            Events = events ?? Empty<string, MemberDoc>.EmptyDict;
-            Fields = fields ?? Empty<string, FieldDoc>.EmptyDict;
-            Properties = properties ?? Empty<string, PropertyDoc>.EmptyDict;
-            Constructors = constructors ?? Empty<string, MethodDoc>.EmptyDict;
-            Operators = operators ?? Empty<string, OperatorDoc>.EmptyDict;
-            Methods = methods ?? Empty<string, MethodDoc>.EmptyDict;
+            Events = events ?? Empty<string, MemberDoc>.Dict;
+            Fields = fields ?? Empty<string, FieldDoc>.Dict;
+            Properties = properties ?? Empty<string, PropertyDoc>.Dict;
+            Constructors = constructors ?? Empty<string, MethodDoc>.Dict;
+            Operators = operators ?? Empty<string, OperatorDoc>.Dict;
+            Methods = methods ?? Empty<string, MethodDoc>.Dict;
         }
     }
 }
