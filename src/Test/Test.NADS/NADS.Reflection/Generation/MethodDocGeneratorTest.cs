@@ -33,13 +33,13 @@ namespace NADS.Reflection.Generation
             idGen.GenerateMethodID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
 
             MemberDoc member = gen.GenerateMemberDoc(method);
-            MemberRef returnType = gen.GenerateReturnType(method);
+            ReturnValue returnType = gen.GenerateReturnValue(method);
             var parameters = gen.GenerateParams(method);
             var typeParams = gen.GenerateTypeParams(method);
 
             MethodDoc mDoc = gen.GenerateMethodDoc(method);
             Assert.AreEqual(member, mDoc.Member);
-            Assert.AreEqual(returnType, mDoc.ReturnType);
+            Assert.AreEqual(returnType, mDoc.ReturnValue);
             Assert.That(mDoc.Params, Is.EquivalentTo(parameters));
             Assert.That(mDoc.TypeParams, Is.EquivalentTo(typeParams));
         }
@@ -80,18 +80,45 @@ namespace NADS.Reflection.Generation
         }
 
         [Test]
-        public void TestGenerateReturnType()
+        public void TestGenerateReturnValue()
         {
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            gen.GenerateReturnType(method);
+            ReturnValue val = gen.GenerateReturnValue(method);
 
+            Assert.AreEqual(ReturnModifier.None, val.Modifier);
             utility.Received().MakeMemberRef(method.ReturnType);
+            Assert.AreEqual(false, val.IsGenericType);
+            Assert.AreEqual(-1, val.GenericTypePosition);
         }
 
         [Test]
-        public void TestGenerateReturnTypeThrowsOnNull()
+        public void TestGenerateGenericReturnValue()
         {
-            Assert.Throws<ArgumentNullException>(() => gen.GenerateReturnType(null));
+            MethodInfo method = typeof(MethodTestClass).GetMethod("GenericMethod");
+            ReturnValue val = gen.GenerateReturnValue(method);
+
+            Assert.AreEqual(ReturnModifier.None, val.Modifier);
+            utility.DidNotReceiveWithAnyArgs().MakeMemberRef(null);
+            Assert.AreEqual(true, val.IsGenericType);
+            Assert.AreEqual(0, val.GenericTypePosition);
+        }
+
+        [Test]
+        public void TestGenerateByRefReturnValue()
+        {
+            MethodInfo method = typeof(TestStruct).GetMethod("Method");
+            ReturnValue val = gen.GenerateReturnValue(method);
+
+            Assert.AreEqual(ReturnModifier.Ref, val.Modifier);
+            utility.Received().MakeMemberRef(method.ReturnType);
+            Assert.AreEqual(false, val.IsGenericType);
+            Assert.AreEqual(-1, val.GenericTypePosition);
+        }
+
+        [Test]
+        public void TestGenerateReturnValueThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => gen.GenerateReturnValue(null));
         }
 
         [Test]

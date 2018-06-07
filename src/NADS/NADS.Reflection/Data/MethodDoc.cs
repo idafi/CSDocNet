@@ -7,16 +7,16 @@ namespace NADS.Reflection.Data
     {
         public readonly MemberDoc Member;
 
-        public readonly MemberRef ReturnType;
+        public readonly ReturnValue ReturnValue;
         public readonly IReadOnlyList<Param> Params;
         public readonly IReadOnlyList<TypeParam> TypeParams;
 
-        public MethodDoc(in MemberDoc member, in MemberRef returnType,
+        public MethodDoc(in MemberDoc member, in ReturnValue returnValue,
             IReadOnlyList<Param> parameters, IReadOnlyList<TypeParam> typeParams)
         {
             Member = member;
 
-            ReturnType = returnType;
+            ReturnValue = returnValue;
             Params = parameters ?? Empty<Param>.List;;
             TypeParams = typeParams ?? Empty<TypeParam>.List;
         }

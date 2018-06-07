@@ -27,7 +27,7 @@ namespace NADS.Reflection.Generation
 
             return new MethodDoc(
                 GenerateMemberDoc(methodInfo),
-                GenerateReturnType(methodInfo),
+                GenerateReturnValue(methodInfo),
                 GenerateParams(methodInfo),
                 GenerateTypeParams(methodInfo)
             );
@@ -46,11 +46,23 @@ namespace NADS.Reflection.Generation
             );
         }
 
-        public MemberRef GenerateReturnType(MethodInfo methodInfo)
+        public ReturnValue GenerateReturnValue(MethodInfo methodInfo)
         {
             Check.Ref(methodInfo);
 
-            return utility.MakeMemberRef(methodInfo.ReturnType);
+            Type returnType = methodInfo.ReturnType;
+            ReturnModifier modifier = (returnType.IsByRef)
+                ? ReturnModifier.Ref
+                : ReturnModifier.None;
+
+            if(returnType.IsGenericParameter)
+            {
+                int genericPos = returnType.GenericParameterPosition;
+                return new ReturnValue(modifier, default, true, genericPos);
+            }
+            
+            MemberRef mRef = utility.MakeMemberRef(returnType);
+            return new ReturnValue(modifier, mRef, false, -1);
         }
 
         public IReadOnlyList<Param> GenerateParams(MethodInfo methodInfo)
