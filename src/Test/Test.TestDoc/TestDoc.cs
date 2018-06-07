@@ -619,7 +619,7 @@ namespace NADS.TestDoc
             /// <inheritdoc />
             public override int VirtualProperty { get; set; }
             /// <inheritdoc />
-            public override int AbstractProperty { get; set; }
+            public sealed override int AbstractProperty { get; set; }
         }
 
         /// <summary>Public property.</summary>
@@ -631,8 +631,13 @@ namespace NADS.TestDoc
         /// <summary>Protected property.</summary>
         protected int protectedProperty { get; set; }
         private protected int privateProtectedProperty { get; set; }
-        private int privateProprety { get; set; }
+        private int privateProperty { get; set; }
         int defaultProperty { get; set; }
+
+        /// <summary>Protected set property.</summary>
+        public int ProtectedSetProperty { get; protected set; }
+        /// <summary>Protected get property.</summary>
+        public int ProtectedGetProperty { protected get; set; }
 
         /// <summary>Static property.</summary>
         public static int StaticProperty { get; set; }
