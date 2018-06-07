@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using NADS.Collections;
 using NADS.Debug;
 using NADS.Reflection.Data;
 
@@ -27,7 +28,8 @@ namespace NADS.Reflection.Generation
             return new MethodDoc(
                 GenerateMemberDoc(methodInfo),
                 GenerateReturnType(methodInfo),
-                GenerateParams(methodInfo)
+                GenerateParams(methodInfo),
+                GenerateTypeParams(methodInfo)
             );
         }
 
@@ -62,6 +64,28 @@ namespace NADS.Reflection.Generation
             { parameters[i] = GenerateParam(paramInfo[i]); }
 
             return parameters;
+        }
+
+        public IReadOnlyList<TypeParam> GenerateTypeParams(MethodInfo methodInfo)
+        {
+            Check.Ref(methodInfo);
+
+            if(methodInfo.ContainsGenericParameters)
+            {
+                Type[] typeArgs = methodInfo.GetGenericArguments();
+                TypeParam[] typeParams = new TypeParam[typeArgs.Length];
+                
+                for(int i = 0; i < typeArgs.Length; i++)
+                {
+                    ParamModifier modifier = utility.GetGenericParamModifier(typeArgs[i].GenericParameterAttributes);
+                    IReadOnlyList<TypeConstraint> constraints = utility.GetTypeParamConstraints(typeArgs[i]);
+                    typeParams[i] = new TypeParam(typeArgs[i].Name, modifier, constraints);
+                }
+
+                return typeParams;
+            }
+
+            return Empty<TypeParam>.List;
         }
 
         public string GenerateName(MethodInfo member)

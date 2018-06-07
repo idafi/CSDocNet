@@ -35,11 +35,13 @@ namespace NADS.Reflection.Generation
             MemberDoc member = gen.GenerateMemberDoc(method);
             MemberRef returnType = gen.GenerateReturnType(method);
             var parameters = gen.GenerateParams(method);
+            var typeParams = gen.GenerateTypeParams(method);
 
             MethodDoc mDoc = gen.GenerateMethodDoc(method);
             Assert.AreEqual(member, mDoc.Member);
             Assert.AreEqual(returnType, mDoc.ReturnType);
             Assert.That(mDoc.Params, Is.EquivalentTo(parameters));
+            Assert.That(mDoc.TypeParams, Is.EquivalentTo(typeParams));
         }
 
         [Test]
@@ -115,6 +117,31 @@ namespace NADS.Reflection.Generation
         public void TestGenerateParamsThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => gen.GenerateParams(null));
+        }
+
+        [Test]
+        public void TestGenerateTypeParams()
+        {
+            MethodInfo method = typeof(MethodTestClass).GetMethod("GenericMethod");
+            var typeParamTypes = method.GetGenericArguments();
+            var typeParams = gen.GenerateTypeParams(typeof(MethodTestClass).GetMethod("GenericMethod"));
+            
+            Assert.AreEqual(typeParamTypes.Length, typeParams.Count);
+            for(int i = 0; i < typeParams.Count; i++)
+            {
+                utility.Received().GetGenericParamModifier(typeParamTypes[i].GenericParameterAttributes);
+                utility.Received().GetTypeParamConstraints(typeParamTypes[i]);
+            }
+
+            Assert.AreEqual("T", typeParamTypes[0].Name);
+            Assert.AreEqual("U", typeParamTypes[1].Name);
+            Assert.AreEqual("V", typeParamTypes[2].Name);
+        }
+
+        [Test]
+        public void TestGenerateTypeParamsThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => gen.GenerateTypeParams(null));
         }
 
         [Test]
