@@ -131,6 +131,20 @@ namespace NADS.Reflection.Generation
         }
 
         [Test]
+        public void TestGetRootElementType()
+        {
+            Type type = typeof(TestClass).GetField("MultiArrayField").FieldType;
+            Assert.AreEqual(typeof(int), utility.GetRootElementType(type));
+        }
+
+        [Test]
+        public void TestGetRootElementTypeOfByref()
+        {
+            Type type = typeof(TestStruct).GetMethod("Method").ReturnType;
+            Assert.AreEqual(typeof(int), utility.GetRootElementType(type));
+        }
+
+        [Test]
         public void TestMakeClassRef()
         {
             MemberRef mRef = utility.MakeMemberRef(typeof(TestClass));

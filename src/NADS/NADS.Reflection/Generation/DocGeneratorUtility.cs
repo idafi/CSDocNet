@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NADS.Collections;
 using NADS.Debug;
 using NADS.Reflection.Data;
 
@@ -35,27 +36,30 @@ namespace NADS.Reflection.Generation
             return attributes.ToArray();
         }
 
+        public Type GetRootElementType(Type type)
+        {
+            Check.Ref(type);
+
+            var result = FindRootElementType(type);
+            return result.Type;
+        }
+
         public MemberRef MakeMemberRef(MemberInfo member)
         {
             Check.Ref(member);
 
-            List<int> arrayDim = new List<int>();
-            if(member is Type t)
+            IReadOnlyList<int> arrayDim = Empty<int>.List;
+            if(member is Type type)
             {
-                while(t.IsByRef)
-                { member = t = t.GetElementType(); }
-                
-                while(t.IsArray)
-                {
-                    arrayDim.Add(t.GetArrayRank());
-                    member = t = t.GetElementType();
-                }
+                var result = FindRootElementType(type);
+                member = result.Type;
+                arrayDim = result.Arrays;
             }
 
             var refType = GetMemberRefType(member);
             var refName = GenerateName(member);
 
-            return new MemberRef(refType, refName, arrayDim.ToArray());
+            return new MemberRef(refType, refName, arrayDim);
         }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
@@ -101,6 +105,23 @@ namespace NADS.Reflection.Generation
             }
 
             return constraints.ToArray();
+        }
+
+        (Type Type, IReadOnlyList<int> Arrays) FindRootElementType(Type type)
+        {
+            Assert.Ref(type);
+
+            List<int> arrayDim = new List<int>();
+            while(type.IsByRef)
+            { type = type.GetElementType(); }
+            
+            while(type.IsArray)
+            {
+                arrayDim.Add(type.GetArrayRank());
+                type = type.GetElementType();
+            }
+
+            return (type, arrayDim.ToArray());
         }
 
         MemberRefType GetMemberRefType(MemberInfo member)

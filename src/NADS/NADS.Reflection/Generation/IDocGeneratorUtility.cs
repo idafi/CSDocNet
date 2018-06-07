@@ -10,7 +10,9 @@ namespace NADS.Reflection.Generation
         string GenerateName(MemberInfo info);
         IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo);
 
+        Type GetRootElementType(Type type);
         MemberRef MakeMemberRef(MemberInfo member);
+
         ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes);
         IReadOnlyList<TypeConstraint> GetTypeParamConstraints(Type typeParam);
     }
