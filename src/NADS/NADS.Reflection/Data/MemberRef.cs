@@ -6,14 +6,14 @@ namespace NADS.Reflection.Data
     public readonly struct MemberRef
     {
         public readonly MemberRefType Type;
-        public readonly string Name;
+        public readonly int Token;
 
         public readonly IReadOnlyList<int> ArrayDimensions;
         
-        public MemberRef(MemberRefType type, string name, IReadOnlyList<int> arrayDimensions = null)
+        public MemberRef(MemberRefType type, int token, IReadOnlyList<int> arrayDimensions = null)
         {
             Type = type;
-            Name = name ?? "";
+            Token = token;
 
             ArrayDimensions = arrayDimensions ?? Empty<int>.List;
         }

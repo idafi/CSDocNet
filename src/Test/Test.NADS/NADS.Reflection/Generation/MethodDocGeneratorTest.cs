@@ -27,7 +27,7 @@ namespace NADS.Reflection.Generation
         public void TestGenerateMethodDoc()
         {
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, "System.STAThreadAttribute") };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(method).Returns("NADS.TestDoc.MethodTestClass.Method");
             utility.GenerateAttributes(method).Returns(expectedAttr);
             idGen.GenerateMethodID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
@@ -54,7 +54,7 @@ namespace NADS.Reflection.Generation
         public void TestGenerateMemberDoc()
         {
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, "System.STAThreadAttribute") };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(method).Returns("NADS.TestDoc.MethodTestClass.Method");
             utility.GenerateAttributes(method).Returns(expectedAttr);
             idGen.GenerateMethodID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
@@ -139,7 +139,7 @@ namespace NADS.Reflection.Generation
         public void TestGenerateParams()
         {
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            MemberRef intRef = new MemberRef(MemberRefType.Struct, "System.Int32");
+            MemberRef intRef = new MemberRef(MemberRefType.Struct, typeof(int).MetadataToken);
             utility.MakeMemberRef(null).ReturnsForAnyArgs(intRef);
 
             IReadOnlyList<Param> expected = new Param[]

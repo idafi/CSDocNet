@@ -54,7 +54,7 @@ namespace NADS.Reflection.Generation
         public void TestGenerateMemberDoc()
         {
             FieldInfo field = typeof(FieldTestClass).GetField("StaticReadonlyField");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, "System.NonSerializedAttribute") };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(NonSerializedAttribute).MetadataToken) };
             utility.GenerateName(field).Returns("NADS.TestDoc.FieldTestClass.StaticReadonlyField");
             utility.GenerateAttributes(field).Returns(expectedAttr);
             idGen.GenerateFieldID(field).Returns("F:NADS.TestDoc.FieldTestClass.StaticReadonlyField");

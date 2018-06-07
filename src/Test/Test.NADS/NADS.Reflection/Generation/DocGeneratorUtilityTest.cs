@@ -119,8 +119,8 @@ namespace NADS.Reflection.Generation
         {
             var attributes = utility.GenerateAttributes(typeof(TestClass));
             Assert.AreEqual(2, attributes.Count);
-            AssertMemberRef(attributes[0], MemberRefType.Class, "System.SerializableAttribute");
-            AssertMemberRef(attributes[1], MemberRefType.Class, "System.Reflection.DefaultMemberAttribute");
+            AssertMemberRef(attributes[0], MemberRefType.Class, typeof(SerializableAttribute).MetadataToken);
+            AssertMemberRef(attributes[1], MemberRefType.Class, typeof(DefaultMemberAttribute).MetadataToken);
             // "what?" classes with indexers get ^this second attribute
         }
 
@@ -147,96 +147,109 @@ namespace NADS.Reflection.Generation
         [Test]
         public void TestMakeClassRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestClass));
-            AssertMemberRef(mRef, MemberRefType.Class, "NADS.TestDoc.TestClass");
+            Type t = typeof(TestClass);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeNestedClassRef()
         {
+            Type t = typeof(TestClass.NestedClass);
             MemberRef mRef = utility.MakeMemberRef(typeof(TestClass.NestedClass));
-            AssertMemberRef(mRef, MemberRefType.Class, "NADS.TestDoc.TestClass+NestedClass");
+            AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeGenericClassRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(GenericClass<>));
-            AssertMemberRef(mRef, MemberRefType.Class, "NADS.TestDoc.GenericClass`1");
+            Type t = typeof(GenericClass<>);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeGenericNestedClassRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(GenericClass<>.GenericNestedClass<>));
-            AssertMemberRef(mRef, MemberRefType.Class, "NADS.TestDoc.GenericClass`1+GenericNestedClass`1");
+            Type t = typeof(GenericClass<>.GenericNestedClass<>);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeStructRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestStruct));
-            AssertMemberRef(mRef, MemberRefType.Struct, "NADS.TestDoc.TestStruct");
+            Type t = typeof(TestStruct);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Struct, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeGenericStructRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(GenericStruct<>));
-            AssertMemberRef(mRef, MemberRefType.Struct, "NADS.TestDoc.GenericStruct`1");
+            Type t = typeof(GenericStruct<>);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Struct, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeEnumRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestEnum));
-            AssertMemberRef(mRef, MemberRefType.Enum, "NADS.TestDoc.TestEnum");
+            Type t = typeof(TestEnum);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Enum, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeInterfaceRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestInterface));
-            AssertMemberRef(mRef, MemberRefType.Interface, "NADS.TestDoc.TestInterface");
+            Type t = typeof(TestInterface);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Interface, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeGenericInterfaceRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(GenericInterface<,,>));
-            AssertMemberRef(mRef, MemberRefType.Interface, "NADS.TestDoc.GenericInterface`3");
+            Type t = typeof(GenericInterface<,,>);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Interface, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeDelegateRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestDoc.TestDelegate));
-            AssertMemberRef(mRef, MemberRefType.Delegate, "NADS.TestDoc.TestDelegate");
+            Type t = typeof(TestDoc.TestDelegate);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Delegate, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeGenericDelegateRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(GenericDelegate<>));
-            AssertMemberRef(mRef, MemberRefType.Delegate, "NADS.TestDoc.GenericDelegate`1");
+            Type t = typeof(GenericDelegate<>);
+            MemberRef mRef = utility.MakeMemberRef(t);
+            AssertMemberRef(mRef, MemberRefType.Delegate, t.MetadataToken);
         }
 
         [Test]
         public void TestMakeMultiArrayTypeRef()
         {
-            MemberRef mRef = utility.MakeMemberRef(typeof(TestClass).GetField("MultiArrayField").FieldType);
-            AssertMemberRef(mRef, MemberRefType.Struct, "System.Int32", new int[] { 1, 3, 2 });
+            Type t = typeof(TestClass);
+            MemberRef mRef = utility.MakeMemberRef(t.GetField("MultiArrayField").FieldType);
+            AssertMemberRef(mRef, MemberRefType.Struct, typeof(int).MetadataToken, new int[] { 1, 3, 2 });
         }
 
         [Test]
         public void TestMakeByRefTypeRef()
         {
-            MethodInfo method = typeof(TestStruct).GetMethod("Method");
+            Type t = typeof(TestStruct);
+            MethodInfo method = t.GetMethod("Method");
             MemberRef returnRef = utility.MakeMemberRef(method.ReturnType);
             MemberRef paramRef = utility.MakeMemberRef(method.GetParameters()[0].ParameterType);
 
-            AssertMemberRef(returnRef, MemberRefType.Struct, "System.Int32");
-            AssertMemberRef(paramRef, MemberRefType.Struct, "NADS.TestDoc.TestStruct");
+            AssertMemberRef(returnRef, MemberRefType.Struct, typeof(int).MetadataToken);
+            AssertMemberRef(paramRef, MemberRefType.Struct, t.MetadataToken);
         }
 
         [Test]
@@ -274,7 +287,7 @@ namespace NADS.Reflection.Generation
             var tExpected = new TypeConstraint[] { TypeConstraint.Struct };
             var uExpected = new TypeConstraint[] { TypeConstraint.Class, TypeConstraint.Ctor };
             var vExpected = new TypeConstraint[] { TypeConstraint.TypeParam(3) };
-            var wExpected = new TypeConstraint[] { TypeConstraint.Type(new MemberRef(MemberRefType.Class, "NADS.TestDoc.TestClass")) };
+            var wExpected = new TypeConstraint[] { TypeConstraint.Type(new MemberRef(MemberRefType.Class, typeof(TestClass).MetadataToken)) };
 
             AssertTypeConstraints(tExpected, utility.GetTypeParamConstraints(tParam));
             AssertTypeConstraints(uExpected, utility.GetTypeParamConstraints(uParam));
@@ -342,10 +355,10 @@ namespace NADS.Reflection.Generation
             Assert.Throws<ArgumentNullException>(() => utility.IsReadOnly(null));
         }
 
-        void AssertMemberRef(in MemberRef mRef, MemberRefType type, string name, IReadOnlyList<int> arrayDim = null)
+        void AssertMemberRef(in MemberRef mRef, MemberRefType type, int token, IReadOnlyList<int> arrayDim = null)
         {
             Assert.AreEqual(mRef.Type, type);
-            Assert.AreEqual(mRef.Name, name);
+            Assert.AreEqual(mRef.Token, token);
             Assert.That(mRef.ArrayDimensions, Is.EquivalentTo(arrayDim ?? Empty<int>.List));
         }
 
@@ -361,7 +374,7 @@ namespace NADS.Reflection.Generation
             Assert.AreEqual(expected.Constraint, actual.Constraint);
 
             if(expected.Constraint == ConstraintType.Type)
-            { AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.Name); }
+            { AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.Token); }
             else if(expected.Constraint == ConstraintType.TypeParam)
             { Assert.AreEqual(expected.ConstrainedTypeParamPosition, actual.ConstrainedTypeParamPosition); }
         }

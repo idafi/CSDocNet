@@ -57,9 +57,7 @@ namespace NADS.Reflection.Generation
             }
 
             var refType = GetMemberRefType(member);
-            var refName = GenerateName(member);
-
-            return new MemberRef(refType, refName, arrayDim);
+            return new MemberRef(refType, member.MetadataToken, arrayDim);
         }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
@@ -98,7 +96,7 @@ namespace NADS.Reflection.Generation
                     }
                     else
                     {
-                        MemberRef mRef = new MemberRef(GetMemberRefType(constraint), constraint.FullName);
+                        MemberRef mRef = new MemberRef(GetMemberRefType(constraint), constraint.MetadataToken);
                         constraints.Add(TypeConstraint.Type(mRef));
                     }
                 }

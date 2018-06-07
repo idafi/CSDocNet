@@ -49,7 +49,7 @@ namespace NADS.Reflection.Generation
         public void TestGenerateMemberDoc()
         {
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, "System.STAThreadAttribute") };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(property).Returns("NADS.TestDoc.PropertyTestClass.Property");
             utility.GenerateAttributes(property).Returns(expectedAttr);
             idGen.GeneratePropertyID(property).Returns("M:NADS.TestDoc.PropertyTestClass.Property");
