@@ -107,6 +107,23 @@ namespace NADS.Reflection.Generation
             return constraints.ToArray();
         }
 
+        public bool IsReadOnly(ICustomAttributeProvider member)
+        {
+            Check.Ref(member);
+
+            if(member is FieldInfo field)
+            { return field.Attributes.HasFlag(FieldAttributes.InitOnly); }
+
+            // IsReadOnlyAttribute is private. thus, the hackiest hack on the planet of hacks
+            foreach(var attr in member.GetCustomAttributes(false))
+            {
+                if(attr.GetType().FullName == "System.Runtime.CompilerServices.IsReadOnlyAttribute")
+                { return true; }
+            }
+
+            return false;
+        }
+
         (Type Type, IReadOnlyList<int> Arrays) FindRootElementType(Type type)
         {
             Assert.Ref(type);

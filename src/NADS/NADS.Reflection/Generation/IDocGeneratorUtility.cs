@@ -15,5 +15,7 @@ namespace NADS.Reflection.Generation
 
         ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes);
         IReadOnlyList<TypeConstraint> GetTypeParamConstraints(Type typeParam);
+
+        bool IsReadOnly(ICustomAttributeProvider member);
     }
 }

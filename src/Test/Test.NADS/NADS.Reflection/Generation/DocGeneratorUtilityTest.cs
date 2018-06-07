@@ -294,6 +294,54 @@ namespace NADS.Reflection.Generation
             Assert.Throws<Exception>(() => utility.GetTypeParamConstraints(typeof(int)));
         }
 
+        [Test]
+        public void TestIsReadOnlyField()
+        {
+            FieldInfo field = typeof(TestClass).GetField("IntField");
+            Assert.AreEqual(true, utility.IsReadOnly(field));
+        }
+
+        [Test]
+        public void TestIsReadOnlyType()
+        {
+            Type type = typeof(TestStruct);
+            Assert.AreEqual(true, utility.IsReadOnly(type));
+        }
+
+        [Test]
+        public void TestIsReadOnlyReturnValue()
+        {
+            ParameterInfo val = typeof(TestStruct).GetMethod("Method").ReturnParameter;
+            Assert.AreEqual(true, utility.IsReadOnly(val));
+        }
+
+        [Test]
+        public void TestIsNotReadOnlyField()
+        {
+            FieldInfo field = typeof(TestClass).GetField("MutableField");
+            Assert.AreEqual(false, utility.IsReadOnly(field));
+        }
+
+        [Test]
+        public void TestIsNotReadOnlyType()
+        {
+            Type type = typeof(UnsafeStruct);
+            Assert.AreEqual(false, utility.IsReadOnly(type));
+        }
+
+        [Test]
+        public void TestIsNotReadOnlyReturnValue()
+        {
+            ParameterInfo val = typeof(TestClass).GetMethod("IntMethod").ReturnParameter;
+            Assert.AreEqual(false, utility.IsReadOnly(val));
+        }
+
+        [Test]
+        public void TestIsReadOnlyThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => utility.IsReadOnly(null));
+        }
+
         void AssertMemberRef(in MemberRef mRef, MemberRefType type, string name, IReadOnlyList<int> arrayDim = null)
         {
             Assert.AreEqual(mRef.Type, type);
