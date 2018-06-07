@@ -715,5 +715,21 @@ namespace NADS.TestDoc
             await Task.Delay(666);
             return 666;
         }
+
+        /// <summary>
+        /// Generic method doc.
+        /// </summary>
+        /// <param name="normalParam">Normal param.</param>
+        /// <param name="tParam">T param.</param>
+        /// <param name="uParam">U param.</param>
+        /// <typeparam name="T">Typeparam T.</typeparam>
+        /// <typeparam name="U">Typeparam U.</typeparam>
+        /// <typeparam name="V">Typeparam V.</typeparam>
+        /// <returns>Returns doc.</returns>
+        public T GenericMethod<T, U, V>(int normalParam, T tParam, U uParam)
+        where T : class, U
+        where U : TestClass, new()
+        where V : struct
+        => tParam;
     }
 }
