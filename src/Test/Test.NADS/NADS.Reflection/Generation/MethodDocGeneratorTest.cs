@@ -106,10 +106,24 @@ namespace NADS.Reflection.Generation
         [Test]
         public void TestGenerateByRefReturnValue()
         {
-            MethodInfo method = typeof(TestStruct).GetMethod("Method");
+            MethodInfo method = typeof(MethodTestClass).GetMethod("RefReturnMethod");
             ReturnValue val = gen.GenerateReturnValue(method);
 
             Assert.AreEqual(ReturnModifier.Ref, val.Modifier);
+            utility.Received().MakeMemberRef(method.ReturnType);
+            Assert.AreEqual(false, val.IsGenericType);
+            Assert.AreEqual(-1, val.GenericTypePosition);
+        }
+
+        [Test]
+        public void TestGenerateByRefReadonlyReturnValue()
+        {
+            MethodInfo method = typeof(MethodTestClass).GetMethod("RefReadonlyReturnMethod");
+            utility.IsReadOnly(method.ReturnParameter).Returns(true);
+
+            ReturnValue val = gen.GenerateReturnValue(method);
+            
+            Assert.AreEqual(ReturnModifier.RefReadonly, val.Modifier);
             utility.Received().MakeMemberRef(method.ReturnType);
             Assert.AreEqual(false, val.IsGenericType);
             Assert.AreEqual(-1, val.GenericTypePosition);

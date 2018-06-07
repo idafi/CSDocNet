@@ -51,9 +51,7 @@ namespace NADS.Reflection.Generation
             Check.Ref(methodInfo);
 
             Type returnType = methodInfo.ReturnType;
-            ReturnModifier modifier = (returnType.IsByRef)
-                ? ReturnModifier.Ref
-                : ReturnModifier.None;
+            ReturnModifier modifier = GenerateReturnModifier(methodInfo.ReturnParameter);
 
             if(returnType.IsGenericParameter)
             {
@@ -170,6 +168,19 @@ namespace NADS.Reflection.Generation
             Check.Ref(member);
 
             return utility.GenerateAttributes(member);
+        }
+
+        ReturnModifier GenerateReturnModifier(ParameterInfo returnParam)
+        {
+            if(returnParam.ParameterType.IsByRef)
+            {
+                if(utility.IsReadOnly(returnParam))
+                { return ReturnModifier.RefReadonly; }
+
+                return ReturnModifier.Ref;
+            }
+
+            return ReturnModifier.None;
         }
 
         Param GenerateParam(ParameterInfo parameterInfo)

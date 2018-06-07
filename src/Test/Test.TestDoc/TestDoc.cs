@@ -648,6 +648,9 @@ namespace NADS.TestDoc
     /// </summary>
     public abstract class MethodTestClass
     {
+        int refField;
+        int refReadonlyField;
+
         /// <summary>
         /// Method test class implementation.
         /// </summary>
@@ -731,5 +734,11 @@ namespace NADS.TestDoc
         where U : TestClass, new()
         where V : struct
         => tParam;
+
+        /// <summary>Ref return method doc.</summary>
+        public ref int RefReturnMethod() => ref refField;
+
+        /// <summary>Ref readonly return method doc.</summary>
+        public ref readonly int RefReadonlyReturnMethod() => ref refReadonlyField;
     }
 }
