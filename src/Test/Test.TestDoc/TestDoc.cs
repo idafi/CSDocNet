@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace NADS.TestDoc
 {
+    /// <summary>Test doc attribute doc.</summary>
+    public class TestDocAttribute : Attribute { }
+
     /// <summary>
     /// Test class doc.
     /// </summary>
@@ -620,6 +623,7 @@ namespace NADS.TestDoc
         }
 
         /// <summary>Public property.</summary>
+        [TestDoc]
         public int PublicProperty { get; set; }
         /// <summary>Protected internal property.</summary>
         protected internal int ProtectedInternalProperty { get; set; }
