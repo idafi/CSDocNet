@@ -564,6 +564,36 @@ namespace NADS.TestDoc
         GenericClass<int> constructedGenericParam);
 
     /// <summary>
+    /// Event test class doc.
+    /// </summary>
+    public class EventTestClass
+    {
+        /// <summary>Public event doc.</summary>
+        [TestDoc]
+        public event Action PublicEvent;
+        /// <summary>Protected internal event doc.</summary>
+        protected internal event Action ProtectedInternalEvent;
+        internal event Action InternalEvent;
+        /// <summary>Protected event doc.</summary>
+        protected event Action protectedEvent;
+        private protected event Action privateProtectedEvent;
+        private event Action privateEvent;
+        event Action defaultEvent;
+
+        // shut up, compiler
+        void ShutUpCompiler()
+        {
+            PublicEvent?.Invoke();
+            ProtectedInternalEvent?.Invoke();
+            InternalEvent?.Invoke();
+            protectedEvent?.Invoke();
+            privateProtectedEvent?.Invoke();
+            privateEvent?.Invoke();
+            defaultEvent?.Invoke();
+        }
+    }
+
+    /// <summary>
     /// Field test class doc.
     /// </summary>
     public class FieldTestClass
