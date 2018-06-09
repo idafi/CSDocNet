@@ -109,7 +109,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return idGen.GenerateMethodID(member);
+            return idGen.GenerateMemberID(member);
         }
         
         public AccessModifier GenerateAccess(MethodInfo member)

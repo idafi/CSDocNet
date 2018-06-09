@@ -6,11 +6,12 @@ namespace NADS.Reflection.Generation
 {
     public interface ICommentIDGenerator
     {
-        string GenerateTypeID(Type type);
-        string GenerateFieldID(FieldInfo field);
-        string GeneratePropertyID(PropertyInfo property);
-        string GenerateMethodID(MethodInfo method);
-        string GenerateMethodID(ConstructorInfo ctor);
-        string GenerateEventID(EventInfo ev);
+        string GenerateMemberID(Type type);
+        string GenerateMemberID(FieldInfo field);
+        string GenerateMemberID(PropertyInfo property);
+        string GenerateMemberID(MethodBase method);
+        string GenerateMemberID(MethodInfo method);
+        string GenerateMemberID(ConstructorInfo ctor);
+        string GenerateMemberID(EventInfo ev);
     }
 }

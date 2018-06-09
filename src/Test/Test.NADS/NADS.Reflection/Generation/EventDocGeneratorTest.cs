@@ -32,7 +32,7 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(ev).Returns("NADS.TestDoc.EventTestClass.Event");
             utility.GenerateAttributes(ev).Returns(expectedAttr);
-            idGen.GenerateEventID(ev).Returns("M:NADS.TestDoc.EventTestClass.Event");
+            idGen.GenerateMemberID(ev).Returns("M:NADS.TestDoc.EventTestClass.Event");
 
             var name = gen.GenerateName(ev);
             var id = gen.GenerateCommentID(ev);
@@ -75,7 +75,7 @@ namespace NADS.Reflection.Generation
             EventInfo ev = typeof(EventTestClass).GetEvent("PublicEvent");
             gen.GenerateCommentID(ev);
 
-            idGen.Received().GenerateEventID(ev);
+            idGen.Received().GenerateMemberID(ev);
         }        
 
         [Test]

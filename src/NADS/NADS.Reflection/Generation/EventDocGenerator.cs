@@ -45,7 +45,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return idGen.GenerateEventID(member);
+            return idGen.GenerateMemberID(member);
         }
         
         public AccessModifier GenerateAccess(EventInfo member)

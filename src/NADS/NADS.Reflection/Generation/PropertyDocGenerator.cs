@@ -66,7 +66,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return idGen.GeneratePropertyID(member);
+            return idGen.GenerateMemberID(member);
         }
         
         public AccessModifier GenerateAccess(PropertyInfo member)

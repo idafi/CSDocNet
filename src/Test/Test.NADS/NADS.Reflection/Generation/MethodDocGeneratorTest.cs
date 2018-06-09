@@ -30,7 +30,7 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(method).Returns("NADS.TestDoc.MethodTestClass.Method");
             utility.GenerateAttributes(method).Returns(expectedAttr);
-            idGen.GenerateMethodID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
+            idGen.GenerateMemberID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
 
             MemberDoc member = gen.GenerateMemberDoc(method);
             ReturnValue returnType = gen.GenerateReturnValue(method);
@@ -57,7 +57,7 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(method).Returns("NADS.TestDoc.MethodTestClass.Method");
             utility.GenerateAttributes(method).Returns(expectedAttr);
-            idGen.GenerateMethodID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
+            idGen.GenerateMemberID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
 
             var name = gen.GenerateName(method);
             var id = gen.GenerateCommentID(method);
@@ -206,7 +206,7 @@ namespace NADS.Reflection.Generation
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
             gen.GenerateCommentID(method);
 
-            idGen.Received().GenerateMethodID(method);
+            idGen.Received().GenerateMemberID(method);
         }        
 
         [Test]

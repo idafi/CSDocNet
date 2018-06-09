@@ -60,7 +60,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return idGen.GenerateFieldID(member);
+            return idGen.GenerateMemberID(member);
         }
         
         public AccessModifier GenerateAccess(FieldInfo member)

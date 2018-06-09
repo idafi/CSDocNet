@@ -52,7 +52,7 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             utility.GenerateName(property).Returns("NADS.TestDoc.PropertyTestClass.Property");
             utility.GenerateAttributes(property).Returns(expectedAttr);
-            idGen.GeneratePropertyID(property).Returns("M:NADS.TestDoc.PropertyTestClass.Property");
+            idGen.GenerateMemberID(property).Returns("M:NADS.TestDoc.PropertyTestClass.Property");
 
             var name = gen.GenerateName(property);
             var id = gen.GenerateCommentID(property);
@@ -117,7 +117,7 @@ namespace NADS.Reflection.Generation
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
             gen.GenerateCommentID(property);
 
-            idGen.Received().GeneratePropertyID(property);
+            idGen.Received().GenerateMemberID(property);
         }        
 
         [Test]

@@ -30,7 +30,7 @@ namespace NADS.Reflection.Generation
             FieldInfo field = typeof(FieldTestClass).GetField("ConstField");
             utility.GenerateName(field).Returns("NADS.TestDoc.FieldTestClass.ConstField");
             utility.GenerateAttributes(field).Returns(new MemberRef[0]);
-            idGen.GenerateFieldID(field).Returns("F:NADS.TestDoc.FieldTestClass.ConstField");
+            idGen.GenerateMemberID(field).Returns("F:NADS.TestDoc.FieldTestClass.ConstField");
 
             var name = gen.GenerateName(field);
             var id = gen.GenerateCommentID(field);
@@ -57,7 +57,7 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(NonSerializedAttribute).MetadataToken) };
             utility.GenerateName(field).Returns("NADS.TestDoc.FieldTestClass.StaticReadonlyField");
             utility.GenerateAttributes(field).Returns(expectedAttr);
-            idGen.GenerateFieldID(field).Returns("F:NADS.TestDoc.FieldTestClass.StaticReadonlyField");
+            idGen.GenerateMemberID(field).Returns("F:NADS.TestDoc.FieldTestClass.StaticReadonlyField");
 
             var name = gen.GenerateName(field);
             var id = gen.GenerateCommentID(field);
@@ -122,7 +122,7 @@ namespace NADS.Reflection.Generation
             FieldInfo field = typeof(TestClass).GetField("IntField");
             gen.GenerateCommentID(field);
 
-            idGen.Received().GenerateFieldID(field);
+            idGen.Received().GenerateMemberID(field);
         }
 
         [Test]

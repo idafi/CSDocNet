@@ -12,14 +12,14 @@ namespace NADS.Reflection.Generation
     {
         static readonly Regex typeParamCountRegex = new Regex(@"\`(\d+)");
 
-        public string GenerateTypeID(Type type)
+        public string GenerateMemberID(Type type)
         {
             Check.Ref(type);
 
             return $"T:{FormatTypeName(type)}";
         }
 
-        public string GenerateFieldID(FieldInfo field)
+        public string GenerateMemberID(FieldInfo field)
         {
             Check.Ref(field);
             
@@ -27,7 +27,7 @@ namespace NADS.Reflection.Generation
             return $"F:{type}.{field.Name}";
         }
 
-        public string GeneratePropertyID(PropertyInfo property)
+        public string GenerateMemberID(PropertyInfo property)
         {
             Check.Ref(property);
 
@@ -37,7 +37,20 @@ namespace NADS.Reflection.Generation
             return $"P:{typeName}.{property.Name}{paramList}";
         }
 
-        public string GenerateMethodID(MethodInfo method)
+        public string GenerateMemberID(MethodBase method)
+        {
+            switch(method)
+            {
+                case MethodInfo m:
+                    return GenerateMemberID(m);
+                case ConstructorInfo c:
+                    return GenerateMemberID(c);
+                default:
+                    throw new NotSupportedException($"Method '{method.Name}' has unsupported type '{method.GetType()}'");
+            }
+        }
+
+        public string GenerateMemberID(MethodInfo method)
         {
             Check.Ref(method);
 
@@ -54,7 +67,7 @@ namespace NADS.Reflection.Generation
             return $"M:{typeName}.{method.Name}{typeParams}{paramList}{returnType}";
         }
 
-        public string GenerateMethodID(ConstructorInfo ctor)
+        public string GenerateMemberID(ConstructorInfo ctor)
         {
             Check.Ref(ctor);
 
@@ -64,7 +77,7 @@ namespace NADS.Reflection.Generation
             return $"M:{typeName}.#ctor{paramList}";
         }
 
-        public string GenerateEventID(EventInfo ev)
+        public string GenerateMemberID(EventInfo ev)
         {
             Check.Ref(ev);
             
