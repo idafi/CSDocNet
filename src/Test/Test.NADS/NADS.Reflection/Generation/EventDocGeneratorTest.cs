@@ -12,17 +12,17 @@ namespace NADS.Reflection.Generation
     public class EventDocGeneratorTest
     {
         EventDocGenerator gen;
-        IDocGeneratorUtility utility;
+        IDocGeneratorUtility docUtility;
+        IMethodBaseUtility methodUtility;
         ICommentIDGenerator idGen;
-        MethodDocGenerator methodGen;
 
         [SetUp]
         public void SetUp()
         {
-            utility = Substitute.For<IDocGeneratorUtility>();
+            docUtility = Substitute.For<IDocGeneratorUtility>();
             idGen = Substitute.For<ICommentIDGenerator>();
-            methodGen = new MethodDocGenerator(utility, idGen);
-            gen = new EventDocGenerator(utility, idGen, methodGen);
+            methodUtility = new MethodBaseUtility(docUtility, idGen);
+            gen = new EventDocGenerator(docUtility, methodUtility, idGen);
         }
 
         [Test]
@@ -30,8 +30,8 @@ namespace NADS.Reflection.Generation
         {
             EventInfo ev = typeof(EventTestClass).GetEvent("PublicEvent");
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
-            utility.GenerateName(ev).Returns("NADS.TestDoc.EventTestClass.Event");
-            utility.GenerateAttributes(ev).Returns(expectedAttr);
+            docUtility.GenerateName(ev).Returns("NADS.TestDoc.EventTestClass.Event");
+            docUtility.GenerateAttributes(ev).Returns(expectedAttr);
             idGen.GenerateMemberID(ev).Returns("M:NADS.TestDoc.EventTestClass.Event");
 
             var name = gen.GenerateName(ev);
@@ -60,7 +60,7 @@ namespace NADS.Reflection.Generation
             EventInfo ev = typeof(EventTestClass).GetEvent("PublicEvent");
             gen.GenerateName(ev);
 
-            utility.Received().GenerateName(ev);
+            docUtility.Received().GenerateName(ev);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace NADS.Reflection.Generation
             EventInfo ev = typeof(EventTestClass).GetEvent("PublicEvent");
             gen.GenerateAttributes(ev);
 
-            utility.Received().GenerateAttributes(ev);
+            docUtility.Received().GenerateAttributes(ev);
         }
 
         [Test]

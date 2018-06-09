@@ -7,18 +7,18 @@ namespace NADS.Reflection.Generation
 {
     public class EventDocGenerator : IEventDocGenerator
     {
-        readonly IDocGeneratorUtility utility;
+        readonly IDocGeneratorUtility docUtility;
+        readonly IMethodBaseUtility methodUtility;
         readonly ICommentIDGenerator idGen;
-        readonly IMethodDocGenerator methodGen;
 
-        public EventDocGenerator(IDocGeneratorUtility utility, ICommentIDGenerator idGen,
-            IMethodDocGenerator methodGen)
+        public EventDocGenerator(IDocGeneratorUtility utility, IMethodBaseUtility methodUtility,
+            ICommentIDGenerator idGen)
         {
-            Check.Ref(utility, idGen, methodGen);
+            Check.Ref(utility, methodUtility, idGen);
 
-            this.utility = utility;
+            this.docUtility = utility;
+            this.methodUtility = methodUtility;
             this.idGen = idGen;
-            this.methodGen = methodGen;
         }
 
         public MemberDoc GenerateMemberDoc(EventInfo member)
@@ -38,7 +38,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return utility.GenerateName(member);
+            return docUtility.GenerateName(member);
         }
 
         public string GenerateCommentID(EventInfo member)
@@ -52,7 +52,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return methodGen.GenerateAccess(member.AddMethod);
+            return methodUtility.GenerateAccess(member.AddMethod);
         }
 
         public Modifier GenerateModifiers(EventInfo member)
@@ -66,7 +66,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return utility.GenerateAttributes(member);
+            return docUtility.GenerateAttributes(member);
         }
     }
 }

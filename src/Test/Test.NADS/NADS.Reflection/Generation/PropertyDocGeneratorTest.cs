@@ -12,17 +12,17 @@ namespace NADS.Reflection.Generation
     public class PropertyDocGeneratorTest
     {
         PropertyDocGenerator gen;
-        IDocGeneratorUtility utility;
+        IDocGeneratorUtility docUtility;
+        IMethodBaseUtility methodUtility;
         ICommentIDGenerator idGen;
-        MethodDocGenerator methodGen;
 
         [SetUp]
         public void SetUp()
         {
-            utility = Substitute.For<IDocGeneratorUtility>();
+            docUtility = Substitute.For<IDocGeneratorUtility>();
             idGen = Substitute.For<ICommentIDGenerator>();
-            methodGen = new MethodDocGenerator(utility, idGen);
-            gen = new PropertyDocGenerator(utility, idGen, methodGen);
+            methodUtility = new MethodBaseUtility(docUtility, idGen);
+            gen = new PropertyDocGenerator(docUtility, methodUtility, idGen);
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace NADS.Reflection.Generation
         {
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
-            utility.GenerateName(property).Returns("NADS.TestDoc.PropertyTestClass.Property");
-            utility.GenerateAttributes(property).Returns(expectedAttr);
+            docUtility.GenerateName(property).Returns("NADS.TestDoc.PropertyTestClass.Property");
+            docUtility.GenerateAttributes(property).Returns(expectedAttr);
             idGen.GenerateMemberID(property).Returns("M:NADS.TestDoc.PropertyTestClass.Property");
 
             var name = gen.GenerateName(property);
@@ -102,7 +102,7 @@ namespace NADS.Reflection.Generation
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
             gen.GenerateName(property);
 
-            utility.Received().GenerateName(property);
+            docUtility.Received().GenerateName(property);
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace NADS.Reflection.Generation
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
             gen.GenerateAttributes(property);
 
-            utility.Received().GenerateAttributes(property);
+            docUtility.Received().GenerateAttributes(property);
         }
 
         [Test]

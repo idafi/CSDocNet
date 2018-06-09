@@ -7,18 +7,18 @@ namespace NADS.Reflection.Generation
 {
     public class PropertyDocGenerator : IPropertyDocGenerator
     {
-        readonly IDocGeneratorUtility utility;
+        readonly IDocGeneratorUtility docUtility;
+        readonly IMethodBaseUtility methodUtility;
         readonly ICommentIDGenerator idGen;
-        readonly IMethodDocGenerator methodGen;
 
-        public PropertyDocGenerator(IDocGeneratorUtility utility, ICommentIDGenerator idGen,
-            IMethodDocGenerator methodGen)
+        public PropertyDocGenerator(IDocGeneratorUtility utility, IMethodBaseUtility methodUtility,
+            ICommentIDGenerator idGen)
         {
-            Check.Ref(utility, idGen, methodGen);
+            Check.Ref(utility, idGen, methodUtility);
 
-            this.utility = utility;
+            this.docUtility = utility;
             this.idGen = idGen;
-            this.methodGen = methodGen;
+            this.methodUtility = methodUtility;
         }
 
         public PropertyDoc GeneratePropertyDoc(PropertyInfo propertyInfo)
@@ -52,14 +52,14 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(accessorInfo);
 
-            return new PropertyDoc.Accessor(true, methodGen.GenerateAccess(accessorInfo));
+            return new PropertyDoc.Accessor(true, methodUtility.GenerateAccess(accessorInfo));
         }
 
         public string GenerateName(PropertyInfo member)
         {
             Check.Ref(member);
 
-            return utility.GenerateName(member);
+            return docUtility.GenerateName(member);
         }
 
         public string GenerateCommentID(PropertyInfo member)
@@ -77,9 +77,9 @@ namespace NADS.Reflection.Generation
             AccessModifier set = AccessModifier.Private;
 
             if(member.CanRead)
-            { get = methodGen.GenerateAccess(member.GetMethod); }
+            { get = methodUtility.GenerateAccess(member.GetMethod); }
             if(member.CanWrite)
-            { set = methodGen.GenerateAccess(member.SetMethod); }
+            { set = methodUtility.GenerateAccess(member.SetMethod); }
 
             return (AccessModifier)(Math.Max((int)(get), (int)(set)));
         }
@@ -89,9 +89,9 @@ namespace NADS.Reflection.Generation
             Check.Ref(member);
 
             if(member.CanRead)
-            { return methodGen.GenerateModifiers(member.GetMethod); }
+            { return methodUtility.GenerateModifiers(member.GetMethod); }
             else if(member.CanWrite)
-            { return methodGen.GenerateModifiers(member.SetMethod); }
+            { return methodUtility.GenerateModifiers(member.SetMethod); }
             else
             { throw new NotSupportedException($"Property '{member.Name}' has neither get nor set accessor"); }
         }
@@ -100,7 +100,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return utility.GenerateAttributes(member);
+            return docUtility.GenerateAttributes(member);
         }
     }
 }
