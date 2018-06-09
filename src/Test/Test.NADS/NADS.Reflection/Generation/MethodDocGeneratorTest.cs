@@ -14,15 +14,13 @@ namespace NADS.Reflection.Generation
         MethodDocGenerator gen;
         IDocGeneratorUtility docUtility;
         IMethodBaseUtility methodUtility;
-        ICommentIDGenerator idGen;
 
         [SetUp]
         public void SetUp()
         {
             docUtility = Substitute.For<IDocGeneratorUtility>();
             methodUtility = Substitute.For<IMethodBaseUtility>();
-            idGen = Substitute.For<ICommentIDGenerator>();
-            gen = new MethodDocGenerator(docUtility, methodUtility, idGen);
+            gen = new MethodDocGenerator(docUtility, methodUtility);
         }
 
         [Test]
@@ -32,7 +30,6 @@ namespace NADS.Reflection.Generation
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             docUtility.GenerateName(method).Returns("NADS.TestDoc.MethodTestClass.Method");
             docUtility.GenerateAttributes(method).Returns(expectedAttr);
-            idGen.GenerateMemberID(method).Returns("M:NADS.TestDoc.MethodTestClass.Method");
 
             MemberDoc member = gen.GenerateMemberDoc(method);
             ReturnValue returnType = gen.GenerateReturnValue(method);

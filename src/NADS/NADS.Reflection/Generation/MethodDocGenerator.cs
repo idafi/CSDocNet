@@ -12,16 +12,13 @@ namespace NADS.Reflection.Generation
     {
         readonly IDocGeneratorUtility docUtility;
         readonly IMethodBaseUtility methodUtility;
-        readonly ICommentIDGenerator idGen;
 
-        public MethodDocGenerator(IDocGeneratorUtility docUtility, IMethodBaseUtility methodUtility,
-            ICommentIDGenerator idGen)
+        public MethodDocGenerator(IDocGeneratorUtility docUtility, IMethodBaseUtility methodUtility)
         {
-            Check.Ref(docUtility, methodUtility, idGen);
+            Check.Ref(docUtility, methodUtility);
 
             this.docUtility = docUtility;
             this.methodUtility = methodUtility;
-            this.idGen = idGen;
         }
 
         public MethodDoc GenerateMethodDoc(MethodInfo methodInfo)
