@@ -31,8 +31,8 @@ namespace NADS.Reflection.Generation
             return new MethodDoc(
                 GenerateMemberDoc(methodInfo),
                 GenerateReturnValue(methodInfo),
-                GenerateParams(methodInfo),
-                GenerateTypeParams(methodInfo)
+                methodUtility.GenerateParams(methodInfo),
+                methodUtility.GenerateTypeParams(methodInfo)
             );
         }
 
@@ -58,20 +58,6 @@ namespace NADS.Reflection.Generation
             
             MemberRef mRef = docUtility.MakeMemberRef(returnType);
             return new ReturnValue(modifier, mRef, false, -1);
-        }
-
-        public IReadOnlyList<Param> GenerateParams(MethodInfo methodInfo)
-        {
-            Check.Ref(methodInfo);
-
-            return methodUtility.GenerateParams(methodInfo);
-        }
-
-        public IReadOnlyList<TypeParam> GenerateTypeParams(MethodInfo methodInfo)
-        {
-            Check.Ref(methodInfo);
-
-            return methodUtility.GenerateTypeParams(methodInfo);
         }
 
         public string GenerateName(MethodInfo member)

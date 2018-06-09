@@ -9,7 +9,5 @@ namespace NADS.Reflection.Generation
         MethodDoc GenerateMethodDoc(MethodInfo methodInfo);
 
         ReturnValue GenerateReturnValue(MethodInfo methodInfo);
-        IReadOnlyList<Param> GenerateParams(MethodInfo methodInfo);
-        IReadOnlyList<TypeParam> GenerateTypeParams(MethodInfo methodInfo);
     }
 }

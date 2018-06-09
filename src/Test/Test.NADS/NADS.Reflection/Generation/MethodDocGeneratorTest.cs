@@ -36,8 +36,8 @@ namespace NADS.Reflection.Generation
 
             MemberDoc member = gen.GenerateMemberDoc(method);
             ReturnValue returnType = gen.GenerateReturnValue(method);
-            var parameters = gen.GenerateParams(method);
-            var typeParams = gen.GenerateTypeParams(method);
+            var parameters = methodUtility.GenerateParams(method);
+            var typeParams = methodUtility.GenerateTypeParams(method);
 
             MethodDoc mDoc = gen.GenerateMethodDoc(method);
             Assert.AreEqual(member, mDoc.Member);
@@ -120,34 +120,6 @@ namespace NADS.Reflection.Generation
         public void TestGenerateReturnValueThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => gen.GenerateReturnValue(null));
-        }
-
-        [Test]
-        public void TestGenerateParams()
-        {
-            MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            gen.GenerateParams(method);
-            methodUtility.Received().GenerateParams(method);
-        }
-
-        [Test]
-        public void TestGenerateParamsThrowsOnNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => gen.GenerateParams(null));
-        }
-
-        [Test]
-        public void TestGenerateTypeParams()
-        {
-            MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            gen.GenerateTypeParams(method);
-            methodUtility.Received().GenerateTypeParams(method);
-        }
-
-        [Test]
-        public void TestGenerateTypeParamsThrowsOnNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => gen.GenerateTypeParams(null));
         }
 
         [Test]
