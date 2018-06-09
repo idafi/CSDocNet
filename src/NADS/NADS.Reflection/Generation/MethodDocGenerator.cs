@@ -10,14 +10,17 @@ namespace NADS.Reflection.Generation
 {
     public class MethodDocGenerator : IMethodDocGenerator
     {
-        readonly IDocGeneratorUtility utility;
+        readonly IDocGeneratorUtility docUtility;
+        readonly IMethodBaseUtility methodUtility;
         readonly ICommentIDGenerator idGen;
 
-        public MethodDocGenerator(IDocGeneratorUtility utility, ICommentIDGenerator idGen)
+        public MethodDocGenerator(IDocGeneratorUtility docUtility, IMethodBaseUtility methodUtility,
+            ICommentIDGenerator idGen)
         {
-            Check.Ref(utility, idGen);
+            Check.Ref(docUtility, methodUtility, idGen);
 
-            this.utility = utility;
+            this.docUtility = docUtility;
+            this.methodUtility = methodUtility;
             this.idGen = idGen;
         }
 
@@ -37,13 +40,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(member);
 
-            return new MemberDoc(
-                GenerateName(member),
-                GenerateCommentID(member),
-                GenerateAccess(member),
-                GenerateModifiers(member),
-                GenerateAttributes(member)
-            );
+            return methodUtility.GenerateMemberDoc(member);
         }
 
         public ReturnValue GenerateReturnValue(MethodInfo methodInfo)
@@ -59,7 +56,7 @@ namespace NADS.Reflection.Generation
                 return new ReturnValue(modifier, default, true, genericPos);
             }
             
-            MemberRef mRef = utility.MakeMemberRef(returnType);
+            MemberRef mRef = docUtility.MakeMemberRef(returnType);
             return new ReturnValue(modifier, mRef, false, -1);
         }
 
@@ -67,156 +64,62 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(methodInfo);
 
-            ParameterInfo[] paramInfo = methodInfo.GetParameters();
-            Param[] parameters = new Param[paramInfo.Length];
-
-            for(int i = 0; i < paramInfo.Length; i++)
-            { parameters[i] = GenerateParam(paramInfo[i]); }
-
-            return parameters;
+            return methodUtility.GenerateParams(methodInfo);
         }
 
         public IReadOnlyList<TypeParam> GenerateTypeParams(MethodInfo methodInfo)
         {
             Check.Ref(methodInfo);
 
-            if(methodInfo.ContainsGenericParameters)
-            {
-                Type[] typeArgs = methodInfo.GetGenericArguments();
-                TypeParam[] typeParams = new TypeParam[typeArgs.Length];
-                
-                for(int i = 0; i < typeArgs.Length; i++)
-                {
-                    ParamModifier modifier = utility.GetGenericParamModifier(typeArgs[i].GenericParameterAttributes);
-                    IReadOnlyList<TypeConstraint> constraints = utility.GetTypeParamConstraints(typeArgs[i]);
-                    typeParams[i] = new TypeParam(typeArgs[i].Name, modifier, constraints);
-                }
-
-                return typeParams;
-            }
-
-            return Empty<TypeParam>.List;
+            return methodUtility.GenerateTypeParams(methodInfo);
         }
 
         public string GenerateName(MethodInfo member)
         {
             Check.Ref(member);
 
-            return utility.GenerateName(member);
+            return methodUtility.GenerateName(member);
         }
 
         public string GenerateCommentID(MethodInfo member)
         {
             Check.Ref(member);
 
-            return idGen.GenerateMemberID(member);
+            return methodUtility.GenerateCommentID(member);
         }
         
         public AccessModifier GenerateAccess(MethodInfo member)
         {
             Check.Ref(member);
 
-            MethodAttributes attr = member.Attributes & MethodAttributes.MemberAccessMask;
-            switch(attr)
-            {
-                case MethodAttributes.Public:
-                    return AccessModifier.Public;
-                case MethodAttributes.FamORAssem:
-                    return AccessModifier.ProtectedInternal;
-                case MethodAttributes.Assembly:
-                    return AccessModifier.Internal;
-                case MethodAttributes.Family:
-                    return AccessModifier.Protected;
-                case MethodAttributes.FamANDAssem:
-                    return AccessModifier.PrivateProtected;
-                case MethodAttributes.Private:
-                    return AccessModifier.Private;
-                default:
-                    throw new NotSupportedException($"unrecognized access type on method '{utility.GenerateName(member)}'");
-            }
+            return methodUtility.GenerateAccess(member);
         }
 
         public Modifier GenerateModifiers(MethodInfo member)
         {
             Check.Ref(member);
 
-            Modifier mod = Modifier.None;
-
-            if(member.IsAbstract)
-            { mod |= Modifier.Abstract; }
-            else if(member.GetBaseDefinition().DeclaringType != member.DeclaringType)
-            { mod |= Modifier.Override; }
-            else if(member.IsVirtual)
-            { mod |= Modifier.Virtual; }
-
-            if(member.Attributes.HasFlag(MethodAttributes.PinvokeImpl))
-            { mod |= Modifier.Extern; }
-            if(member.Attributes.HasFlag(MethodAttributes.Final))
-            { mod |= Modifier.Sealed; }
-            
-            if(member.IsStatic)
-            { mod |= Modifier.Static; }
-
-            if(member.GetCustomAttribute<AsyncStateMachineAttribute>() != null)
-            { mod |= Modifier.Async; }
-            
-            return mod;
+            return methodUtility.GenerateModifiers(member);
         }
         
         public IReadOnlyList<MemberRef> GenerateAttributes(MethodInfo member)
         {
             Check.Ref(member);
 
-            return utility.GenerateAttributes(member);
+            return methodUtility.GenerateAttributes(member);
         }
 
         ReturnModifier GenerateReturnModifier(ParameterInfo returnParam)
         {
             if(returnParam.ParameterType.IsByRef)
             {
-                if(utility.IsReadOnly(returnParam))
+                if(docUtility.IsReadOnly(returnParam))
                 { return ReturnModifier.RefReadonly; }
 
                 return ReturnModifier.Ref;
             }
 
             return ReturnModifier.None;
-        }
-
-        Param GenerateParam(ParameterInfo parameterInfo)
-        {
-            Assert.Ref(parameterInfo);
-
-            ParamModifier modifier = GenerateParamModifier(parameterInfo);
-            MemberRef type = utility.MakeMemberRef(parameterInfo.ParameterType);
-
-            bool isGenericType = parameterInfo.ParameterType.IsGenericParameter;
-            int genericPos = (isGenericType) ? parameterInfo.ParameterType.GenericParameterPosition : -1;
-
-            bool hasDefaultValue = parameterInfo.HasDefaultValue;
-            object defaultValue = (hasDefaultValue) ? parameterInfo.RawDefaultValue : null;
-
-            return new Param(modifier, type, isGenericType, genericPos, hasDefaultValue, defaultValue);
-        }
-
-        ParamModifier GenerateParamModifier(ParameterInfo parameterInfo)
-        {
-            Assert.Ref(parameterInfo);
-
-            if(parameterInfo.ParameterType.IsByRef)
-            { 
-                switch(parameterInfo.Attributes)
-                {
-                    case ParameterAttributes.In:
-                        return ParamModifier.In;
-                    case ParameterAttributes.Out:
-                        return ParamModifier.Out;
-                    default:
-                        return ParamModifier.Ref;
-                }
-            }
-
-            return ParamModifier.None;
         }
     }
 }
