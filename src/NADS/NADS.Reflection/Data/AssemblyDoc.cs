@@ -7,7 +7,7 @@ namespace NADS.Reflection.Data
     {
         public readonly IReadOnlyDictionary<int, ClassDoc> Classes;
         public readonly IReadOnlyDictionary<int, ClassDoc> Structs;
-        public readonly IReadOnlyDictionary<int, InterfaceDoc> Interfaces;
+        public readonly IReadOnlyDictionary<int, ClassDoc> Interfaces;
         public readonly IReadOnlyDictionary<int, EnumDoc> Enums;
         public readonly IReadOnlyDictionary<int, MethodDoc> Delegates;
         
@@ -21,7 +21,7 @@ namespace NADS.Reflection.Data
         public AssemblyDoc(
             IReadOnlyDictionary<int, ClassDoc> classes,
             IReadOnlyDictionary<int, ClassDoc> structs,
-            IReadOnlyDictionary<int, InterfaceDoc> interfaces,
+            IReadOnlyDictionary<int, ClassDoc> interfaces,
             IReadOnlyDictionary<int, EnumDoc> enums,
             IReadOnlyDictionary<int, MethodDoc> delegates,
             
@@ -35,7 +35,7 @@ namespace NADS.Reflection.Data
         {
             Classes = classes ?? Empty<int, ClassDoc>.Dict;
             Structs = classes ?? Empty<int, ClassDoc>.Dict;
-            Interfaces = interfaces ?? Empty<int, InterfaceDoc>.Dict;
+            Interfaces = interfaces ?? Empty<int, ClassDoc>.Dict;
             Enums = enums ?? Empty<int, EnumDoc>.Dict;
             Delegates = delegates ?? Empty<int, MethodDoc>.Dict;
             
