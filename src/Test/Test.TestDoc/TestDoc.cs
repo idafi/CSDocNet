@@ -472,17 +472,17 @@ namespace NADS.TestDoc
     /// <summary>
     /// Test enum doc.
     /// </summary>
-    public enum TestEnum
+    public enum TestEnum : short
     {
         /// <summary>
         /// Value A doc.
         /// </summary>
-        ValueA,
+        ValueA = 69,
 
         /// <summary>
         /// Value B doc.
         /// </summary>
-        ValueB
+        ValueB = 666
     }
 
     /// <summary>
