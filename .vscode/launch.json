@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/NADS/NADS/bin/Debug/netcoreapp2.0/NADS.dll",
+            "program": "${workspaceFolder}/src/CSDocNet/CSDocNet/bin/Debug/netcoreapp2.0/CSDocNet.dll",
             "args": [ "Magic.xml" ],
-            "cwd": "${workspaceFolder}/src/NADS/NADS/bin/Debug/netcoreapp2.0",
+            "cwd": "${workspaceFolder}/src/CSDocNet/CSDocNet/bin/Debug/netcoreapp2.0",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

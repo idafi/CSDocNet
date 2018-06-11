@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace NADS.TestDoc
+namespace CSDocNet.TestDoc
 {
     /// <summary>Test doc attribute doc.</summary>
     public class TestDocAttribute : Attribute { }

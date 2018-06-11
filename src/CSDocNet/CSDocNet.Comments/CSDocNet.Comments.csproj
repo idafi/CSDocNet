@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../CSDocNet.props"/>
+
+  <ItemGroup>
+    <ProjectReference Include="../CSDocNet.Base/CSDocNet.Base.csproj" />
+  </ItemGroup>
+</Project>
