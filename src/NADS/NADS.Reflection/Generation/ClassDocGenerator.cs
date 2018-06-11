@@ -97,7 +97,7 @@ namespace NADS.Reflection.Generation
         {
             Check.Ref(type);
 
-            return docUtility.MakeMemberRef(type.BaseType);
+            return docUtility.MakeMemberRef(type.BaseType ?? typeof(object));
         }
 
         public IReadOnlyList<MemberRef> GenerateImplementsList(Type type)
