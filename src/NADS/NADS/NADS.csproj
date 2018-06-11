@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="../NADS.Base/NADS.Base.csproj" />
     <ProjectReference Include="../NADS.Comments/NADS.Comments.csproj" />
+    <ProjectReference Include="../NADS.Reflection/NADS.Reflection.csproj" />
   </ItemGroup>
 </Project>
