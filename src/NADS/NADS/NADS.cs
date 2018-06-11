@@ -16,7 +16,7 @@ namespace NADS
             if(args != null)
             {
                 var parser = new AssemblyCommentParser();
-                var gen = MakeAssemblyDocGen();
+                var gen = new AssemblyDocGenerator();
 
                 Stopwatch sw = new Stopwatch();
 
@@ -55,26 +55,6 @@ namespace NADS
         static void InitLog()
         {
             Log.AddLogger(new ConsoleLogger(), LogLevel.Debug);
-        }
-
-        static AssemblyDocGenerator MakeAssemblyDocGen()
-        {
-            var docUtility = new DocGeneratorUtility();
-            var idGen = new CommentIDGenerator();
-            var typeUtility = new TypeDocUtility(docUtility);
-            var methodUtility = new MethodBaseUtility(docUtility, idGen);
-            var methodGen = new MethodDocGenerator(docUtility, methodUtility);
-
-            return new AssemblyDocGenerator(
-                new ClassDocGenerator(docUtility, typeUtility, idGen),
-                new EnumDocGenerator(docUtility, typeUtility, idGen),
-                new EventDocGenerator(docUtility, methodUtility, idGen),
-                new FieldDocGenerator(docUtility, idGen),
-                new PropertyDocGenerator(docUtility, methodUtility, idGen),
-                new ConstructorDocGenerator(methodUtility),
-                new OperatorDocGenerator(methodGen),
-                methodGen
-            );
         }
     }
 }

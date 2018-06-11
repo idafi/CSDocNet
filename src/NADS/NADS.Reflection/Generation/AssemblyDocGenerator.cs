@@ -21,6 +21,23 @@ namespace NADS.Reflection.Generation
         readonly IOperatorDocGenerator operatorGen;
         readonly IMethodDocGenerator methodGen;
 
+        public AssemblyDocGenerator()
+        {
+            var docUtility = new DocGeneratorUtility();
+            var idGen = new CommentIDGenerator();
+            var typeUtility = new TypeDocUtility(docUtility);
+            var methodUtility = new MethodBaseUtility(docUtility, idGen);
+            
+            methodGen = new MethodDocGenerator(docUtility, methodUtility);
+            classGen = new ClassDocGenerator(docUtility, typeUtility, idGen);
+            enumGen = new EnumDocGenerator(docUtility, typeUtility, idGen);
+            eventGen = new EventDocGenerator(docUtility, methodUtility, idGen);
+            fieldGen = new FieldDocGenerator(docUtility, idGen);
+            propertyGen = new PropertyDocGenerator(docUtility, methodUtility, idGen);
+            ctorGen = new ConstructorDocGenerator(methodUtility);
+            operatorGen = new OperatorDocGenerator(methodGen);
+        }
+
         public AssemblyDocGenerator(
             IClassDocGenerator classGen,
             IEnumDocGenerator enumGen,
