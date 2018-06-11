@@ -16,7 +16,7 @@ namespace NADS
             if(args != null)
             {
                 var parser = new AssemblyCommentParser();
-                var gen = new AssemblyDocGenerator();
+                var gen = new AssemblyDataGenerator();
 
                 Stopwatch sw = new Stopwatch();
 
@@ -39,7 +39,7 @@ namespace NADS
                             if(File.Exists(assName))
                             {
                                 Assembly ass = Assembly.LoadFile(assName);
-                                var doc = gen.GenerateAssemblyDoc(ass);
+                                var doc = gen.GenerateAssemblyData(ass);
 
                                 sw.Stop();
                                 Log.Note($"generated reflected doc in {sw.ElapsedMilliseconds} ms");

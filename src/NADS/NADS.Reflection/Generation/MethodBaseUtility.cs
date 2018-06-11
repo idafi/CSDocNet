@@ -10,10 +10,10 @@ namespace NADS.Reflection.Generation
 {
     public class MethodBaseUtility : IMethodBaseUtility
     {
-        readonly IDocGeneratorUtility utility;
+        readonly IDataGeneratorUtility utility;
         readonly ICommentIDGenerator idGen;
 
-        public MethodBaseUtility(IDocGeneratorUtility utility, ICommentIDGenerator idGen)
+        public MethodBaseUtility(IDataGeneratorUtility utility, ICommentIDGenerator idGen)
         {
             Check.Ref(utility, idGen);
 
@@ -21,11 +21,11 @@ namespace NADS.Reflection.Generation
             this.idGen = idGen;
         }
         
-        public MemberDoc GenerateMemberDoc(MethodBase member)
+        public MemberData GenerateMemberData(MethodBase member)
         {
             Check.Ref(member);
 
-            return new MemberDoc(
+            return new MemberData(
                 GenerateName(member),
                 GenerateCommentID(member),
                 GenerateAccess(member),

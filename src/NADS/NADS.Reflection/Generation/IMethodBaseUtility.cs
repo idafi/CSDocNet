@@ -6,7 +6,7 @@ namespace NADS.Reflection.Generation
 {
     public interface IMethodBaseUtility
     {
-        MemberDoc GenerateMemberDoc(MethodBase member);
+        MemberData GenerateMemberData(MethodBase member);
 
         string GenerateName(MethodBase member);
         string GenerateCommentID(MethodBase member);

@@ -12,19 +12,19 @@ namespace NADS.Reflection.Generation
     public class MethodBaseUtilityTest
     {
         MethodBaseUtility methodUtility;
-        IDocGeneratorUtility docUtility;
+        IDataGeneratorUtility docUtility;
         ICommentIDGenerator idGen;
 
         [SetUp]
         public void SetUp()
         {
-            docUtility = Substitute.For<IDocGeneratorUtility>();
+            docUtility = Substitute.For<IDataGeneratorUtility>();
             idGen = Substitute.For<ICommentIDGenerator>();
             methodUtility = new MethodBaseUtility(docUtility, idGen);
         }
 
         [Test]
-        public void TestGenerateMemberDoc()
+        public void TestGenerateMemberData()
         {
             MethodBase method = typeof(MethodTestClass).GetMethod("Method");
             IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
@@ -38,18 +38,18 @@ namespace NADS.Reflection.Generation
             var modifiers = methodUtility.GenerateModifiers(method);
             var attr = methodUtility.GenerateAttributes(method);
 
-            MemberDoc mDoc = methodUtility.GenerateMemberDoc(method);
-            Assert.AreEqual(name, mDoc.Name);
-            Assert.AreEqual(id, mDoc.CommentID);
-            Assert.AreEqual(access, mDoc.Access);
-            Assert.AreEqual(modifiers, mDoc.Modifiers);
-            Assert.That(mDoc.Attributes, Is.EquivalentTo(attr));
+            MemberData mData = methodUtility.GenerateMemberData(method);
+            Assert.AreEqual(name, mData.Name);
+            Assert.AreEqual(id, mData.CommentID);
+            Assert.AreEqual(access, mData.Access);
+            Assert.AreEqual(modifiers, mData.Modifiers);
+            Assert.That(mData.Attributes, Is.EquivalentTo(attr));
         }
 
         [Test]
-        public void TestGenerateMemberDocThrowsOnNull()
+        public void TestGenerateMemberDataThrowsOnNull()
         {
-            Assert.Throws<ArgumentNullException>(() => methodUtility.GenerateMemberDoc(null));
+            Assert.Throws<ArgumentNullException>(() => methodUtility.GenerateMemberData(null));
         }
 
         [Test]
