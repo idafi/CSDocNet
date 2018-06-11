@@ -781,29 +781,49 @@ namespace NADS.TestDoc
         public ref readonly int RefReadonlyReturnMethod() => ref refReadonlyField;
     }
 
+    /// <summary>
+    /// Class test class doc.
+    /// </summary>
     public class ClassTestClass
     {
+        /// <summary>Public event doc.</summary>
         public event Action EventA;
+        /// <summary>Protected internal event doc.</summary>
         protected internal event Action EventB;
+        /// <summary>Protected event doc.</summary>
         protected event Action eventC;
 
+        /// <summary>Public field doc.</summary>
         public int FieldA;
+        /// <summary>Protected internal field doc.</summary>
         protected internal int FieldB;
+        /// <summary>Protected field doc.</summary>
         protected int fieldC;
 
+        /// <summary>Public property doc.</summary>
         public int PropertyA => FieldA;
+        /// <summary>Protected internal property doc.</summary>
         protected internal int PropertyB => FieldB;
+        /// <summary>Protected property doc.</summary>
         protected int propertyC => fieldC;
 
+        /// <summary>Public class doc.</summary>
         public ClassTestClass() {  }
+        /// <summary>Protected internal class doc.</summary>
         protected internal ClassTestClass(int intParam) { }
+        /// <summary>Protected class doc.</summary>
         protected ClassTestClass(float floatParam) { }
 
+        /// <summary>Not operator doc.</summary>
         public static bool operator !(ClassTestClass c) => false;
+        /// <summary>Increment operator doc.</summary>
         public static ClassTestClass operator ++(ClassTestClass c) => c;
 
+        /// <summary>Public method doc.</summary>
         public void MethodA() { }
+        /// <summary>Protected internal method doc.</summary>
         protected internal void MethodB() { }
+        /// <summary>Protected method doc.</summary>
         protected void MethodC() { }
     }
 }
