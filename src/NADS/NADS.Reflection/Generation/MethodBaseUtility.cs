@@ -50,8 +50,9 @@ namespace NADS.Reflection.Generation
         public IReadOnlyList<TypeParam> GenerateTypeParams(MethodBase methodInfo)
         {
             Check.Ref(methodInfo);
-
-            if(methodInfo.ContainsGenericParameters)
+            
+            // ugh. reflection thinks ctors can have typeparams, but will then throw if you try to get them
+            if(methodInfo.ContainsGenericParameters && !methodInfo.IsConstructor)
             {
                 Type[] typeArgs = methodInfo.GetGenericArguments();
                 TypeParam[] typeParams = new TypeParam[typeArgs.Length];
