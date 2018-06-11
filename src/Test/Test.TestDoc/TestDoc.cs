@@ -825,5 +825,12 @@ namespace CSDocNet.TestDoc
         protected internal void MethodB() { }
         /// <summary>Protected method doc.</summary>
         protected void MethodC() { }
+
+        void ShutUpCompiler()
+        {
+            EventA?.Invoke();
+            EventB?.Invoke();
+            eventC?.Invoke();
+        }
     }
 }
