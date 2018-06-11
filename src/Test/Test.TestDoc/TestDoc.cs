@@ -780,4 +780,30 @@ namespace NADS.TestDoc
         /// <summary>Ref readonly return method doc.</summary>
         public ref readonly int RefReadonlyReturnMethod() => ref refReadonlyField;
     }
+
+    public class ClassTestClass
+    {
+        public event Action EventA;
+        protected internal event Action EventB;
+        protected event Action eventC;
+
+        public int FieldA;
+        protected internal int FieldB;
+        protected int fieldC;
+
+        public int PropertyA => FieldA;
+        protected internal int PropertyB => FieldB;
+        protected int propertyC => fieldC;
+
+        public ClassTestClass() {  }
+        protected internal ClassTestClass(int intParam) { }
+        protected ClassTestClass(float floatParam) { }
+
+        public static bool operator !(ClassTestClass c) => false;
+        public static ClassTestClass operator ++(ClassTestClass c) => c;
+
+        public void MethodA() { }
+        protected internal void MethodB() { }
+        protected void MethodC() { }
+    }
 }
