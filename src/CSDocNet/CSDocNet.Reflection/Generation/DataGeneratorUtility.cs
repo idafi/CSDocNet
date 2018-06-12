@@ -50,7 +50,8 @@ namespace CSDocNet.Reflection.Generation
 
             int token = member.MetadataToken;
             IReadOnlyList<int> arrayDim = Empty<int>.List;
-            
+            IReadOnlyList<MemberRef> typeParams = Empty<MemberRef>.List;
+
             if(member is Type type)
             {
                 var result = FindRootElementType(type);
@@ -60,10 +61,14 @@ namespace CSDocNet.Reflection.Generation
                 token = (type.IsGenericParameter)
                     ? type.GenericParameterPosition
                     : member.MetadataToken;
+
+                typeParams = GetTypeParamRefs(type.GetGenericArguments());
             }
+            else if(member is MethodInfo method)
+            { typeParams = GetTypeParamRefs(method.GetGenericArguments()); }
 
             var refType = GetMemberRefType(member);
-            return new MemberRef(refType, token, arrayDim);
+            return new MemberRef(refType, token, arrayDim, typeParams);
         }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
@@ -193,6 +198,21 @@ namespace CSDocNet.Reflection.Generation
             { return MemberRefType.Struct; }
             else
             { throw new NotSupportedException($"couldn't determine member type of type '{type.Name}'"); }
+        }
+
+        IReadOnlyList<MemberRef> GetTypeParamRefs(IReadOnlyList<Type> typeParams)
+        {
+            if(typeParams.Count > 0)
+            {
+                MemberRef[] refs = new MemberRef[typeParams.Count];
+
+                for(int i = 0; i < refs.Length; i++)
+                { refs[i] = MakeMemberRef(typeParams[i]); }
+
+                return refs;
+            }
+
+            return Empty<MemberRef>.List;
         }
     }
 }

@@ -9,13 +9,16 @@ namespace CSDocNet.Reflection.Data
         public readonly int ID;
 
         public readonly IReadOnlyList<int> ArrayDimensions;
+        public readonly IReadOnlyList<MemberRef> TypeParams;
         
-        public MemberRef(MemberRefType type, int token, IReadOnlyList<int> arrayDimensions = null)
+        public MemberRef(MemberRefType type, int id,
+            IReadOnlyList<int> arrayDimensions = null, IReadOnlyList<MemberRef> typeParams = null)
         {
             Type = type;
-            Token = token;
+            ID = id;
 
             ArrayDimensions = arrayDimensions ?? Empty<int>.List;
+            TypeParams = typeParams ?? Empty<MemberRef>.List;
         }
     }
 }
