@@ -176,7 +176,7 @@ namespace CSDocNet.Reflection.Generation
             docUtility.Received().MakeMemberRef(t.GetMethod("MethodC", bindingFlags));
 
             Assert.AreEqual(2, methods.Operators.Count);
-            Assert.AreEqual(3, methods.Methods.Count);
+            Assert.AreEqual(4, methods.Methods.Count);  // "4?" don't forget ShutUpCompiler()
         }
 
         [Test]
