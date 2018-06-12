@@ -251,6 +251,26 @@ namespace CSDocNet.Reflection.Generation
             AssertMemberRef(returnRef, MemberRefType.Struct, typeof(int).MetadataToken);
             AssertMemberRef(paramRef, MemberRefType.Struct, t.MetadataToken);
         }
+        
+        [Test]
+        public void TestMakeTypeParamRef()
+        {
+            Type t = typeof(GenericClass<>);
+            Type arg = t.GetGenericArguments()[0];
+
+            MemberRef mRef = utility.MakeMemberRef(arg);
+            AssertMemberRef(mRef, MemberRefType.TypeParam, 0);        
+        }
+
+        [Test]
+        public void TestMakeMethodTypeParamRef()
+        {
+            MethodInfo method = typeof(GenericClass<>).GetMethod("GenericMethod");
+            Type arg = method.GetGenericArguments()[0];
+
+            MemberRef mRef = utility.MakeMemberRef(arg);
+            AssertMemberRef(mRef, MemberRefType.MethodTypeParam, 0);
+        }
 
         [Test]
         public void TestMakeMemberRefThrowsOnNull()
