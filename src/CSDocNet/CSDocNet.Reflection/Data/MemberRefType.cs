@@ -13,6 +13,10 @@ namespace CSDocNet.Reflection.Data
         Property,
         Constructor,
         Operator,
-        Method
+        Method,
+
+        // "why both?" position is different for each
+        TypeParam,
+        MethodTypeParam
     }
 }

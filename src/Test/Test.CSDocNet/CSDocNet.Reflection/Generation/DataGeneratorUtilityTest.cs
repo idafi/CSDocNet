@@ -358,7 +358,7 @@ namespace CSDocNet.Reflection.Generation
         void AssertMemberRef(in MemberRef mRef, MemberRefType type, int token, IReadOnlyList<int> arrayDim = null)
         {
             Assert.AreEqual(mRef.Type, type);
-            Assert.AreEqual(mRef.Token, token);
+            Assert.AreEqual(mRef.ID, token);
             Assert.That(mRef.ArrayDimensions, Is.EquivalentTo(arrayDim ?? Empty<int>.List));
         }
 
@@ -374,7 +374,7 @@ namespace CSDocNet.Reflection.Generation
             Assert.AreEqual(expected.Constraint, actual.Constraint);
 
             if(expected.Constraint == ConstraintType.Type)
-            { AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.Token); }
+            { AssertMemberRef(expected.ConstrainedType, actual.ConstrainedType.Type, actual.ConstrainedType.ID); }
             else if(expected.Constraint == ConstraintType.TypeParam)
             { Assert.AreEqual(expected.ConstrainedTypeParamPosition, actual.ConstrainedTypeParamPosition); }
         }

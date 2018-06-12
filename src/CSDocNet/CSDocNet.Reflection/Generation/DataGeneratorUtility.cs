@@ -48,16 +48,22 @@ namespace CSDocNet.Reflection.Generation
         {
             Check.Ref(member);
 
+            int token = member.MetadataToken;
             IReadOnlyList<int> arrayDim = Empty<int>.List;
+            
             if(member is Type type)
             {
                 var result = FindRootElementType(type);
                 member = result.Type;
                 arrayDim = result.Arrays;
+
+                token = (type.IsGenericParameter)
+                    ? type.GenericParameterPosition
+                    : member.MetadataToken;
             }
 
             var refType = GetMemberRefType(member);
-            return new MemberRef(refType, member.MetadataToken, arrayDim);
+            return new MemberRef(refType, token, arrayDim);
         }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
@@ -166,6 +172,14 @@ namespace CSDocNet.Reflection.Generation
         MemberRefType GetMemberRefType(Type type)
         {
             Assert.Ref(type);
+
+            if(type.IsGenericParameter)
+            {
+                if(type.DeclaringMethod != null)
+                { return MemberRefType.MethodTypeParam; }
+
+                return MemberRefType.TypeParam;
+            }
 
             if(type.BaseType == typeof(Delegate) || type.BaseType == typeof(MulticastDelegate))
             { return MemberRefType.Delegate; }

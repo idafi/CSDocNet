@@ -6,7 +6,7 @@ namespace CSDocNet.Reflection.Data
     public readonly struct MemberRef
     {
         public readonly MemberRefType Type;
-        public readonly int Token;
+        public readonly int ID;
 
         public readonly IReadOnlyList<int> ArrayDimensions;
         
