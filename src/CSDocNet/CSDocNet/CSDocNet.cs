@@ -51,10 +51,10 @@ namespace CSDocNet
                             sw.Restart();
                             foreach(MemberComments m in comments.Members.Values)
                             {
-                                sWriter.Write($"# {m.Name}\n\n");
-                                sWriter.Write($"\n\n## Summary\n\n");
+                                sWriter.Write($"## {m.Name}\n\n");
+                                sWriter.Write($"\n\n### Summary\n\n");
                                 mdWriter.WriteCommentBlock(m.Summary);
-                                sWriter.Write($"\n\n## Remarks\n\n");
+                                sWriter.Write($"\n\n### Remarks\n\n");
                                 mdWriter.WriteCommentBlock(m.Remarks);
                                 sWriter.Write("\n\n---\n\n");
                             }
