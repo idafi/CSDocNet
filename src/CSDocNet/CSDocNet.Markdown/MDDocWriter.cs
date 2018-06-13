@@ -106,6 +106,29 @@ namespace CSDocNet.Markdown
 
         public void WriteList(CommentList list)
         {
+            writer.Write("\n\n");
+
+            switch(list.Type)
+            {
+                case CommentListType.Bullet:
+                    foreach(CommentListItem item in list.Items)
+                    {
+                        writer.Write("- ");
+                        WriteCommentBlock(item.Description);
+                        writer.Write('\n');
+                    }
+                    break;
+                case CommentListType.Number:
+                    for(int i = 0; i < list.Items.Count; i++)
+                    {
+                        writer.Write($"{i + 1}. ");
+                        WriteCommentBlock(list.Items[i].Description);
+                        writer.Write('\n');
+                    }
+                    break;
+            }
+
+            writer.Write('\n');
         }
 
         void WriteSanitized(string text)
