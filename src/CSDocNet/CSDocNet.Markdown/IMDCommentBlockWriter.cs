@@ -2,7 +2,7 @@ using CSDocNet.Comments;
 
 namespace CSDocNet.Markdown
 {
-    public interface IMDDocWriter
+    public interface IMDCommentBlockWriter
     {
         void WriteCommentBlock(CommentBlock block);
 

@@ -4,12 +4,12 @@ using CSDocNet.Comments;
 
 namespace CSDocNet.Markdown
 {
-    public class MDDocWriter : IMDDocWriter
+    public class MDCommentBlockWriter : IMDCommentBlockWriter
     {
         readonly TextWriter writer;
         bool writeCode;
 
-        public MDDocWriter(TextWriter writer)
+        public MDCommentBlockWriter(TextWriter writer)
         {
             Check.Ref(writer);
 

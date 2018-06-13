@@ -19,7 +19,7 @@ namespace CSDocNet
                 var sWriter = new StreamWriter("out.md");
                 var parser = new AssemblyCommentParser();
                 var gen = new AssemblyDataGenerator();
-                var mdWriter = new MDDocWriter(sWriter);
+                var mdWriter = new MDCommentBlockWriter(sWriter);
 
                 Stopwatch sw = new Stopwatch();
 
