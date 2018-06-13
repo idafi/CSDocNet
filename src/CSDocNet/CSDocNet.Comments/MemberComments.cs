@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Comments
 {
-    public readonly struct MemberComments
+    public class MemberComments
     {
         public readonly string Name;
         
@@ -20,8 +20,8 @@ namespace CSDocNet.Comments
 
         public readonly bool InheritDoc;
 
-        public MemberComments(string name, in CommentBlock summary, in CommentBlock remarks,
-            in CommentBlock value, in CommentBlock returns, in CommentBlock example,
+        public MemberComments(string name, CommentBlock summary, CommentBlock remarks,
+            in CommentBlock value, CommentBlock returns, CommentBlock example,
             IReadOnlyList<ParamComments> parameters, IReadOnlyList<ParamComments> typeParams,
             IReadOnlyList<ParamComments> exceptions, IReadOnlyList<ParamComments> permissions,
             bool inheritDoc = false)

@@ -1,13 +1,13 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct TypeConstraint
+    public class TypeConstraint
     {
         public readonly ConstraintType Constraint;
         
         public readonly MemberRef ConstrainedType;
         public readonly int ConstrainedTypeParamPosition;
 
-        TypeConstraint(ConstraintType constraint, in MemberRef constrainedType,
+        TypeConstraint(ConstraintType constraint, MemberRef constrainedType,
             int constrainedTypeParamPosition)
         {
             Constraint = constraint;
@@ -25,7 +25,7 @@ namespace CSDocNet.Reflection.Data
         public static TypeConstraint Unmanaged
             => new TypeConstraint(ConstraintType.Unmanaged, default, default);
 
-        public static TypeConstraint Type(in MemberRef constrainedType)
+        public static TypeConstraint Type(MemberRef constrainedType)
             => new TypeConstraint(ConstraintType.Type, constrainedType, default);
         public static TypeConstraint TypeParam(int typeParamPosition)
             => new TypeConstraint(ConstraintType.TypeParam, default, typeParamPosition);

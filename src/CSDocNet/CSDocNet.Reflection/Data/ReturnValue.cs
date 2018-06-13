@@ -1,6 +1,6 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct ReturnValue
+    public class ReturnValue
     {
         public readonly ReturnModifier Modifier;
         public readonly MemberRef Type;
@@ -8,7 +8,7 @@ namespace CSDocNet.Reflection.Data
         public readonly bool IsGenericType;
         public readonly int GenericTypePosition;
 
-        public ReturnValue(ReturnModifier modifier, in MemberRef type,
+        public ReturnValue(ReturnModifier modifier, MemberRef type,
             bool isGenericType, int genericTypePosition)
         {
             Modifier = modifier;

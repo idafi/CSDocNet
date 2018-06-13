@@ -1,13 +1,13 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct OperatorData
+    public class OperatorData
     {
         public readonly MemberData Member;
         public readonly MethodData Method;
 
         public readonly Operator Operator;
 
-        public OperatorData(in MemberData member, in MethodData method,
+        public OperatorData(MemberData member, MethodData method,
             Operator @operator)
         {
             Member = member;

@@ -391,7 +391,7 @@ namespace CSDocNet.Reflection.Generation
             Assert.Throws<ArgumentNullException>(() => utility.IsReadOnly(null));
         }
 
-        void AssertMemberRef(in MemberRef mRef, MemberRefType type, int id,
+        void AssertMemberRef(MemberRef mRef, MemberRefType type, int id,
             IReadOnlyList<int> arrayDim = null, IReadOnlyList<MemberRef> typeParams = null)
         {
             Assert.AreEqual(mRef.Type, type);
@@ -410,7 +410,7 @@ namespace CSDocNet.Reflection.Generation
             { AssertTypeConstraint(expected[i], actual[i]); }
         }
 
-        void AssertTypeConstraint(in TypeConstraint expected, in TypeConstraint actual)
+        void AssertTypeConstraint(TypeConstraint expected, TypeConstraint actual)
         {
             Assert.AreEqual(expected.Constraint, actual.Constraint);
 

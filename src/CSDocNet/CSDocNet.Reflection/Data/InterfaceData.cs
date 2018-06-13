@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct InterfaceData
+    public class InterfaceData
     {
         public readonly MemberData Member;
 
@@ -11,7 +11,7 @@ namespace CSDocNet.Reflection.Data
         public readonly IReadOnlyList<MemberRef> Properties;
         public readonly IReadOnlyList<MemberRef> Methods;
 
-        public InterfaceData(in MemberData member,
+        public InterfaceData(MemberData member,
             IReadOnlyList<MemberRef> events,
             IReadOnlyList<MemberRef> properties,
             IReadOnlyList<MemberRef> methods)

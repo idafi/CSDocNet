@@ -1,6 +1,6 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct EnumValue
+    public class EnumValue
     {
         public readonly string Name;
         public readonly long Value;

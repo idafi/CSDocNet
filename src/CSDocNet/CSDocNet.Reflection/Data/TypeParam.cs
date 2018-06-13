@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct TypeParam
+    public class TypeParam
     {
         public readonly string Name;
 

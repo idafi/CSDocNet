@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Comments
 {
-    public readonly struct CommentBlock
+    public class CommentBlock
     {
         public readonly IReadOnlyList<CommentNode> Nodes;
 

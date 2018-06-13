@@ -3,14 +3,14 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Comments
 {
-    public readonly struct CommentList
+    public class CommentList
     {
         public readonly CommentListType Type;
         
         public readonly CommentListItem Header;
         public readonly IReadOnlyList<CommentListItem> Items;
 
-        public CommentList(CommentListType type, in CommentListItem header,
+        public CommentList(CommentListType type, CommentListItem header,
             IReadOnlyList<CommentListItem> items)
         {
             Type = type;

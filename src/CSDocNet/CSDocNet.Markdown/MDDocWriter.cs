@@ -16,7 +16,7 @@ namespace CSDocNet.Markdown
             this.writer = writer;
         }
 
-        public void WriteCommentBlock(in CommentBlock block)
+        public void WriteCommentBlock(CommentBlock block)
         {
             foreach(CommentNode node in block.Nodes)
             {
@@ -79,7 +79,7 @@ namespace CSDocNet.Markdown
             writer.Write('`');
         }
 
-        public void WriteParagraph(in CommentBlock para)
+        public void WriteParagraph(CommentBlock para)
         {
             writer.Write("\n\n");
 
@@ -90,21 +90,21 @@ namespace CSDocNet.Markdown
             writer.Write("\n\n");
         }
 
-        public void WriteCodeBlock(in CommentBlock code)
+        public void WriteCodeBlock(CommentBlock code)
         {
             writeCode = true;
             WriteParagraph(code);
             writeCode = false;
         }
 
-        public void WriteCodeInline(in CommentBlock code)
+        public void WriteCodeInline(CommentBlock code)
         {
             writer.Write('`');
             WriteCommentBlock(code);
             writer.Write('`');
         }
 
-        public void WriteList(in CommentList list)
+        public void WriteList(CommentList list)
         {
         }
 

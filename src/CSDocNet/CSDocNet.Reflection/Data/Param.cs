@@ -1,6 +1,6 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct Param
+    public class Param
     {
         public readonly ParamModifier Modifier;
         public readonly MemberRef Type;
@@ -11,7 +11,7 @@ namespace CSDocNet.Reflection.Data
         public readonly bool HasDefaultValue;
         public readonly object DefaultValue;
 
-        public Param(ParamModifier modifier, in MemberRef type,
+        public Param(ParamModifier modifier, MemberRef type,
             bool isGenericType, int genericTypePosition,
             bool hasDefaultValue, object defaultValue)
         {

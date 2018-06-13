@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct AssemblyData
+    public class AssemblyData
     {
         public readonly IReadOnlyDictionary<int, ClassData> Classes;
         public readonly IReadOnlyDictionary<int, ClassData> Structs;

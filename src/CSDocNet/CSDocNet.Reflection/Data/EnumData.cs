@@ -3,14 +3,14 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct EnumData
+    public class EnumData
     {
         public readonly MemberData Member;
 
         public readonly MemberRef UnderlyingType;
         public readonly IReadOnlyList<EnumValue> Values;
 
-        public EnumData(in MemberData member, in MemberRef underlyingType,
+        public EnumData(MemberData member, MemberRef underlyingType,
             IReadOnlyList<EnumValue> values)
         {
             Member = member;

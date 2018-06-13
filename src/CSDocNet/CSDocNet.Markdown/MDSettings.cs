@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace CSDocNet.Markdown
 {
-    public readonly struct MDSettings
+    public class MDSettings
     {
         public readonly IReadOnlyList<MDSection> Sections;
         public readonly IReadOnlyList<MDSummarySection> SummarySections;

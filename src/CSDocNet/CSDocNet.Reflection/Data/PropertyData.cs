@@ -1,8 +1,8 @@
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct PropertyData
+    public class PropertyData
     {
-        public readonly struct Accessor
+        public class Accessor
         {
             public readonly bool IsDefined;
             public readonly AccessModifier Access;
@@ -19,7 +19,7 @@ namespace CSDocNet.Reflection.Data
         public readonly Accessor GetAccessor;
         public readonly Accessor SetAccessor;
 
-        public PropertyData(in MemberData member, in Accessor getAccessor, in Accessor setAccessor)
+        public PropertyData(MemberData member, Accessor getAccessor, Accessor setAccessor)
         {
             Member = member;
 

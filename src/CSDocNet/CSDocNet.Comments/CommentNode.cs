@@ -1,6 +1,6 @@
 namespace CSDocNet.Comments
 {
-    public readonly struct CommentNode
+    public class CommentNode
     {
         public readonly CommentNodeType Type;
         public readonly int ValueIndex;

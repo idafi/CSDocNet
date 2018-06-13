@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct MethodData
+    public class MethodData
     {
         public readonly MemberData Member;
 
@@ -11,7 +11,7 @@ namespace CSDocNet.Reflection.Data
         public readonly IReadOnlyList<Param> Params;
         public readonly IReadOnlyList<TypeParam> TypeParams;
 
-        public MethodData(in MemberData member, in ReturnValue returnValue,
+        public MethodData(MemberData member, ReturnValue returnValue,
             IReadOnlyList<Param> parameters, IReadOnlyList<TypeParam> typeParams)
         {
             Member = member;

@@ -3,7 +3,7 @@ using CSDocNet.Collections;
 
 namespace CSDocNet.Reflection.Data
 {
-    public readonly struct MemberData
+    public class MemberData
     {
         public readonly string Name;
         public readonly string CommentID;

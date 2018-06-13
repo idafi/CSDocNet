@@ -1,11 +1,11 @@
 namespace CSDocNet.Comments
 {
-    public readonly struct CommentListItem
+    public class CommentListItem
     {
         public readonly CommentBlock Term;
         public readonly CommentBlock Description;
 
-        public CommentListItem(in CommentBlock term, in CommentBlock description)
+        public CommentListItem(CommentBlock term, CommentBlock description)
         {
             Term = term;
             Description = description;
