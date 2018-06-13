@@ -52,7 +52,7 @@ namespace CSDocNet.Reflection.Generation
             Check.Ref(methodInfo);
             
             // ugh. reflection thinks ctors can have typeparams, but will then throw if you try to get them
-            if(methodInfo.ContainsGenericParameters && !methodInfo.IsConstructor)
+            if(methodInfo.IsGenericMethod && !methodInfo.IsConstructor)
             {
                 Type[] typeArgs = methodInfo.GetGenericArguments();
                 TypeParam[] typeParams = new TypeParam[typeArgs.Length];
