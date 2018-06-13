@@ -34,8 +34,8 @@ namespace CSDocNet.Reflection.Generation
             var getAccess = gen.GenerateAccessor(property.GetMethod);
 
             PropertyData pData = gen.GeneratePropertyData(property);
-            Assert.AreEqual(member, pData.Member);
-            Assert.AreEqual(getAccess, pData.GetAccessor);
+            Assert.AreEqual(getAccess.Access, pData.GetAccessor.Access);
+            Assert.AreEqual(getAccess.IsDefined, pData.GetAccessor.IsDefined);
             Assert.AreEqual(false, pData.SetAccessor.IsDefined);
         }
 

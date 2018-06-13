@@ -32,15 +32,14 @@ namespace CSDocNet.Reflection.Generation
             docUtility.GenerateAttributes(method).Returns(expectedAttr);
 
             MemberData member = gen.GenerateMemberData(method);
-            ReturnValue returnType = gen.GenerateReturnValue(method);
+            ReturnValue returnValue = gen.GenerateReturnValue(method);
             var parameters = methodUtility.GenerateParams(method);
             var typeParams = methodUtility.GenerateTypeParams(method);
 
             MethodData mData = gen.GenerateMethodData(method);
             Assert.AreEqual(member, mData.Member);
-            Assert.AreEqual(returnType, mData.ReturnValue);
-            Assert.That(mData.Params, Is.EquivalentTo(parameters));
-            Assert.That(mData.TypeParams, Is.EquivalentTo(typeParams));
+            Assert.AreEqual(parameters.Count, mData.Params.Count);
+            Assert.AreEqual(typeParams.Count, mData.TypeParams.Count);
         }
 
         [Test]

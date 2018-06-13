@@ -119,7 +119,14 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateEnumValues()
         {
             var expected = new EnumValue[] { new EnumValue("ValueA", 69), new EnumValue("ValueB", 666) };
-            Assert.That(gen.GenerateEnumValues(typeof(TestEnum)), Is.EquivalentTo(expected));
+            var actual = gen.GenerateEnumValues(typeof(TestEnum));
+
+            Assert.AreEqual(expected.Length, actual.Count);
+            for(int i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i].Name, actual[i].Name);
+                Assert.AreEqual(expected[i].Value, actual[i].Value);
+            }
         }
 
         [Test]

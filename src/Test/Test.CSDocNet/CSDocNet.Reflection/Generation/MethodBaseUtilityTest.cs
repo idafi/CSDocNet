@@ -173,7 +173,10 @@ namespace CSDocNet.Reflection.Generation
             };
 
             var actual = methodUtility.GenerateParams(method);
-            Assert.That(actual, Is.EquivalentTo(expected));
+            
+            Assert.AreEqual(expected.Count, actual.Count);
+            for(int i = 0; i < expected.Count; i++)
+            { AssertParam(expected[i], actual[i], intRef); }
         }
 
         [Test]
@@ -205,6 +208,16 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateTypeParamsThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => methodUtility.GenerateTypeParams(null));
+        }
+
+        void AssertParam(Param expected, Param actual, MemberRef typeRef)
+        {
+            Assert.AreEqual(expected.Modifier, actual.Modifier);
+            Assert.AreEqual(typeRef, expected.Type);
+            Assert.AreEqual(expected.IsGenericType, actual.IsGenericType);
+            Assert.AreEqual(expected.GenericTypePosition, actual.GenericTypePosition);
+            Assert.AreEqual(expected.HasDefaultValue, actual.HasDefaultValue);
+            Assert.AreEqual(expected.DefaultValue, actual.DefaultValue);
         }
     }
 }
