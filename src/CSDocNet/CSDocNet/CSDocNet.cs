@@ -3,6 +3,7 @@ using System.Reflection;
 using System.IO;
 using CSDocNet.Comments;
 using CSDocNet.Logging;
+using CSDocNet.Markdown;
 using CSDocNet.Reflection.Generation;
 
 namespace CSDocNet
@@ -15,8 +16,10 @@ namespace CSDocNet
 
             if(args != null)
             {
+                var sWriter = new StreamWriter("out.md");
                 var parser = new AssemblyCommentParser();
                 var gen = new AssemblyDataGenerator();
+                var mdWriter = new MDDocWriter(sWriter);
 
                 Stopwatch sw = new Stopwatch();
 
@@ -44,11 +47,26 @@ namespace CSDocNet
                                 sw.Stop();
                                 Log.Note($"generated reflected doc in {sw.ElapsedMilliseconds} ms");
                             }
+
+                            sw.Restart();
+                            foreach(MemberComments m in comments.Members.Values)
+                            {
+                                sWriter.Write($"# {m.Name}\n\n");
+                                sWriter.Write($"\n\n## Summary\n\n");
+                                mdWriter.WriteCommentBlock(m.Summary);
+                                sWriter.Write($"\n\n## Remarks\n\n");
+                                mdWriter.WriteCommentBlock(m.Remarks);
+                                sWriter.Write("\n\n---\n\n");
+                            }
+                            sw.Stop();
+                            Log.Note($"wrote summaries and remarks in {sw.ElapsedMilliseconds} ms");
                         }
                     }
 
                     sw.Reset();
                 }
+
+                sWriter.Dispose();
             }
         }
 

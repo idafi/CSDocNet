@@ -10,5 +10,6 @@
     <ProjectReference Include="../CSDocNet.Base/CSDocNet.Base.csproj" />
     <ProjectReference Include="../CSDocNet.Comments/CSDocNet.Comments.csproj" />
     <ProjectReference Include="../CSDocNet.Reflection/CSDocNet.Reflection.csproj" />
+    <ProjectReference Include="../CSDocNet.Markdown/CSDocNet.Markdown.csproj" />
   </ItemGroup>
 </Project>
