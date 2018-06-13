@@ -133,7 +133,7 @@ namespace CSDocNet.Markdown
 
         void WriteSanitized(string text)
         {
-            if(text != null)
+            if(!string.IsNullOrEmpty(text))
             {
                 text = text.Replace("`", "\\`");
                 text = Regex.Replace(text, @"\s+", " ");
