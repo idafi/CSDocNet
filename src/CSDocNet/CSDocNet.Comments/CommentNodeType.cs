@@ -10,7 +10,6 @@ namespace CSDocNet.Comments
         Paragraph,
         CodeBlock,
         CodeInline,
-        Example,
 
         List
     }
