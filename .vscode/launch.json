@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/CSDocNet/CSDocNet/bin/Debug/netcoreapp2.0/CSDocNet.dll",
-            "args": [ "Magic.xml" ],
+            "args": [ "Test.TestDoc.xml" ],
             "cwd": "${workspaceFolder}/src/CSDocNet/CSDocNet/bin/Debug/netcoreapp2.0",
             "console": "internalConsole",
             "stopAtEntry": false,
