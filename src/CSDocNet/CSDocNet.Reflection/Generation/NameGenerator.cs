@@ -29,10 +29,7 @@ namespace CSDocNet.Reflection.Generation
             string name = type.Name;
 
             if(type.IsGenericType || type.IsGenericTypeDefinition || type.IsConstructedGenericType)
-            {
-                name = name.Substring(0, name.IndexOf('`'));
-                name += GenerateTypeParamList(type.GetGenericArguments());
-            }
+            { name = name.Substring(0, name.IndexOf('`')); }
 
             return name;
         }
@@ -52,11 +49,7 @@ namespace CSDocNet.Reflection.Generation
             if(method.IsSpecialName && method.Name.StartsWith("op_"))
             { return GenerateOperatorName(method.Name.Substring(3)); }
 
-            string name = method.Name;
-            if(method.IsGenericMethod || method.IsGenericMethodDefinition)
-            { name += GenerateTypeParamList(method.GetGenericArguments()); }
-
-            return name;
+            return method.Name;
         }
 
         public string GenerateOperatorName(string opMethodName)
@@ -121,23 +114,6 @@ namespace CSDocNet.Reflection.Generation
             }
 
             throw new NotSupportedException($"unknown operator '{opMethodName}'");
-        }
-
-        string GenerateTypeParamList(IEnumerable<Type> typeParams)
-        {
-            IEnumerable<string> names = GenerateTypeParamNames(typeParams);
-            return $"<{string.Join(",", names)}>";
-        }
-
-        IEnumerable<string> GenerateTypeParamNames(IEnumerable<Type> typeParams)
-        {
-            foreach(Type t in typeParams)
-            {
-                if(t.IsGenericParameter)
-                { yield return t.Name; }
-                else
-                { yield return GenerateTypeName(t); }
-            }
         }
     }
 }

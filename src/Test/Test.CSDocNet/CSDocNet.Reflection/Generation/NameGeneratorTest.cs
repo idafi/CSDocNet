@@ -39,14 +39,7 @@ namespace CSDocNet.Reflection.Generation
         [Test]
         public void TestGenerateGenericTypeName()
         {
-            Assert.AreEqual("GenericClass<T>", gen.GenerateTypeName(typeof(GenericClass<>)));
-        }
-
-        [Test]
-        public void TestGenerateConstructedGenericTypeName()
-        {
-            Type t = typeof(GenericClass<Int32>);
-            Assert.AreEqual("GenericClass<Int32>", gen.GenerateTypeName(t));
+            Assert.AreEqual("GenericClass", gen.GenerateTypeName(typeof(GenericClass<>)));
         }
 
         [Test]
@@ -74,7 +67,7 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateGenericMethodName()
         {
             MethodInfo m = typeof(TestClass).GetMethod("GenericMethod");
-            Assert.AreEqual("GenericMethod<T>", gen.GenerateMethodName(m));
+            Assert.AreEqual("GenericMethod", gen.GenerateMethodName(m));
         }
 
         [Test]
