@@ -6,139 +6,118 @@ namespace CSDocNet.Markdown
 {
     public class MDCommentBlockWriter : IMDCommentBlockWriter
     {
-        readonly TextWriter writer;
-        bool writeCode;
-
-        public MDCommentBlockWriter(TextWriter writer)
+        volatile bool writeCode;
+        
+        public string WriteCommentBlock(CommentBlock block)
         {
-            Check.Ref(writer);
+            string str = "";
 
-            this.writer = writer;
-        }
-
-        public void WriteCommentBlock(CommentBlock block)
-        {
             foreach(CommentNode node in block.Nodes)
-            {
-                switch(node.Type)
-                {
-                    case CommentNodeType.Text:
-                        WriteText(block.Text[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.CRef:
-                        WriteCRef(block.Text[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.ParamRef:
-                        WriteParamRef(block.Text[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.TypeParamRef:
-                        WriteTypeParamRef(block.Text[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.Paragraph:
-                        WriteParagraph(block.Blocks[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.CodeBlock:
-                        WriteCodeBlock(block.Blocks[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.CodeInline:
-                        WriteCodeInline(block.Blocks[node.ValueIndex]);
-                        break;
-                    case CommentNodeType.List:
-                        WriteList(block.Lists[node.ValueIndex]);
-                        break;
-                }
-            }
+            { str += WriteCommentNode(block, node); }
+
+            return str;
         }
 
-        public void WriteText(string text)
+        public string WriteText(string text)
         {
-            WriteSanitized(text);
+            return WriteSanitized(text);
         }
 
-        public void WriteCRef(string cRef)
+        public string WriteCRef(string cRef)
         {
-            writer.Write('[');
-            WriteSanitized(cRef);
-            writer.Write(']');
-            writer.Write('(');
-            WriteSanitized(cRef);
-            writer.Write(')');
+            return $"[{cRef}]({cRef})";
         }
 
-        public void WriteParamRef(string pRef)
+        public string WriteParamRef(string pRef)
         {
-            writer.Write('`');
-            WriteSanitized(pRef);
-            writer.Write('`');
+            return $"`{pRef}`";
         }
 
-        public void WriteTypeParamRef(string tpRef)
+        public string WriteTypeParamRef(string tpRef)
         {
-            writer.Write('`');
-            WriteSanitized(tpRef);
-            writer.Write('`');
+            return $"`{tpRef}`";
         }
 
-        public void WriteParagraph(CommentBlock para)
+        public string WriteParagraph(CommentBlock para)
         {
-            writer.Write("\n\n");
+            string str = "\n\n";
 
             if(writeCode)
-            { writer.Write("\t"); }
+            { str += '\t'; }
             
-            WriteCommentBlock(para);
-            writer.Write("\n\n");
+            str += WriteCommentBlock(para);
+            str += "\n\n";
+
+            return str;
         }
 
-        public void WriteCodeBlock(CommentBlock code)
+        public string WriteCodeBlock(CommentBlock code)
         {
             writeCode = true;
-            WriteParagraph(code);
+            string str = WriteParagraph(code);
             writeCode = false;
+
+            return str;
         }
 
-        public void WriteCodeInline(CommentBlock code)
+        public string WriteCodeInline(CommentBlock code)
         {
-            writer.Write('`');
-            WriteCommentBlock(code);
-            writer.Write('`');
+            return $"`{WriteCommentBlock(code)}`";
         }
 
-        public void WriteList(CommentList list)
+        public string WriteList(CommentList list)
         {
-            writer.Write("\n\n");
+            string str = "\n\n";
 
             switch(list.Type)
             {
                 case CommentListType.Bullet:
                     foreach(CommentListItem item in list.Items)
-                    {
-                        writer.Write("- ");
-                        WriteCommentBlock(item.Description);
-                        writer.Write('\n');
-                    }
+                    { str += $"- {WriteCommentBlock(item.Description)}\n"; }
                     break;
                 case CommentListType.Number:
                     for(int i = 0; i < list.Items.Count; i++)
-                    {
-                        writer.Write($"{i + 1}. ");
-                        WriteCommentBlock(list.Items[i].Description);
-                        writer.Write('\n');
-                    }
+                    { str += $"{i + 1}. {WriteCommentBlock(list.Items[i].Description)}\n"; }
                     break;
             }
 
-            writer.Write('\n');
+            str += '\n';
+            return str;
         }
 
-        void WriteSanitized(string text)
+        string WriteCommentNode(CommentBlock block, CommentNode node)
         {
-            if(!string.IsNullOrEmpty(text))
+            switch(node.Type)
             {
-                text = text.Replace("`", "\\`");
-                text = Regex.Replace(text, @"\s+", " ");
-                writer.Write(text);
+                case CommentNodeType.Text:
+                    return WriteText(block.Text[node.ValueIndex]);
+                case CommentNodeType.CRef:
+                    return WriteCRef(block.Text[node.ValueIndex]);
+                case CommentNodeType.ParamRef:
+                    return WriteParamRef(block.Text[node.ValueIndex]);
+                case CommentNodeType.TypeParamRef:
+                    return WriteTypeParamRef(block.Text[node.ValueIndex]);
+                case CommentNodeType.Paragraph:
+                    return WriteParagraph(block.Blocks[node.ValueIndex]);
+                case CommentNodeType.CodeBlock:
+                    return WriteCodeBlock(block.Blocks[node.ValueIndex]);
+                case CommentNodeType.CodeInline:
+                    return WriteCodeInline(block.Blocks[node.ValueIndex]);
+                case CommentNodeType.List:
+                    return WriteList(block.Lists[node.ValueIndex]);
+                default:
+                    return "";
             }
+        }
+
+        string WriteSanitized(string text)
+        {
+            if(string.IsNullOrEmpty(text))
+            { return ""; }
+
+            text = text.Replace("`", "\\`");
+            text = Regex.Replace(text, @"\s+", " ");
+            return text;
         }
     }
 }

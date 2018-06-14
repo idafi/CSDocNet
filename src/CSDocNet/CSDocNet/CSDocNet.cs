@@ -19,7 +19,7 @@ namespace CSDocNet
                 var sWriter = new StreamWriter("out.md");
                 var parser = new AssemblyCommentParser();
                 var gen = new AssemblyDataGenerator();
-                var mdWriter = new MDCommentBlockWriter(sWriter);
+                var mdWriter = new MDCommentBlockWriter();
 
                 Stopwatch sw = new Stopwatch();
 
@@ -53,9 +53,9 @@ namespace CSDocNet
                             {
                                 sWriter.Write($"## {m.Name}\n\n");
                                 sWriter.Write($"\n\n### Summary\n\n");
-                                mdWriter.WriteCommentBlock(m.Summary);
+                                sWriter.Write(mdWriter.WriteCommentBlock(m.Summary));
                                 sWriter.Write($"\n\n### Remarks\n\n");
-                                mdWriter.WriteCommentBlock(m.Remarks);
+                                sWriter.Write(mdWriter.WriteCommentBlock(m.Remarks));
                                 sWriter.Write("\n\n---\n\n");
                             }
                             sw.Stop();

@@ -4,17 +4,17 @@ namespace CSDocNet.Markdown
 {
     public interface IMDCommentBlockWriter
     {
-        void WriteCommentBlock(CommentBlock block);
+        string WriteCommentBlock(CommentBlock block);
 
-        void WriteText(string text);
-        void WriteCRef(string cRef);
-        void WriteParamRef(string pRef);
-        void WriteTypeParamRef(string tpRef);
+        string WriteText(string text);
+        string WriteCRef(string cRef);
+        string WriteParamRef(string pRef);
+        string WriteTypeParamRef(string tpRef);
 
-        void WriteParagraph(CommentBlock para);
-        void WriteCodeBlock(CommentBlock code);
-        void WriteCodeInline(CommentBlock code);
+        string WriteParagraph(CommentBlock para);
+        string WriteCodeBlock(CommentBlock code);
+        string WriteCodeInline(CommentBlock code);
 
-        void WriteList(CommentList list);
+        string WriteList(CommentList list);
     }
 }
