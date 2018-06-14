@@ -23,7 +23,7 @@ namespace CSDocNet.Reflection.Generation
 
         public AssemblyDataGenerator()
         {
-            var docUtility = new DataGeneratorUtility();
+            var docUtility = new DataGeneratorUtility(new NameGenerator());
             var idGen = new CommentIDGenerator();
             var typeUtility = new TypeDataUtility(docUtility);
             var methodUtility = new MethodBaseUtility(docUtility, idGen);

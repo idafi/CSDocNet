@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using NSubstitute;
 using CSDocNet.Collections;
 using CSDocNet.TestDoc;
 using CSDocNet.Reflection.Data;
@@ -12,106 +13,13 @@ namespace CSDocNet.Reflection.Generation
     public class DataGeneratorUtilityTest
     {
         DataGeneratorUtility utility;
+        INameGenerator nameGen;
 
         [SetUp]
         public void SetUp()
         {
-            utility = new DataGeneratorUtility();
-        }
-
-        [Test]
-        public void TestGenerateTypeName()
-        {
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass", utility.GenerateName(typeof(TestClass)));
-        }
-
-        [Test]
-        public void TestGenerateNestedTypeName()
-        {
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass+NestedClass", utility.GenerateName(typeof(TestClass.NestedClass)));
-        }
-
-        [Test]
-        public void TestGenerateGenericTypeName()
-        {
-            Assert.AreEqual("CSDocNet.TestDoc.GenericClass`1", utility.GenerateName(typeof(GenericClass<>)));   
-        }
-
-        [Test]
-        public void TestGenerateEventName()
-        {
-            EventInfo ev = typeof(TestClass).GetEvent("ActionEvent");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass.ActionEvent", utility.GenerateName(ev));
-        }
-
-        [Test]
-        public void TestGenerateFieldName()
-        {
-            FieldInfo field = typeof(TestClass).GetField("IntField");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass.IntField", utility.GenerateName(field));
-        }
-
-        [Test]
-        public void TestGenerateNestedFieldName()
-        {
-            FieldInfo field = typeof(TestClass.NestedClass).GetField("NestedField");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass+NestedClass.NestedField", utility.GenerateName(field));
-        }
-
-        [Test]
-        public void TestGenerateGenericFieldName()
-        {
-            FieldInfo field = typeof(GenericClass<>).GetField("GenericField");
-            Assert.AreEqual("CSDocNet.TestDoc.GenericClass`1.GenericField", utility.GenerateName(field));
-        }
-
-        [Test]
-        public void TestGeneratePropertyName()
-        {
-            PropertyInfo property = typeof(TestClass).GetProperty("IntProperty");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass.IntProperty", utility.GenerateName(property));
-        }
-
-        [Test]
-        public void TestGenerateNestedPropertyName()
-        {
-            PropertyInfo property = typeof(TestClass.NestedClass).GetProperty("NestedProperty");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass+NestedClass.NestedProperty", utility.GenerateName(property));
-        }
-
-        [Test]
-        public void TestGenerateGenericPropertyName()
-        {
-            PropertyInfo property = typeof(GenericClass<>).GetProperty("GenericProperty");
-            Assert.AreEqual("CSDocNet.TestDoc.GenericClass`1.GenericProperty", utility.GenerateName(property));
-        }
-
-        [Test]
-        public void TestGenerateConstructorName()
-        {
-            ConstructorInfo ctor = typeof(TestClass).GetConstructor(new Type[] { typeof(int) });
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass..ctor", utility.GenerateName(ctor));
-        }
-
-        [Test]
-        public void TestGenerateMethodName()
-        {
-            MethodInfo method = typeof(TestClass).GetMethod("IntMethod");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass.IntMethod", utility.GenerateName(method));
-        }
-
-        [Test]
-        public void TestGenerateNestedMethodName()
-        {
-            MethodInfo method = typeof(TestClass.NestedClass).GetMethod("NestedMethod");
-            Assert.AreEqual("CSDocNet.TestDoc.TestClass+NestedClass.NestedMethod", utility.GenerateName(method));
-        }
-
-        [Test]
-        public void TestGenerateGenericMethodName()
-        {
-            MethodInfo method = typeof(GenericClass<>).GetMethod("GenericMethod");
-            Assert.AreEqual("CSDocNet.TestDoc.GenericClass`1.GenericMethod", utility.GenerateName(method));
+            nameGen = Substitute.For<INameGenerator>();
+            utility = new DataGeneratorUtility(nameGen);
         }
 
         [Test]

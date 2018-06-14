@@ -9,17 +9,18 @@ namespace CSDocNet.Reflection.Generation
 {
     public class DataGeneratorUtility : IDataGeneratorUtility
     {
+        readonly INameGenerator nameGenerator;
+
+        public DataGeneratorUtility(INameGenerator nameGenerator)
+        {
+            Check.Ref(nameGenerator);
+
+            this.nameGenerator = nameGenerator;
+        }
+
         public string GenerateName(MemberInfo member)
         {
-            switch(member.MemberType)
-            {
-                case MemberTypes.TypeInfo:
-                case MemberTypes.NestedType:
-                    Type t = (Type)(member);
-                    return t.FullName;
-                default:
-                    return $"{member.DeclaringType.FullName}.{member.Name}";
-            }
+            return nameGenerator.GenerateMemberName(member);
         }
 
         public IReadOnlyList<MemberRef> GenerateAttributes(MemberInfo memberInfo)
