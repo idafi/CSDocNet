@@ -6,16 +6,9 @@ namespace CSDocNet.Markdown
 {
     public class MDCommentBlockWriter : IMDCommentBlockWriter
     {
-        volatile bool writeCode;
-        
         public string WriteCommentBlock(CommentBlock block)
         {
-            string str = "";
-
-            foreach(CommentNode node in block.Nodes)
-            { str += WriteCommentNode(block, node); }
-
-            return str;
+            return WriteCommentBlock(block, false);
         }
 
         public string WriteText(string text)
@@ -40,24 +33,12 @@ namespace CSDocNet.Markdown
 
         public string WriteParagraph(CommentBlock para)
         {
-            string str = "\n\n";
-
-            if(writeCode)
-            { str += '\t'; }
-            
-            str += WriteCommentBlock(para);
-            str += "\n\n";
-
-            return str;
+            return WriteParagraph(para, false);
         }
 
         public string WriteCodeBlock(CommentBlock code)
         {
-            writeCode = true;
-            string str = WriteParagraph(code);
-            writeCode = false;
-
-            return str;
+            return WriteParagraph(code, true);
         }
 
         public string WriteCodeInline(CommentBlock code)
@@ -84,8 +65,18 @@ namespace CSDocNet.Markdown
             str += '\n';
             return str;
         }
+        
+        string WriteCommentBlock(CommentBlock block, bool writeCode)
+        {
+            string str = "";
 
-        string WriteCommentNode(CommentBlock block, CommentNode node)
+            foreach(CommentNode node in block.Nodes)
+            { str += WriteCommentNode(block, node, writeCode); }
+
+            return str;
+        }
+
+        string WriteCommentNode(CommentBlock block, CommentNode node, bool writeCode)
         {
             switch(node.Type)
             {
@@ -98,7 +89,7 @@ namespace CSDocNet.Markdown
                 case CommentNodeType.TypeParamRef:
                     return WriteTypeParamRef(block.Text[node.ValueIndex]);
                 case CommentNodeType.Paragraph:
-                    return WriteParagraph(block.Blocks[node.ValueIndex]);
+                    return WriteParagraph(block.Blocks[node.ValueIndex], writeCode);
                 case CommentNodeType.CodeBlock:
                     return WriteCodeBlock(block.Blocks[node.ValueIndex]);
                 case CommentNodeType.CodeInline:
@@ -108,6 +99,19 @@ namespace CSDocNet.Markdown
                 default:
                     return "";
             }
+        }
+
+        string WriteParagraph(CommentBlock para, bool writeCode)
+        {
+            string str = "\n\n";
+
+            if(writeCode)
+            { str += '\t'; }
+            
+            str += WriteCommentBlock(para, writeCode);
+            str += "\n\n";
+
+            return str;
         }
 
         string WriteSanitized(string text)
