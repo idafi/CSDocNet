@@ -4,23 +4,23 @@ namespace CSDocNet.Markdown
 {
     public interface IMDSummarySyntaxWriter
     {
-        string WriteClassSyntax(ClassData classData);
-        string WriteStructSyntax(ClassData structData);
-        string WriteInterfaceSyntax(ClassData interfaceData);
-        string WriteEnumSyntax(EnumData enumData);
-        string WriteDelegateSyntax(MethodData delegateData);
+        string WriteClassSyntax(ClassData classData, AssemblyData assemblyData);
+        string WriteStructSyntax(ClassData structData, AssemblyData assemblyData);
+        string WriteInterfaceSyntax(ClassData interfaceData, AssemblyData assemblyData);
+        string WriteEnumSyntax(EnumData enumData, AssemblyData assemblyData);
+        string WriteDelegateSyntax(MethodData delegateData, AssemblyData assemblyData);
 
-        string WriteEventSyntax(MemberData eventData);
-        string WriteFieldSyntax(FieldData fieldData);
-        string WritePropertySyntax(PropertyData propertyData);
-        string WriteConstructorSyntax(MethodData ctorData);
-        string WriteOperatorSyntax(OperatorData operatorData);
-        string WriteMethodSyntax(MethodData methodData);
+        string WriteEventSyntax(MemberData eventData, AssemblyData assemblyData);
+        string WriteFieldSyntax(FieldData fieldData, AssemblyData assemblyData);
+        string WritePropertySyntax(PropertyData propertyData, AssemblyData assemblyData);
+        string WriteConstructorSyntax(MethodData ctorData, AssemblyData assemblyData);
+        string WriteOperatorSyntax(OperatorData operatorData, AssemblyData assemblyData);
+        string WriteMethodSyntax(MethodData methodData, AssemblyData assemblyData);
 
-        string WriteAttributes(MemberData member);
+        string WriteAttributes(MemberData member, AssemblyData assemblyData);
         string WriteAccess(MemberData member);
         string WriteModifiers(MemberData member);
-        string WriteTypeParams(MemberData member);
+        string WriteTypeParams(MemberData member, AssemblyData assemblyData);
         string WriteInheritedTypes(ClassData classData, AssemblyData assembly);
         string WriteConstraints(MemberData member, AssemblyData assembly);
     }
