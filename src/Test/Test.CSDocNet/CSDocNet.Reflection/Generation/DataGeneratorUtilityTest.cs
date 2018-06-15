@@ -203,6 +203,25 @@ namespace CSDocNet.Reflection.Generation
         }
 
         [Test]
+        public void TestGetTypeParams()
+        {
+            MethodBase method = typeof(MethodTestClass).GetMethod("GenericMethod");
+            var typeParamTypes = method.GetGenericArguments();
+            var typeParams = utility.GetTypeParams(typeParamTypes);
+            
+            Assert.AreEqual(typeParamTypes.Length, typeParams.Count);
+            Assert.AreEqual("T", typeParamTypes[0].Name);
+            Assert.AreEqual("U", typeParamTypes[1].Name);
+            Assert.AreEqual("V", typeParamTypes[2].Name);
+        }
+
+        [Test]
+        public void TestGetTypeParamsThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => utility.GetTypeParams(null));
+        }
+
+        [Test]
         public void TestGetGenericParamModifier()
         {
             Type i = typeof(GenericInterface<,,>);
@@ -309,6 +328,13 @@ namespace CSDocNet.Reflection.Generation
             Assert.AreEqual(typeParams?.Count ?? 0, mRef.TypeParams.Count);
             for(int i = 0; i < mRef.TypeParams.Count; i++)
             { AssertMemberRef(mRef.TypeParams[i], typeParams[i].Type, typeParams[i].ID); }
+        }
+
+        void AssertTypeParam(TypeParam expected, TypeParam actual)
+        {
+            Assert.AreEqual(expected.Name, actual.Name);
+            Assert.AreEqual(expected.Modifier, actual.Modifier);
+            AssertTypeConstraints(expected.Constraints, actual.Constraints);
         }
 
         void AssertTypeConstraints(IReadOnlyList<TypeConstraint> expected, IReadOnlyList<TypeConstraint> actual)

@@ -53,19 +53,7 @@ namespace CSDocNet.Reflection.Generation
             
             // ugh. reflection thinks ctors can have typeparams, but will then throw if you try to get them
             if(methodInfo.IsGenericMethod && !methodInfo.IsConstructor)
-            {
-                Type[] typeArgs = methodInfo.GetGenericArguments();
-                TypeParam[] typeParams = new TypeParam[typeArgs.Length];
-                
-                for(int i = 0; i < typeArgs.Length; i++)
-                {
-                    ParamModifier modifier = utility.GetGenericParamModifier(typeArgs[i].GenericParameterAttributes);
-                    IReadOnlyList<TypeConstraint> constraints = utility.GetTypeParamConstraints(typeArgs[i]);
-                    typeParams[i] = new TypeParam(typeArgs[i].Name, modifier, constraints);
-                }
-
-                return typeParams;
-            }
+            { return utility.GetTypeParams(methodInfo.GetGenericArguments()); }
 
             return Empty<TypeParam>.List;
         }

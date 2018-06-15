@@ -13,6 +13,7 @@ namespace CSDocNet.Reflection.Generation
         Type GetRootElementType(Type type);
         MemberRef MakeMemberRef(MemberInfo member);
 
+        IReadOnlyList<TypeParam> GetTypeParams(IReadOnlyList<Type> typeArgs);
         ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes);
         IReadOnlyList<TypeConstraint> GetTypeParamConstraints(Type typeParam);
 

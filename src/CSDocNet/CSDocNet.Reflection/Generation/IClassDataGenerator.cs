@@ -9,6 +9,8 @@ namespace CSDocNet.Reflection.Generation
     {
         ClassData GenerateClassData(Type type);
 
+        IReadOnlyList<TypeParam> GenerateTypeParams(Type type);
+
         MemberRef GenerateInheritsRef(Type type);
         IReadOnlyList<MemberRef> GenerateImplementsList(Type type);
 

@@ -6,6 +6,7 @@ namespace CSDocNet.Reflection.Data
     public class ClassData
     {
         public readonly MemberData Member;
+        public readonly IReadOnlyList<TypeParam> TypeParams;
 
         public readonly MemberRef Inherits;
         public readonly IReadOnlyList<MemberRef> Implements;
@@ -18,16 +19,19 @@ namespace CSDocNet.Reflection.Data
         public readonly IReadOnlyList<MemberRef> Methods;
 
         public ClassData(MemberData member,
-            in MemberRef inherits,
+            IReadOnlyList<TypeParam> typeParams,
+            MemberRef inherits,
             IReadOnlyList<MemberRef> implements,
             IReadOnlyList<MemberRef> events,
             IReadOnlyList<MemberRef> fields,
             IReadOnlyList<MemberRef> properties,
             IReadOnlyList<MemberRef> constructors,
             IReadOnlyList<MemberRef> operators,
-            IReadOnlyList<MemberRef> methods)
+            IReadOnlyList<MemberRef> methods
+        )
         {
             Member = member;
+            TypeParams = typeParams;
             
             Inherits = inherits;
             Implements = implements ?? Empty<MemberRef>.List;

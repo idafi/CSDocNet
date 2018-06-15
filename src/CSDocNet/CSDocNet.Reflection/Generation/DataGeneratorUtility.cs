@@ -71,6 +71,22 @@ namespace CSDocNet.Reflection.Generation
             var refType = GetMemberRefType(member);
             return new MemberRef(refType, token, arrayDim, typeParams);
         }
+
+        public IReadOnlyList<TypeParam> GetTypeParams(IReadOnlyList<Type> typeArgs)
+        {
+            Check.Ref(typeArgs);
+
+            TypeParam[] typeParams = new TypeParam[typeArgs.Count];
+            
+            for(int i = 0; i < typeArgs.Count; i++)
+            {
+                ParamModifier modifier = GetGenericParamModifier(typeArgs[i].GenericParameterAttributes);
+                IReadOnlyList<TypeConstraint> constraints = GetTypeParamConstraints(typeArgs[i]);
+                typeParams[i] = new TypeParam(typeArgs[i].Name, modifier, constraints);
+            }
+
+            return typeParams;
+        }
         
         public ParamModifier GetGenericParamModifier(GenericParameterAttributes attributes)
         {

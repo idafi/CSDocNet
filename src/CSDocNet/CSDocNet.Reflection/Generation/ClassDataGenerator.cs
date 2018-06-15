@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CSDocNet.Collections;
 using CSDocNet.Debug;
 using CSDocNet.Reflection.Data;
 
@@ -34,6 +35,7 @@ namespace CSDocNet.Reflection.Generation
 
             return new ClassData(
                 GenerateMemberData(type),
+                GenerateTypeParams(type),
                 GenerateInheritsRef(type),
                 GenerateImplementsList(type),
                 GenerateEvents(type),
@@ -91,6 +93,16 @@ namespace CSDocNet.Reflection.Generation
             Check.Ref(member);
 
             return docUtility.GenerateAttributes(member);
+        }
+
+        public IReadOnlyList<TypeParam> GenerateTypeParams(Type type)
+        {
+            Check.Ref(type);
+
+            if(type.IsGenericTypeDefinition)
+            { return docUtility.GetTypeParams(type.GetGenericArguments()); }
+
+            return Empty<TypeParam>.List;
         }
 
         public MemberRef GenerateInheritsRef(Type type)

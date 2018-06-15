@@ -190,18 +190,8 @@ namespace CSDocNet.Reflection.Generation
         {
             MethodBase method = typeof(MethodTestClass).GetMethod("GenericMethod");
             var typeParamTypes = method.GetGenericArguments();
-            var typeParams = methodUtility.GenerateTypeParams(typeof(MethodTestClass).GetMethod("GenericMethod"));
-            
-            Assert.AreEqual(typeParamTypes.Length, typeParams.Count);
-            for(int i = 0; i < typeParams.Count; i++)
-            {
-                docUtility.Received().GetGenericParamModifier(typeParamTypes[i].GenericParameterAttributes);
-                docUtility.Received().GetTypeParamConstraints(typeParamTypes[i]);
-            }
-
-            Assert.AreEqual("T", typeParamTypes[0].Name);
-            Assert.AreEqual("U", typeParamTypes[1].Name);
-            Assert.AreEqual("V", typeParamTypes[2].Name);
+            methodUtility.GenerateTypeParams(method);
+            docUtility.ReceivedWithAnyArgs().GetTypeParams(typeParamTypes);
         }
 
         [Test]
