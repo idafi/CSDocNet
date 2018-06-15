@@ -74,7 +74,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericClass<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken,
-                typeParams: new MemberRef[] { new MemberRef(MemberRefType.TypeParam, 0) });
+                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Class, 0) });
         }
 
         [Test]
@@ -83,10 +83,10 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericClass<>.GenericNestedClass<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken,
-                typeParams: new MemberRef[]
+                typeParams: new TypeParamRef[]
                 {
-                    new MemberRef(MemberRefType.TypeParam, 0),
-                    new MemberRef(MemberRefType.TypeParam, 1)
+                    new TypeParamRef(MemberRefType.Class, 0),
+                    new TypeParamRef(MemberRefType.Class, 1)
                 }
             );
         }
@@ -105,7 +105,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericStruct<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Struct, t.MetadataToken,
-                typeParams: new MemberRef[] { new MemberRef(MemberRefType.TypeParam, 0)});
+                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Struct, 0) });
         }
 
         [Test]
@@ -130,11 +130,11 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericInterface<,,>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Interface, t.MetadataToken,
-                typeParams: new MemberRef[]
+                typeParams: new TypeParamRef[]
                 {
-                    new MemberRef(MemberRefType.TypeParam, 0),
-                    new MemberRef(MemberRefType.TypeParam, 1),
-                    new MemberRef(MemberRefType.TypeParam, 2),
+                    new TypeParamRef(MemberRefType.Interface, 0),
+                    new TypeParamRef(MemberRefType.Interface, 1),
+                    new TypeParamRef(MemberRefType.Interface, 2)
                 }
             );
         }
@@ -153,7 +153,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericDelegate<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Delegate, t.MetadataToken,
-                typeParams: new MemberRef[] { new MemberRef(MemberRefType.TypeParam, 0)});
+                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Delegate, 0) });
         }
 
         [Test]
@@ -174,26 +174,6 @@ namespace CSDocNet.Reflection.Generation
 
             AssertMemberRef(returnRef, MemberRefType.Struct, typeof(int).MetadataToken);
             AssertMemberRef(paramRef, MemberRefType.Struct, t.MetadataToken);
-        }
-        
-        [Test]
-        public void TestMakeTypeParamRef()
-        {
-            Type t = typeof(GenericClass<>);
-            Type arg = t.GetGenericArguments()[0];
-
-            MemberRef mRef = utility.MakeMemberRef(arg);
-            AssertMemberRef(mRef, MemberRefType.TypeParam, 0);        
-        }
-
-        [Test]
-        public void TestMakeMethodTypeParamRef()
-        {
-            MethodInfo method = typeof(GenericClass<>).GetMethod("GenericMethod");
-            Type arg = method.GetGenericArguments()[0];
-
-            MemberRef mRef = utility.MakeMemberRef(arg);
-            AssertMemberRef(mRef, MemberRefType.MethodTypeParam, 0);
         }
 
         [Test]
@@ -319,7 +299,7 @@ namespace CSDocNet.Reflection.Generation
         }
 
         void AssertMemberRef(MemberRef mRef, MemberRefType type, int id,
-            IReadOnlyList<int> arrayDim = null, IReadOnlyList<MemberRef> typeParams = null)
+            IReadOnlyList<int> arrayDim = null, IReadOnlyList<TypeParamRef> typeParams = null)
         {
             Assert.AreEqual(mRef.Type, type);
             Assert.AreEqual(mRef.ID, id);
@@ -327,7 +307,22 @@ namespace CSDocNet.Reflection.Generation
             
             Assert.AreEqual(typeParams?.Count ?? 0, mRef.TypeParams.Count);
             for(int i = 0; i < mRef.TypeParams.Count; i++)
-            { AssertMemberRef(mRef.TypeParams[i], typeParams[i].Type, typeParams[i].ID); }
+            {
+                TypeParamRef expRef = typeParams[i];
+                TypeParamRef actRef = mRef.TypeParams[i];
+
+                Assert.AreEqual(expRef.DeclaringType, actRef.DeclaringType);
+                Assert.AreEqual(expRef.DeclaredPosition, actRef.DeclaredPosition);
+                
+                if(expRef.ConstructedType != null)
+                {
+                    AssertMemberRef(actRef.ConstructedType, expRef.ConstructedType.Type,
+                        expRef.ConstructedType.ID, expRef.ConstructedType.ArrayDimensions,
+                        expRef.ConstructedType.TypeParams);
+                }
+                else
+                { Assert.IsNull(actRef.ConstructedType); }
+            }
         }
 
         void AssertTypeParam(TypeParam expected, TypeParam actual)

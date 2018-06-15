@@ -51,7 +51,7 @@ namespace CSDocNet.Reflection.Generation
 
             int token = member.MetadataToken;
             IReadOnlyList<int> arrayDim = Empty<int>.List;
-            IReadOnlyList<MemberRef> typeParams = Empty<MemberRef>.List;
+            IReadOnlyList<TypeParamRef> typeParams = Empty<TypeParamRef>.List;
 
             if(member is Type type)
             {
@@ -195,14 +195,6 @@ namespace CSDocNet.Reflection.Generation
         {
             Assert.Ref(type);
 
-            if(type.IsGenericParameter)
-            {
-                if(type.DeclaringMethod != null)
-                { return MemberRefType.MethodTypeParam; }
-
-                return MemberRefType.TypeParam;
-            }
-
             if(type.BaseType == typeof(Delegate) || type.BaseType == typeof(MulticastDelegate))
             { return MemberRefType.Delegate; }
             else if(type.IsClass)
@@ -217,19 +209,32 @@ namespace CSDocNet.Reflection.Generation
             { throw new NotSupportedException($"couldn't determine member type of type '{type.Name}'"); }
         }
 
-        IReadOnlyList<MemberRef> GetTypeParamRefs(IReadOnlyList<Type> typeParams)
+        IReadOnlyList<TypeParamRef> GetTypeParamRefs(IReadOnlyList<Type> typeParams)
         {
             if(typeParams.Count > 0)
             {
-                MemberRef[] refs = new MemberRef[typeParams.Count];
-
+                TypeParamRef[] refs = new TypeParamRef[typeParams.Count];
                 for(int i = 0; i < refs.Length; i++)
-                { refs[i] = MakeMemberRef(typeParams[i]); }
+                {
+                    Type tp = typeParams[i];
+
+                    if(tp.IsGenericParameter)
+                    {
+                        MemberRefType refType = (tp.DeclaringMethod != null)
+                            ? MemberRefType.Method
+                            : GetMemberRefType(tp.DeclaringType);
+
+                        int pos = tp.GenericParameterPosition;
+                        refs[i] = new TypeParamRef(refType, pos);
+                    }
+                    else
+                    { refs[i] = new TypeParamRef(MakeMemberRef(tp)); }
+                }
 
                 return refs;
             }
 
-            return Empty<MemberRef>.List;
+            return Empty<TypeParamRef>.List;
         }
     }
 }
