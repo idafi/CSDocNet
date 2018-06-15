@@ -75,28 +75,6 @@ namespace CSDocNet.Reflection.Generation
         }
 
         [Test]
-        public void TestGenerateAccessor()
-        {
-            PropertyInfo property = typeof(PropertyTestClass).GetProperty("ProtectedSetProperty");
-            MethodInfo get = property.GetMethod;
-            MethodInfo set = property.SetMethod;
-
-            var getAccess = gen.GenerateAccessor(get);
-            var setAccess = gen.GenerateAccessor(set);
-
-            Assert.AreEqual(true, getAccess.IsDefined);
-            Assert.AreEqual(true, setAccess.IsDefined);
-            Assert.AreEqual(AccessModifier.Public, getAccess.Access);
-            Assert.AreEqual(AccessModifier.Protected, setAccess.Access);
-        }
-
-        [Test]
-        public void TestGenerateAccessorThrowsOnNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => gen.GenerateAccessor(null));
-        }
-
-        [Test]
         public void TestGenerateName()
         {
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
@@ -191,6 +169,46 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateAttributesThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(() => gen.GenerateAttributes(null));
+        }
+
+        [Test]
+        public void TestGenerateAccessor()
+        {
+            PropertyInfo property = typeof(PropertyTestClass).GetProperty("ProtectedSetProperty");
+            MethodInfo get = property.GetMethod;
+            MethodInfo set = property.SetMethod;
+
+            var getAccess = gen.GenerateAccessor(get);
+            var setAccess = gen.GenerateAccessor(set);
+
+            Assert.AreEqual(true, getAccess.IsDefined);
+            Assert.AreEqual(true, setAccess.IsDefined);
+            Assert.AreEqual(AccessModifier.Public, getAccess.Access);
+            Assert.AreEqual(AccessModifier.Protected, setAccess.Access);
+        }
+
+        [Test]
+        public void TestGenerateAccessorThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => gen.GenerateAccessor(null));
+        }
+
+        [Test]
+        public void TestGenerateIndexerParams()
+        {
+            PropertyInfo property = typeof(TestClass).GetProperty("Item");
+            MemberRef mRef = new MemberRef(MemberRefType.Struct, typeof(int).MetadataToken);
+            docUtility.MakeMemberRef(typeof(int)).Returns(mRef);
+
+            var iParams = gen.GenerateIndexerParams(property);
+            Assert.AreEqual(1, iParams.Count);
+            Assert.AreEqual(mRef.ID, iParams[0].Type.ID);
+        }
+
+        [Test]
+        public void TestGenerateIndexerParamsThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => gen.GenerateIndexerParams(null));
         }
     }
 }

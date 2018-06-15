@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CSDocNet.Collections;
 using CSDocNet.Reflection.Data;
 
 namespace CSDocNet.Reflection.Generation
@@ -32,7 +33,10 @@ namespace CSDocNet.Reflection.Generation
                 ? GenerateAccessor(propertyInfo.SetMethod)
                 : new PropertyData.Accessor(false, default);
             
-            return new PropertyData(GenerateMemberData(propertyInfo), get, set);
+            return new PropertyData(
+                    GenerateMemberData(propertyInfo),
+                    GenerateIndexerParams(propertyInfo),
+                    get, set);
         }
 
         public MemberData GenerateMemberData(PropertyInfo member)
@@ -46,13 +50,6 @@ namespace CSDocNet.Reflection.Generation
                 GenerateModifiers(member),
                 GenerateAttributes(member)
             );
-        }
-
-        public PropertyData.Accessor GenerateAccessor(MethodInfo accessorInfo)
-        {
-            Check.Ref(accessorInfo);
-
-            return new PropertyData.Accessor(true, methodUtility.GenerateAccess(accessorInfo));
         }
 
         public string GenerateName(PropertyInfo member)
@@ -101,6 +98,20 @@ namespace CSDocNet.Reflection.Generation
             Check.Ref(member);
 
             return docUtility.GenerateAttributes(member);
+        }
+
+        public IReadOnlyList<Param> GenerateIndexerParams(PropertyInfo propertyInfo)
+        {
+            Check.Ref(propertyInfo);
+
+            return methodUtility.GenerateParams(propertyInfo.GetIndexParameters());
+        }
+
+        public PropertyData.Accessor GenerateAccessor(MethodInfo accessorInfo)
+        {
+            Check.Ref(accessorInfo);
+
+            return new PropertyData.Accessor(true, methodUtility.GenerateAccess(accessorInfo));
         }
     }
 }

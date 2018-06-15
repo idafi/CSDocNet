@@ -31,7 +31,7 @@ namespace CSDocNet.Reflection.Generation
             methodUtility.GenerateAttributes(ctor).Returns(expectedAttr);
 
             MemberData member = gen.GenerateMemberData(ctor);
-            var parameters = methodUtility.GenerateParams(ctor);
+            var parameters = methodUtility.GenerateParams(ctor.GetParameters());
             var typeParams = methodUtility.GenerateTypeParams(ctor);
 
             MethodData cData = gen.GenerateConstructorData(ctor);

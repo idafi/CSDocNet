@@ -172,7 +172,7 @@ namespace CSDocNet.Reflection.Generation
                 new Param(ParamModifier.None, intRef, false, -1, true, 666)
             };
 
-            var actual = methodUtility.GenerateParams(method);
+            var actual = methodUtility.GenerateParams(method.GetParameters());
             
             Assert.AreEqual(expected.Count, actual.Count);
             for(int i = 0; i < expected.Count; i++)

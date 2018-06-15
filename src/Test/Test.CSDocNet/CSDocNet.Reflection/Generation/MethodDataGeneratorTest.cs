@@ -33,7 +33,7 @@ namespace CSDocNet.Reflection.Generation
 
             MemberData member = gen.GenerateMemberData(method);
             ReturnValue returnValue = gen.GenerateReturnValue(method);
-            var parameters = methodUtility.GenerateParams(method);
+            var parameters = methodUtility.GenerateParams(method.GetParameters());
             var typeParams = methodUtility.GenerateTypeParams(method);
 
             MethodData mData = gen.GenerateMethodData(method);

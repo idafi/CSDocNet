@@ -34,15 +34,13 @@ namespace CSDocNet.Reflection.Generation
             );
         }
 
-        public IReadOnlyList<Param> GenerateParams(MethodBase methodInfo)
+        public IReadOnlyList<Param> GenerateParams(IReadOnlyList<ParameterInfo> paramsInfo)
         {
-            Check.Ref(methodInfo);
+            Check.Ref(paramsInfo);
 
-            ParameterInfo[] paramInfo = methodInfo.GetParameters();
-            Param[] parameters = new Param[paramInfo.Length];
-
-            for(int i = 0; i < paramInfo.Length; i++)
-            { parameters[i] = GenerateParam(paramInfo[i]); }
+            Param[] parameters = new Param[paramsInfo.Count];
+            for(int i = 0; i < paramsInfo.Count; i++)
+            { parameters[i] = GenerateParam(paramsInfo[i]); }
 
             return parameters;
         }

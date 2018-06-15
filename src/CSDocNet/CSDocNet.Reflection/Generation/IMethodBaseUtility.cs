@@ -14,7 +14,7 @@ namespace CSDocNet.Reflection.Generation
         Modifier GenerateModifiers(MethodBase member);
         IReadOnlyList<MemberRef> GenerateAttributes(MethodBase member);
 
-        IReadOnlyList<Param> GenerateParams(MethodBase methodInfo);
+        IReadOnlyList<Param> GenerateParams(IReadOnlyList<ParameterInfo> paramsInfo);
         IReadOnlyList<TypeParam> GenerateTypeParams(MethodBase methodInfo);
     }
 }

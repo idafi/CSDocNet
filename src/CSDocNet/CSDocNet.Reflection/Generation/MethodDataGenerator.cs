@@ -28,7 +28,7 @@ namespace CSDocNet.Reflection.Generation
             return new MethodData(
                 GenerateMemberData(methodInfo),
                 GenerateReturnValue(methodInfo),
-                methodUtility.GenerateParams(methodInfo),
+                methodUtility.GenerateParams(methodInfo.GetParameters()),
                 methodUtility.GenerateTypeParams(methodInfo)
             );
         }
