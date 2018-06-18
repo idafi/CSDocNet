@@ -63,8 +63,34 @@ namespace CSDocNet
                                     }
                                 }
 
+                                foreach(ClassData data in doc.Structs.Values)
+                                {
+                                    if(comments.Members.TryGetValue(data.Member.CommentID, out var c))
+                                    {
+                                        sWriter.Write($"# {data.Member.Name}\n\n");
+                                        sWriter.Write(mdWriter.WriteCommentBlock(c.Summary));
+                                        sWriter.Write("\n\n");
+                                        sWriter.Write("## Syntax\n\n");
+                                        sWriter.Write(syntaxWriter.WriteStructSyntax(data, doc));
+                                        sWriter.Write("\n\n");
+                                    }
+                                }
+
+                                foreach(ClassData data in doc.Interfaces.Values)
+                                {
+                                    if(comments.Members.TryGetValue(data.Member.CommentID, out var c))
+                                    {
+                                        sWriter.Write($"# {data.Member.Name}\n\n");
+                                        sWriter.Write(mdWriter.WriteCommentBlock(c.Summary));
+                                        sWriter.Write("\n\n");
+                                        sWriter.Write("## Syntax\n\n");
+                                        sWriter.Write(syntaxWriter.WriteInterfaceSyntax(data, doc));
+                                        sWriter.Write("\n\n");
+                                    }
+                                }
+
                                 sw.Stop();
-                                Log.Note($"wrote class summaries in {sw.ElapsedMilliseconds} ms");
+                                Log.Note($"wrote summaries in {sw.ElapsedMilliseconds} ms");
                             }
                         }
                     }

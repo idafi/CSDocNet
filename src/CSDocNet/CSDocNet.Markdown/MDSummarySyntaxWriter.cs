@@ -18,29 +18,17 @@ namespace CSDocNet.Markdown
 
         public string WriteClassSyntax(ClassData classData, AssemblyData assemblyData)
         {
-            string str = "";
-
-            str += WriteAttributes(classData.Member, assemblyData);
-            str += "\n\t";
-            str += WriteAccess(classData.Member);
-            str += WriteModifiers(classData.Member);
-            str += "class ";
-            str += classData.Member.Name;
-            str += WriteTypeParams(classData);
-            str += WriteInheritedTypes(classData, assemblyData);
-            str += WriteConstraints(classData, assemblyData);
-
-            return str;
+            return WriteClassData(classData, "class", assemblyData);
         }
 
         public string WriteStructSyntax(ClassData structData, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            return WriteClassData(structData, "struct", assemblyData);
         }
 
         public string WriteInterfaceSyntax(ClassData interfaceData, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            return WriteClassData(interfaceData, "interface", assemblyData);
         }
 
         public string WriteEnumSyntax(EnumData enumData, AssemblyData assemblyData)
@@ -178,6 +166,23 @@ namespace CSDocNet.Markdown
                 TypeParam tp = classData.TypeParams[i];
                 str += WriteTypeConstraints(tp.Constraints, i, classData.TypeParams, assemblyData);
             }
+
+            return str;
+        }
+
+        string WriteClassData(ClassData data, string keyword, AssemblyData assemblyData)
+        {
+            string str = "";
+
+            str += WriteAttributes(data.Member, assemblyData);
+            str += "\n\t";
+            str += WriteAccess(data.Member);
+            str += WriteModifiers(data.Member);
+            str += $"{keyword} ";
+            str += data.Member.Name;
+            str += WriteTypeParams(data);
+            str += WriteInheritedTypes(data, assemblyData);
+            str += WriteConstraints(data, assemblyData);
 
             return str;
         }
