@@ -57,12 +57,8 @@ namespace CSDocNet.Reflection.Generation
             {
                 var result = FindRootElementType(type);
                 member = result.Type;
+
                 arrayDim = result.Arrays;
-
-                token = (type.IsGenericParameter)
-                    ? type.GenericParameterPosition
-                    : member.MetadataToken;
-
                 typeParams = GetTypeParamRefs(type.GetGenericArguments());
             }
             else if(member is MethodInfo method)
