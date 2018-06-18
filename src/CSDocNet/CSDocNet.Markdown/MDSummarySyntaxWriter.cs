@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CSDocNet.Comments;
 using CSDocNet.Reflection.Data;
 
@@ -6,9 +7,30 @@ namespace CSDocNet.Markdown
 {
     public class MDSummarySyntaxWriter : IMDSummarySyntaxWriter
     {
+        readonly IMDMemberRefUtility refUtility;
+
+        public MDSummarySyntaxWriter(IMDMemberRefUtility refUtility)
+        {
+            Check.Ref(refUtility);
+
+            this.refUtility = refUtility;
+        }
+
         public string WriteClassSyntax(ClassData classData, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            string str = "";
+
+            str += WriteAttributes(classData.Member, assemblyData);
+            str += "\n\t";
+            str += WriteAccess(classData.Member);
+            str += WriteModifiers(classData.Member);
+            str += "class ";
+            str += classData.Member.Name;
+            str += WriteTypeParams(classData);
+            str += WriteInheritedTypes(classData, assemblyData);
+            str += WriteConstraints(classData, assemblyData);
+
+            return str;
         }
 
         public string WriteStructSyntax(ClassData structData, AssemblyData assemblyData)
@@ -63,7 +85,12 @@ namespace CSDocNet.Markdown
 
         public string WriteAttributes(MemberData member, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            string str = "";
+
+            foreach(MemberRef attr in member.Attributes)
+            { str += $"\n\t[{refUtility.GetMemberName(attr, assemblyData)}]"; }
+
+            return str;
         }
 
         public string WriteAccess(MemberData member)
@@ -71,17 +98,17 @@ namespace CSDocNet.Markdown
             switch(member.Access)
             {
                 case AccessModifier.Public:
-                    return "public";
+                    return "public ";
                 case AccessModifier.ProtectedInternal:
-                    return "protected internal";
+                    return "protected internal ";
                 case AccessModifier.Internal:
-                    return "internal";
+                    return "internal ";
                 case AccessModifier.Protected:
-                    return "protected";
+                    return "protected ";
                 case AccessModifier.PrivateProtected:
-                    return "private protected";
+                    return "private protected ";
                 case AccessModifier.Private:
-                    return "private";
+                    return "private ";
                 default:
                     return "";
             }
@@ -115,22 +142,103 @@ namespace CSDocNet.Markdown
             if(mods.HasFlag(Modifier.Volatile))
             { modStr += "volatile "; }
 
-            return modStr.TrimEnd();
+            return modStr;
         }
 
-        public string WriteTypeParams(MemberData member, AssemblyData assemblyData)
+        public string WriteTypeParams(ClassData classData)
         {
-            throw new NotImplementedException();
+            return WriteTypeParams(classData.TypeParams);
         }
 
-        public string WriteInheritedTypes(ClassData classData, AssemblyData assembly)
+        public string WriteTypeParams(MethodData methodData)
         {
-            throw new NotImplementedException();
+            return WriteTypeParams(methodData.TypeParams);
         }
 
-        public string WriteConstraints(MemberData member, AssemblyData assembly)
+        public string WriteInheritedTypes(ClassData classData, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            if(!ClassInherits(classData) && classData.Implements.Count <= 0)
+            { return ""; }
+
+            List<string> types = new List<string>(classData.Implements.Count + 1);
+            if(ClassInherits(classData))
+            { types.Add(refUtility.GetMemberName(classData.Inherits, assemblyData)); }
+            foreach(MemberRef implements in classData.Implements)
+            { types.Add(refUtility.GetMemberName(implements, assemblyData)); }
+
+            return $" : {string.Join(", ", types)}";
+        }
+
+        public string WriteConstraints(ClassData classData, AssemblyData assemblyData)
+        {
+            string str = "";
+
+            for(int i = 0; i < classData.TypeParams.Count; i++)
+            {
+                TypeParam tp = classData.TypeParams[i];
+                str += WriteTypeConstraints(tp.Constraints, i, classData.TypeParams, assemblyData);
+            }
+
+            return str;
+        }
+
+        string WriteTypeParams(IReadOnlyList<TypeParam> typeParams)
+        {
+            if(typeParams.Count <= 0)
+            { return ""; }
+
+            return $"<{string.Join(", ", GetTypeParamNames(typeParams))}>";
+        }
+
+        string WriteTypeConstraints(IReadOnlyList<TypeConstraint> typeConstraints, int constrainedParam,
+            IReadOnlyList<TypeParam> typeParams, AssemblyData assemblyData)
+        {
+            if(typeConstraints.Count <= 0)
+            { return ""; }
+
+            var tpNames = GetTypeConstraintNames(typeConstraints, typeParams, assemblyData);
+            return $"\n\twhere {typeParams[constrainedParam].Name} : {tpNames}";
+        }
+
+        IEnumerable<string> GetTypeParamNames(IEnumerable<TypeParam> typeParams)
+        {
+            foreach(TypeParam tp in typeParams)
+            { yield return tp.Name; }
+        }
+
+        IEnumerable<string> GetTypeConstraintNames(IEnumerable<TypeConstraint> typeConstraints,
+            IReadOnlyList<TypeParam> typeParams, AssemblyData assemblyData)
+        {
+            foreach(TypeConstraint tc in typeConstraints)
+            {
+                switch(tc.Constraint)
+                {
+                    case ConstraintType.Class:
+                        yield return "class";
+                        break;
+                    case ConstraintType.Struct:
+                        yield return "struct";
+                        break;
+                    case ConstraintType.Ctor:
+                        yield return "new()";
+                        break;
+                    case ConstraintType.Type:
+                        yield return refUtility.GetMemberName(tc.ConstrainedType, assemblyData);
+                        break;
+                    case ConstraintType.TypeParam:
+                        yield return typeParams[tc.ConstrainedTypeParamPosition].Name;
+                        break;
+                }
+            }
+        }
+
+        bool ClassInherits(ClassData classData)
+        {
+            return (classData.Inherits != null
+            && classData.Inherits.ID != typeof(object).MetadataToken
+            && classData.Inherits.ID != typeof(ValueType).MetadataToken
+            && classData.Inherits.ID != typeof(Delegate).MetadataToken
+            && classData.Inherits.ID != typeof(Attribute).MetadataToken);
         }
     }
 }
