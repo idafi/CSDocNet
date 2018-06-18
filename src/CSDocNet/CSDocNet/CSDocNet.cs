@@ -4,6 +4,7 @@ using System.IO;
 using CSDocNet.Comments;
 using CSDocNet.Logging;
 using CSDocNet.Markdown;
+using CSDocNet.Reflection.Data;
 using CSDocNet.Reflection.Generation;
 
 namespace CSDocNet
@@ -20,6 +21,7 @@ namespace CSDocNet
                 var parser = new AssemblyCommentParser();
                 var gen = new AssemblyDataGenerator();
                 var mdWriter = new MDCommentBlockWriter();
+                var syntaxWriter = new MDSummarySyntaxWriter(new MDMemberRefUtility());
 
                 Stopwatch sw = new Stopwatch();
 
@@ -46,20 +48,24 @@ namespace CSDocNet
 
                                 sw.Stop();
                                 Log.Note($"generated reflected doc in {sw.ElapsedMilliseconds} ms");
-                            }
 
-                            sw.Restart();
-                            foreach(MemberComments m in comments.Members.Values)
-                            {
-                                sWriter.Write($"## {m.Name}\n\n");
-                                sWriter.Write($"\n\n### Summary\n\n");
-                                sWriter.Write(mdWriter.WriteCommentBlock(m.Summary));
-                                sWriter.Write($"\n\n### Remarks\n\n");
-                                sWriter.Write(mdWriter.WriteCommentBlock(m.Remarks));
-                                sWriter.Write("\n\n---\n\n");
+                                sw.Restart();
+                                foreach(ClassData data in doc.Classes.Values)
+                                {
+                                    if(comments.Members.TryGetValue(data.Member.CommentID, out var c))
+                                    {
+                                        sWriter.Write($"# {data.Member.Name}\n\n");
+                                        sWriter.Write(mdWriter.WriteCommentBlock(c.Summary));
+                                        sWriter.Write("\n\n");
+                                        sWriter.Write("## Syntax\n\n");
+                                        sWriter.Write(syntaxWriter.WriteClassSyntax(data, doc));
+                                        sWriter.Write("\n\n");
+                                    }
+                                }
+
+                                sw.Stop();
+                                Log.Note($"wrote class summaries in {sw.ElapsedMilliseconds} ms");
                             }
-                            sw.Stop();
-                            Log.Note($"wrote summaries and remarks in {sw.ElapsedMilliseconds} ms");
                         }
                     }
 
