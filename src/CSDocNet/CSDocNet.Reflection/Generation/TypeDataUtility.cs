@@ -49,7 +49,7 @@ namespace CSDocNet.Reflection.Generation
 
             if(member.IsAbstract && member.IsSealed)
             { mod |= Modifier.Static; }
-            else if(member.IsAbstract)
+            else if(member.IsAbstract && !member.IsInterface)
             { mod |= Modifier.Abstract; }
             else if(member.IsSealed && !member.IsValueType)
             { mod |= Modifier.Sealed; }
