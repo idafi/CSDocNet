@@ -86,7 +86,7 @@ namespace CSDocNet.Reflection.Generation
                 typeParams: new TypeParamRef[]
                 {
                     new TypeParamRef("T"),
-                    new TypeParamRef("U")
+                    new TypeParamRef("Q")
                 }
             );
         }
@@ -133,8 +133,8 @@ namespace CSDocNet.Reflection.Generation
                 typeParams: new TypeParamRef[]
                 {
                     new TypeParamRef("T"),
-                    new TypeParamRef("U"),
-                    new TypeParamRef("V")
+                    new TypeParamRef("V"),
+                    new TypeParamRef("W")
                 }
             );
         }
