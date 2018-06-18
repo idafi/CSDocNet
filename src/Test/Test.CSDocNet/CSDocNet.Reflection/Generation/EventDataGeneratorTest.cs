@@ -29,7 +29,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateMemberData()
         {
             EventInfo ev = typeof(EventTestClass).GetEvent("PublicEvent");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             docUtility.GenerateName(ev).Returns("CSDocNet.TestDoc.EventTestClass.Event");
             docUtility.GenerateAttributes(ev).Returns(expectedAttr);
             idGen.GenerateMemberID(ev).Returns("M:CSDocNet.TestDoc.EventTestClass.Event");

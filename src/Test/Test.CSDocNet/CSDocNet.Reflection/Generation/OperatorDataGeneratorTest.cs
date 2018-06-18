@@ -27,7 +27,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateOperatorData()
         {
             MethodInfo op = typeof(TestClass).GetMethod("op_Subtraction");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             methodGen.GenerateName(op).Returns("CSDocNet.TestDoc.TestClass.op_Subtraction");
             methodGen.GenerateAttributes(op).Returns(expectedAttr);
 

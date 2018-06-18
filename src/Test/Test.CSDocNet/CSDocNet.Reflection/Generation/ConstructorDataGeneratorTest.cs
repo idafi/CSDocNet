@@ -26,7 +26,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateConstructorData()
         {
             ConstructorInfo ctor = typeof(TestClass).GetConstructor(new Type[] { typeof(int) });
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             methodUtility.GenerateName(ctor).Returns("CSDocNet.TestDoc.TestClass..ctor");
             methodUtility.GenerateAttributes(ctor).Returns(expectedAttr);
 

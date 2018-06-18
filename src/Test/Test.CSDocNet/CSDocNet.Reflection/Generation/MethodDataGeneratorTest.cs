@@ -27,7 +27,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateMethodData()
         {
             MethodInfo method = typeof(MethodTestClass).GetMethod("Method");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             docUtility.GenerateName(method).Returns("CSDocNet.TestDoc.MethodTestClass.Method");
             docUtility.GenerateAttributes(method).Returns(expectedAttr);
 

@@ -74,7 +74,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericClass<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken,
-                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Class, 0) });
+                typeParams: new TypeParamRef[] { new TypeParamRef("T") });
         }
 
         [Test]
@@ -85,8 +85,8 @@ namespace CSDocNet.Reflection.Generation
             AssertMemberRef(mRef, MemberRefType.Class, t.MetadataToken,
                 typeParams: new TypeParamRef[]
                 {
-                    new TypeParamRef(MemberRefType.Class, 0),
-                    new TypeParamRef(MemberRefType.Class, 1)
+                    new TypeParamRef("T"),
+                    new TypeParamRef("U")
                 }
             );
         }
@@ -105,7 +105,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericStruct<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Struct, t.MetadataToken,
-                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Struct, 0) });
+                typeParams: new TypeParamRef[] { new TypeParamRef("T") });
         }
 
         [Test]
@@ -132,9 +132,9 @@ namespace CSDocNet.Reflection.Generation
             AssertMemberRef(mRef, MemberRefType.Interface, t.MetadataToken,
                 typeParams: new TypeParamRef[]
                 {
-                    new TypeParamRef(MemberRefType.Interface, 0),
-                    new TypeParamRef(MemberRefType.Interface, 1),
-                    new TypeParamRef(MemberRefType.Interface, 2)
+                    new TypeParamRef("T"),
+                    new TypeParamRef("U"),
+                    new TypeParamRef("V")
                 }
             );
         }
@@ -153,7 +153,7 @@ namespace CSDocNet.Reflection.Generation
             Type t = typeof(GenericDelegate<>);
             MemberRef mRef = utility.MakeMemberRef(t);
             AssertMemberRef(mRef, MemberRefType.Delegate, t.MetadataToken,
-                typeParams: new TypeParamRef[] { new TypeParamRef(MemberRefType.Delegate, 0) });
+                typeParams: new TypeParamRef[] { new TypeParamRef("T") });
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace CSDocNet.Reflection.Generation
             var tExpected = new TypeConstraint[] { TypeConstraint.Struct };
             var uExpected = new TypeConstraint[] { TypeConstraint.Class, TypeConstraint.Ctor };
             var vExpected = new TypeConstraint[] { TypeConstraint.TypeParam(3) };
-            var wExpected = new TypeConstraint[] { TypeConstraint.Type(new MemberRef(MemberRefType.Class, typeof(TestClass).MetadataToken)) };
+            var wExpected = new TypeConstraint[] { TypeConstraint.Type(new MemberRef("", MemberRefType.Class, typeof(TestClass).MetadataToken)) };
 
             AssertTypeConstraints(tExpected, utility.GetTypeParamConstraints(tParam));
             AssertTypeConstraints(uExpected, utility.GetTypeParamConstraints(uParam));
@@ -311,17 +311,15 @@ namespace CSDocNet.Reflection.Generation
                 TypeParamRef expRef = typeParams[i];
                 TypeParamRef actRef = mRef.TypeParams[i];
 
-                Assert.AreEqual(expRef.DeclaringType, actRef.DeclaringType);
-                Assert.AreEqual(expRef.DeclaredPosition, actRef.DeclaredPosition);
-                
-                if(expRef.ConstructedType != null)
+                Assert.AreEqual(expRef.TypeParamName, actRef.TypeParamName);
+                if(expRef.MemberRef != null)
                 {
-                    AssertMemberRef(actRef.ConstructedType, expRef.ConstructedType.Type,
-                        expRef.ConstructedType.ID, expRef.ConstructedType.ArrayDimensions,
-                        expRef.ConstructedType.TypeParams);
+                    AssertMemberRef(actRef.MemberRef, expRef.MemberRef.Type,
+                        expRef.MemberRef.ID, expRef.MemberRef.ArrayDimensions,
+                        expRef.MemberRef.TypeParams);
                 }
                 else
-                { Assert.IsNull(actRef.ConstructedType); }
+                { Assert.IsNull(actRef.MemberRef); }
             }
         }
 

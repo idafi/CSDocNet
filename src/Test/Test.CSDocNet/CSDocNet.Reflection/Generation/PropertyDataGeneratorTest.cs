@@ -49,7 +49,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateMemberData()
         {
             PropertyInfo property = typeof(PropertyTestClass).GetProperty("PublicProperty");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             docUtility.GenerateName(property).Returns("CSDocNet.TestDoc.PropertyTestClass.Property");
             docUtility.GenerateAttributes(property).Returns(expectedAttr);
             idGen.GenerateMemberID(property).Returns("M:CSDocNet.TestDoc.PropertyTestClass.Property");
@@ -197,7 +198,7 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateIndexerParams()
         {
             PropertyInfo property = typeof(TestClass).GetProperty("Item");
-            MemberRef mRef = new MemberRef(MemberRefType.Struct, typeof(int).MetadataToken);
+            MemberRef mRef = new MemberRef("Int32", MemberRefType.Struct, typeof(int).MetadataToken);
             docUtility.MakeMemberRef(typeof(int)).Returns(mRef);
 
             var iParams = gen.GenerateIndexerParams(property);

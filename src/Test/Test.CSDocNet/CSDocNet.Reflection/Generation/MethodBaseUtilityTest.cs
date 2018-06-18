@@ -27,7 +27,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateMemberData()
         {
             MethodBase method = typeof(MethodTestClass).GetMethod("Method");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("STAThreadAttribute", MemberRefType.Class, typeof(STAThreadAttribute).MetadataToken) };
             docUtility.GenerateName(method).Returns("CSDocNet.TestDoc.MethodTestClass.Method");
             docUtility.GenerateAttributes(method).Returns(expectedAttr);
             idGen.GenerateMemberID(method).Returns("M:CSDocNet.TestDoc.MethodTestClass.Method");
@@ -161,7 +162,7 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateParams()
         {
             MethodBase method = typeof(MethodTestClass).GetMethod("Method");
-            MemberRef intRef = new MemberRef(MemberRefType.Struct, typeof(int).MetadataToken);
+            MemberRef intRef = new MemberRef("Int32", MemberRefType.Struct, typeof(int).MetadataToken);
             docUtility.MakeMemberRef(null).ReturnsForAnyArgs(intRef);
 
             IReadOnlyList<Param> expected = new Param[]

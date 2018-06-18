@@ -54,7 +54,8 @@ namespace CSDocNet.Reflection.Generation
         public void TestGenerateMemberData()
         {
             FieldInfo field = typeof(FieldTestClass).GetField("StaticReadonlyField");
-            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[] { new MemberRef(MemberRefType.Class, typeof(NonSerializedAttribute).MetadataToken) };
+            IReadOnlyList<MemberRef> expectedAttr = new MemberRef[]
+            { new MemberRef("NonSerializedAttribute", MemberRefType.Class, typeof(NonSerializedAttribute).MetadataToken) };
             utility.GenerateName(field).Returns("CSDocNet.TestDoc.FieldTestClass.StaticReadonlyField");
             utility.GenerateAttributes(field).Returns(expectedAttr);
             idGen.GenerateMemberID(field).Returns("F:CSDocNet.TestDoc.FieldTestClass.StaticReadonlyField");

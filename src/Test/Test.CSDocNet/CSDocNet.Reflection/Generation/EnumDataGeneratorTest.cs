@@ -98,7 +98,7 @@ namespace CSDocNet.Reflection.Generation
         [Test]
         public void TestGenerateUnderlyingType()
         {
-            var expected = new MemberRef(MemberRefType.Struct, typeof(short).MetadataToken);
+            var expected = new MemberRef("Int16", MemberRefType.Struct, typeof(short).MetadataToken);
             docUtility.MakeMemberRef(typeof(short)).Returns(expected);
             Assert.AreEqual(expected, gen.GenerateUnderlyingType(typeof(TestEnum)));
         }
