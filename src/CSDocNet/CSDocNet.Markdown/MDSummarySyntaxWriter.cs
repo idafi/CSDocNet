@@ -197,7 +197,7 @@ namespace CSDocNet.Markdown
             { return ""; }
 
             var tpNames = GetTypeConstraintNames(typeConstraints, typeParams, assemblyData);
-            return $"\n\twhere {typeParams[constrainedParam].Name} : {tpNames}";
+            return $"\n\twhere {typeParams[constrainedParam].Name} : {string.Join(", ", tpNames)}";
         }
 
         IEnumerable<string> GetTypeParamNames(IEnumerable<TypeParam> typeParams)
