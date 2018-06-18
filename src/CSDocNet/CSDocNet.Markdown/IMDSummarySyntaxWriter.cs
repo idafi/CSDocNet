@@ -20,8 +20,8 @@ namespace CSDocNet.Markdown
         string WriteAttributes(MemberData member, AssemblyData assemblyData);
         string WriteAccess(MemberData member);
         string WriteModifiers(MemberData member);
-        string WriteTypeParams(MemberData member, AssemblyData assemblyData);
-        string WriteInheritedTypes(ClassData classData, AssemblyData assembly);
-        string WriteConstraints(MemberData member, AssemblyData assembly);
+        string WriteTypeParams(ClassData classData);
+        string WriteInheritedTypes(ClassData classData, AssemblyData assemblyData);
+        string WriteConstraints(ClassData classData, AssemblyData assemblyData);
     }
 }
