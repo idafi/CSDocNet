@@ -13,6 +13,8 @@ namespace CSDocNet.Reflection.Generation
             {
                 case Type t:
                     return GenerateTypeName(t);
+                case EventInfo e:
+                    return GenerateEventName(e);
                 case FieldInfo f:
                     return GenerateFieldName(f);
                 case PropertyInfo p:
@@ -32,6 +34,11 @@ namespace CSDocNet.Reflection.Generation
             { name = name.Substring(0, name.IndexOf('`')); }
 
             return name;
+        }
+
+        public string GenerateEventName(EventInfo ev)
+        {
+            return ev.Name;
         }
 
         public string GenerateFieldName(FieldInfo field)

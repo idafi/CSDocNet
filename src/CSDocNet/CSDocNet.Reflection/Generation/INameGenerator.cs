@@ -9,6 +9,7 @@ namespace CSDocNet.Reflection
         string GenerateMemberName(MemberInfo member);
 
         string GenerateTypeName(Type type);
+        string GenerateEventName(EventInfo e);
         string GenerateFieldName(FieldInfo field);
         string GeneratePropertyName(PropertyInfo property);
         string GenerateMethodName(MethodBase method);
