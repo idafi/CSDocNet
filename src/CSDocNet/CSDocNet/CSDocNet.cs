@@ -89,6 +89,19 @@ namespace CSDocNet
                                     }
                                 }
 
+                                foreach(EnumData data in doc.Enums.Values)
+                                {
+                                    if(comments.Members.TryGetValue(data.Member.CommentID, out var c))
+                                    {
+                                        sWriter.Write($"# {data.Member.Name}\n\n");
+                                        sWriter.Write(mdWriter.WriteCommentBlock(c.Summary));
+                                        sWriter.Write("\n\n");
+                                        sWriter.Write("## Syntax\n\n");
+                                        sWriter.Write(syntaxWriter.WriteEnumSyntax(data, doc));
+                                        sWriter.Write("\n\n");
+                                    }
+                                }
+
                                 sw.Stop();
                                 Log.Note($"wrote summaries in {sw.ElapsedMilliseconds} ms");
                             }

@@ -33,7 +33,14 @@ namespace CSDocNet.Markdown
 
         public string WriteEnumSyntax(EnumData enumData, AssemblyData assemblyData)
         {
-            throw new NotImplementedException();
+            string str = "";
+            str += WriteAttributes(enumData.Member, assemblyData);
+            str += "\n\t";
+            str += WriteAccess(enumData.Member);
+            str += "enum ";
+            str += enumData.Member.Name;
+
+            return str;
         }
 
         public string WriteDelegateSyntax(MethodData delegateData, AssemblyData assemblyData)
