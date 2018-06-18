@@ -2,28 +2,20 @@ namespace CSDocNet.Reflection.Data
 {
     public class TypeParamRef
     {
-        public readonly MemberRefType DeclaringType;
-        public readonly int DeclaredPosition;           // -1 if constructed
-
-        public readonly MemberRef ConstructedType;       // null if generic
-
-        public bool IsGeneric => (DeclaredPosition > -1);
-        public bool IsConstructed => (ConstructedType != null);
-
-        public TypeParamRef(MemberRefType declaringtype, int declaredPosition)
+        public readonly string TypeParamName;
+        public readonly MemberRef MemberRef;
+        
+        public bool IsGenericParam => TypeParamName != null;
+        public bool IsConstructedParam => MemberRef != null;
+        
+        public TypeParamRef(string typeParamName)
         {
-            DeclaringType = declaringtype;
-            DeclaredPosition = declaredPosition;
-
-            ConstructedType = null;
+            TypeParamName = typeParamName;
         }
-
-        public TypeParamRef(MemberRef constructedType)
+        
+        public TypeParamRef(MemberRef memberRef)
         {
-            DeclaringType = default;
-            DeclaredPosition = -1;
-
-            ConstructedType = constructedType;
+            MemberRef = memberRef;
         }
     }
 }
