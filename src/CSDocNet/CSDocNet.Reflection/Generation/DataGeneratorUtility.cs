@@ -64,8 +64,13 @@ namespace CSDocNet.Reflection.Generation
             else if(member is MethodInfo method)
             { typeParams = GetTypeParamRefs(method.GetGenericArguments()); }
 
+            int tpIndex = member.Name.IndexOf('`');
+            string name = (tpIndex > -1)
+                ? member.Name.Substring(0, member.Name.IndexOf('`'))
+                : member.Name;
+
             var refType = GetMemberRefType(member);
-            return new MemberRef(member.Name, refType, token, arrayDim, typeParams);
+            return new MemberRef(name, refType, member.MetadataToken, arrayDim, typeParams);
         }
 
         public IReadOnlyList<TypeParam> GetTypeParams(IReadOnlyList<Type> typeArgs)
