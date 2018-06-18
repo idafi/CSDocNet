@@ -237,8 +237,7 @@ namespace CSDocNet.Markdown
             return (classData.Inherits != null
             && classData.Inherits.ID != typeof(object).MetadataToken
             && classData.Inherits.ID != typeof(ValueType).MetadataToken
-            && classData.Inherits.ID != typeof(Delegate).MetadataToken
-            && classData.Inherits.ID != typeof(Attribute).MetadataToken);
+            && classData.Inherits.ID != typeof(Delegate).MetadataToken);
         }
     }
 }
