@@ -69,7 +69,7 @@ namespace CSDocNet.Reflection.Generation
             { typeParams = GetTypeParamRefs(method.GetGenericArguments()); }
 
             var refType = GetMemberRefType(member);
-            return new MemberRef(refType, token, arrayDim, typeParams);
+            return new MemberRef(member.Name, refType, token, arrayDim, typeParams);
         }
 
         public IReadOnlyList<TypeParam> GetTypeParams(IReadOnlyList<Type> typeArgs)
@@ -124,7 +124,7 @@ namespace CSDocNet.Reflection.Generation
                     }
                     else
                     {
-                        MemberRef mRef = new MemberRef(GetMemberRefType(constraint), constraint.MetadataToken);
+                        MemberRef mRef = new MemberRef(constraint.Name, GetMemberRefType(constraint), constraint.MetadataToken);
                         constraints.Add(TypeConstraint.Type(mRef));
                     }
                 }
@@ -219,14 +219,7 @@ namespace CSDocNet.Reflection.Generation
                     Type tp = typeParams[i];
 
                     if(tp.IsGenericParameter)
-                    {
-                        MemberRefType refType = (tp.DeclaringMethod != null)
-                            ? MemberRefType.Method
-                            : GetMemberRefType(tp.DeclaringType);
-
-                        int pos = tp.GenericParameterPosition;
-                        refs[i] = new TypeParamRef(refType, pos);
-                    }
+                    { refs[i] = new TypeParamRef(tp.Name); }
                     else
                     { refs[i] = new TypeParamRef(MakeMemberRef(tp)); }
                 }
