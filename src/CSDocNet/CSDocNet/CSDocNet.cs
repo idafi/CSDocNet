@@ -11,6 +11,8 @@ namespace CSDocNet
 {
     internal static class CSDocNet
     {
+        // this isn't a real program entry point !! it is a quick hacky test.
+        // a real one will come, only later
         static void Main(string[] args)
         {
             InitLog();
